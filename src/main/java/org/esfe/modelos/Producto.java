@@ -11,7 +11,7 @@ public class Producto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotBlank(message = "id_marca")
+    @NotBlank(message = "id_Marca")
     private Integer idMarca;
 
     @NotBlank(message = "La Categoria es requerida")
