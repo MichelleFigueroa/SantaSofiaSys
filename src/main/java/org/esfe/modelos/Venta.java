@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class Venta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private BigInteger id;
 
     @NotBlank(message = "El usuario es requerido")
     private Integer idUsuario;
@@ -32,11 +32,11 @@ public class Venta {
     private boolean estado;
 
 
-    public Integer getId() {
+    public BigInteger getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(BigInteger id) {
         this.id = id;
     }
 
