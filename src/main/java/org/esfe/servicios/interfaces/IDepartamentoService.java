@@ -14,7 +14,7 @@ public interface IDepartamentoService {
 
     Optional<Departamento> buscarPorId(Integer id);
 
-    Departamento crearOEditar(Departamento departamento); // Cambiamos el tipo de parámetro a Departamento
+    Departamento crearOEditar(Departamento departamento);
 
     void eliminarPorId(Integer id);
 }
