@@ -22,6 +22,7 @@ public class ProveedorService implements IProveedorService {
         return proveedorRepository.findAll(pageable);
     }
 
+
     @Override
     public List<Proveedor> obtenerTodos() {
         return proveedorRepository.findAll();

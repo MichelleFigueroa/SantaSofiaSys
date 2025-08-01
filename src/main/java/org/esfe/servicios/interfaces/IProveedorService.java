@@ -17,4 +17,5 @@ public interface IProveedorService {
     Proveedor createOrEditone (Proveedor proveedor);
 
     void eliminarPorld (Integer proveedor);
+
 }

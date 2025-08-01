@@ -26,6 +26,7 @@ public class DetalleCompraService implements IDetalleCompraService {
         return detalleCompraRespository.findAll();
     }
 
+
     @Override
     public Optional<DetalleCompra> buscarPorId(Integer id) {
         return detalleCompraRespository.findById(id);

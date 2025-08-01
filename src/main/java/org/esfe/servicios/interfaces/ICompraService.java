@@ -19,4 +19,5 @@ public interface ICompraService {
 
     void eliminarPorId(Integer id);
 
+
 }

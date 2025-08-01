@@ -18,4 +18,5 @@ public interface IDetalleCompraService {
 
     void eliminarPorId(Integer id);
 
+
 }

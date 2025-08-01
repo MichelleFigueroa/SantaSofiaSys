@@ -39,4 +39,5 @@ public class CompraService implements ICompraService {
     public void eliminarPorId(Integer id) {
         compraRepository.deleteById(id);
     }
+
 }
