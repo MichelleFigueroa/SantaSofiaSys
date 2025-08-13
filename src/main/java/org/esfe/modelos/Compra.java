@@ -1,19 +1,17 @@
 package org.esfe.modelos;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
 import java.math.BigInteger;
 import java.time.LocalDateTime;
 
+@Entity
 @Table(name = "compras")
 public class Compra {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private BigInteger id;
+    private Long id;
 
     @NotBlank(message = "El usuario es requerido")
     private Integer idUsuario;
@@ -22,7 +20,7 @@ public class Compra {
     private Integer idProveedor;
 
     @NotBlank(message = "El correlativo es requerido")
-    private BigInteger correlativo;
+    private Long correlativo;
 
     @NotBlank(message = "La fecha es requerida")
     private LocalDateTime fechaHora;
@@ -30,11 +28,11 @@ public class Compra {
     @NotBlank(message = "El Total es requerido")
     private Double total;
 
-    public BigInteger getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(BigInteger id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -54,11 +52,11 @@ public class Compra {
         this.idProveedor = idProveedor;
     }
 
-    public BigInteger getCorrelativo() {
+    public Long getCorrelativo() {
         return correlativo;
     }
 
-    public void setCorrelativo(BigInteger correlativo) {
+    public void setCorrelativo(Long correlativo) {
         this.correlativo = correlativo;
     }
 
