@@ -14,7 +14,7 @@ import java.util.Optional;
 @Service
 public class  MarcaService implements IMarcaService {
     @Autowired
-    private IMarcaRepository marcaRepository;
+     private IMarcaRepository marcaRepository;
 
     @Override
     public Page<Marca> buscarTodosPaginados(Pageable pageable) {
