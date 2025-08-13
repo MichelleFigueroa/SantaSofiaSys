@@ -15,9 +15,7 @@ public class Municipio {
     private String nombre;
 
     @NotNull(message = "El departamento es requerido")
-    @ManyToOne
-    @JoinColumn(name = "id_departamento", nullable = false)
-    private Departamento departamento;
+    private Integer departamento;
 
 
 
@@ -37,11 +35,11 @@ public class Municipio {
         this.nombre = nombre;
     }
 
-    public Departamento getDepartamento() {
+    public Integer getDepartamento() {
         return departamento;
     }
 
-    public void setDepartamento(Departamento departamento) {
+    public void setDepartamento(Integer departamento) {
         this.departamento = departamento;
     }
 }
