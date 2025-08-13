@@ -15,7 +15,7 @@ public class Usuario {
         private Integer idRol;
 
         @NotBlank(message = "El empleado es obligatorio")
-        private BigInteger idEmpleado;
+        private Integer idEmpleado;
 
         @NotBlank(message = "El nombre de usuario es obligatorio")
         private String nombre;
@@ -38,11 +38,11 @@ public class Usuario {
             this.idRol = idRol;
         }
 
-        public BigInteger getIdEmpleado() {
+        public Integer getIdEmpleado() {
             return idEmpleado;
         }
 
-        public void setIdEmpleado(BigInteger idEmpleado) {
+        public void setIdEmpleado(Integer idEmpleado) {
             this.idEmpleado = idEmpleado;
         }
          public String getNombre() {

@@ -13,7 +13,7 @@ public class Distrito {
           private String nombre;
         @NotNull(message = "El municipio es obligatorio")
 
-
+        private Integer idMunicipio;
         public Integer getId() {
             return id;
         }
