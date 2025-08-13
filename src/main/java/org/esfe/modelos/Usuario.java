@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 
 import java.math.BigInteger;
 
+@Entity
+@Table(name = "usuarios")
 public class Usuario {
 
         @Id
@@ -18,7 +20,10 @@ public class Usuario {
         private Integer idEmpleado;
 
         @NotBlank(message = "El nombre de usuario es obligatorio")
-        private String nombre;
+        private String nombreUsuario;
+
+        @NotBlank(message = "La clave del usuario es obligatoria")
+        private String clave;
 
 
 
@@ -45,13 +50,21 @@ public class Usuario {
         public void setIdEmpleado(Integer idEmpleado) {
             this.idEmpleado = idEmpleado;
         }
-         public String getNombre() {
-        return nombre;
-         }
 
-        public void setNombre(String nombre) {
-        this.nombre = nombre;
+        public String getNombreUsuario() {
+            return nombreUsuario;
         }
 
-    }
+        public void setNombreUsuario(String nombreUsuario) {
+            this.nombreUsuario = nombreUsuario;
+        }
+
+        public String getClave() {
+            return clave;
+        }
+
+        public void setClave(String clave) {
+            this.clave = clave;
+        }
+}
 
