@@ -10,13 +10,13 @@ import java.math.BigInteger;
 public class DetalleCompra {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private BigInteger id;
+    private Long id;
 
     @NotBlank(message = "El producto es requerido")
     private Integer idProducto;
 
     @NotBlank(message = "La compra es requerido")
-    private BigInteger idCompra;
+    private Long idCompra;
 
     @NotBlank(message = "La cantidad es requerido")
     private Short cantidad;
@@ -27,11 +27,11 @@ public class DetalleCompra {
     @NotBlank(message = "El subtotal es requerido")
     private Double subtotal;
 
-    public BigInteger getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(BigInteger id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -43,11 +43,11 @@ public class DetalleCompra {
         this.idProducto = idProducto;
     }
 
-    public BigInteger getIdCompra() {
+    public Long getIdCompra() {
         return idCompra;
     }
 
-    public void setIdCompra(BigInteger idCompra) {
+    public void setIdCompra(Long idCompra) {
         this.idCompra = idCompra;
     }
 

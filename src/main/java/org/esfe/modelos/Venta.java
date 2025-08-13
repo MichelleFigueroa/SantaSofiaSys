@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class Venta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private BigInteger id;
+    private Long id;
 
     @NotBlank(message = "El usuario es requerido")
     private Integer idUsuario;
@@ -20,7 +20,7 @@ public class Venta {
     private Integer idCliente;
 
     @NotBlank(message = "El correlativo es requerido")
-    private BigInteger correlativo;
+    private Long correlativo;
 
     @NotBlank(message = "La fecha es requerida")
     private LocalDateTime fechaHora;
@@ -32,11 +32,11 @@ public class Venta {
     private boolean estado;
 
 
-    public BigInteger getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(BigInteger id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -56,11 +56,11 @@ public class Venta {
         this.idCliente = idCliente;
     }
 
-    public BigInteger getCorrelativo() {
+    public Long getCorrelativo() {
         return correlativo;
     }
 
-    public void setCorrelativo(BigInteger correlativo) {
+    public void setCorrelativo(Long correlativo) {
         this.correlativo = correlativo;
     }
 
