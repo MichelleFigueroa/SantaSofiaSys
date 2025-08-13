@@ -9,7 +9,7 @@ public class Usuario {
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private BigInteger id;
+        private Integer id;
 
         @NotBlank(message = "El rol es obligatorio")
         private Integer idRol;
@@ -22,11 +22,11 @@ public class Usuario {
 
 
 
-        public BigInteger getId() {
+        public Integer getId() {
             return id;
         }
 
-        public void setId(BigInteger id) {
+        public void setId(Integer id) {
             this.id = id;
         }
 

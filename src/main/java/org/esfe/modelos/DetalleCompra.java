@@ -16,7 +16,7 @@ public class DetalleCompra {
     private Integer idProducto;
 
     @NotBlank(message = "La compra es requerido")
-    private Integer idCompra;
+    private BigInteger idCompra;
 
     @NotBlank(message = "La cantidad es requerido")
     private Short cantidad;
@@ -43,11 +43,11 @@ public class DetalleCompra {
         this.idProducto = idProducto;
     }
 
-    public Integer getIdCompra() {
+    public BigInteger getIdCompra() {
         return idCompra;
     }
 
-    public void setIdCompra(Integer idCompra) {
+    public void setIdCompra(BigInteger idCompra) {
         this.idCompra = idCompra;
     }
 

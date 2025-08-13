@@ -9,11 +9,12 @@ public class Distrito {
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Integer id;
 
-         @NotBlank(message = "El nombre del distrito es obligatorio")
-          private String nombre;
         @NotNull(message = "El municipio es obligatorio")
-
         private Integer idMunicipio;
+
+         @NotBlank(message = "El nombre del distrito es obligatorio")
+         private String nombre;
+
         public Integer getId() {
             return id;
         }
@@ -30,5 +31,12 @@ public class Distrito {
             this.nombre = nombre;
         }
 
+    public Integer getIdMunicipio() {
+        return idMunicipio;
     }
+
+    public void setIdMunicipio(Integer idMunicipio) {
+        this.idMunicipio = idMunicipio;
+    }
+}
 
