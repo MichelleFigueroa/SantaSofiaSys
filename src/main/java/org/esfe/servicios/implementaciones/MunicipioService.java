@@ -13,6 +13,7 @@ import java.util.Optional;
 
 @Service
 public class MunicipioService implements IMunicipioService {
+    @Autowired
     private IMunicipioRepository municipioRepository;
 
     @Override

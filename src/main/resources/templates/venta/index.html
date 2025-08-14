@@ -27,38 +27,35 @@
         </script>
     </div>
 
-    <h1>Listado de empresas</h1>
-    <a th:href="@{/empresas/create}" class="btn btn-outline-primary">Nueva Empresa</a>
+    <h1>Listado de ventas</h1>
+    <a th:href="@{/ventas/create}" class="btn btn-outline-primary">Nueva Venta</a>
+
     <table class="table table-striped">
         <thead>
         <tr>
             <th>Id</th>
-            <th>Municipio</th>
-            <th>Nombre</th>
-            <th>NIT</th>
-            <th>NRC</th>
-            <th>Sucursal</th>
-            <th>Telefono</th>
-            <th>Direccion</th>
-            <th>Email</th>
+            <th>Usuario</th>
+            <th>Cliente</th>
+            <th>Correlativo</th>
+            <th>Fecha</th>
+            <th>Total</th>
+            <th>Estado</th>
             <th>Acciones</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="item : ${empresas}">
+        <tr th:each="item : ${ventas}">
             <td th:text="${item.id}"></td>
-            <td th:text="${item.idMunicipio}"></td>
-            <td th:text="${item.nombre}"></td>
-            <td th:text="${item.NIT}"></td>
-            <td th:text="${item.NRC}"></td>
-            <td th:text="${item.sucursal}"></td>
-            <td th:text="${item.telefono}"></td>
-            <td th:text="${item.direccion}"></td>
-            <td th:text="${item.email}"></td>
+            <td th:text="${item.idUsuario}"></td>
+            <td th:text="${item.idCliente}"></td>
+            <td th:text="${item.correlativo}"></td>
+            <td th:text="${item.fechaHora}"></td>
+            <td th:text="${item.total}"></td>
+            <td th:text="${item.estado}"></td>
             <td>
-                <a th:href="@{/empresas/details/{id} (id = ${item.id}) }" class="btn btn-outline-secondary">Detalles</a>
-                <a th:href="@{/empresas/edit/{id} (id = ${item.id}) }" class="btn btn-outline-info">Editar</a>
-                <a th:href="@{/empresas/remove/{id} (id = ${item.id}) }" class="btn btn-outline-danger">Eliminar</a>
+                <a th:href="@{/ventas/details/{id} (id = ${item.id}) }" class="btn btn-outline-secondary">Detalles</a>
+                <a th:href="@{/ventas/edit/{id} (id = ${item.id}) }" class="btn btn-outline-info">Editar</a>
+                <a th:href="@{/ventas/remove/{id} (id = ${item.id}) }" class="btn btn-outline-danger">Eliminar</a>
             </td>
         </tr>
         </tbody>
@@ -71,5 +68,6 @@
             </li>
         </ul>
     </nav>
+
 
 </div>

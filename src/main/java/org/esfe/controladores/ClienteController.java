@@ -1,7 +1,7 @@
 package org.esfe.controladores;
 
-import org.esfe.modelos.Empresa;
-import org.esfe.servicios.interfaces.IEmpresaService;
+import org.esfe.modelos.Cliente;
+import org.esfe.servicios.interfaces.IClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,21 +18,22 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Controller
-@RequestMapping("/empresas")
-public class EmpresaController {
+@RequestMapping("/clientes")
+public class ClienteController {
+
     @Autowired
-    private IEmpresaService empresaService;
-
+    private IClienteService clienteService;
     @GetMapping
-    public String index(Model model, @RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size){
-        int currentPage = page.orElse(1) - 1; // Si no está seteado, se asigna 0
-        int pageSize = size.orElse(5); // Tamaño de la página, se asigna 5
+    public String index(Model model, @RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size) {
+        int currentPage = page.orElse(1) - 1;
+        int pageSize = size.orElse(5);
+
         Pageable pageable = PageRequest.of(currentPage, pageSize);
+        Page<Cliente> clientes = clienteService.buscarTodosPaginados(pageable);
 
-        Page<Empresa> empresas = empresaService.buscarTodosPaginados(pageable);
-        model.addAttribute("empresas", empresas);
+        model.addAttribute("clientes", clientes);
 
-        int totalPages = empresas.getTotalPages();
+        int totalPages = clientes.getTotalPages();
         if (totalPages > 0) {
             List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
                     .boxed()
@@ -40,6 +41,6 @@ public class EmpresaController {
             model.addAttribute("pageNumbers", pageNumbers);
         }
 
-        return "empresa/index";
+        return "cliente/index";
     }
 }

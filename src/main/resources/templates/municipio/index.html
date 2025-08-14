@@ -27,38 +27,27 @@
         </script>
     </div>
 
-    <h1>Listado de empresas</h1>
-    <a th:href="@{/empresas/create}" class="btn btn-outline-primary">Nueva Empresa</a>
+    <h1>Listado de Municipios</h1>
+    <a th:href="@{/municipios/create}" class="btn btn-outline-primary">Nuevo Municipio</a>
     <table class="table table-striped">
         <thead>
         <tr>
             <th>Id</th>
-            <th>Municipio</th>
             <th>Nombre</th>
-            <th>NIT</th>
-            <th>NRC</th>
-            <th>Sucursal</th>
-            <th>Telefono</th>
-            <th>Direccion</th>
-            <th>Email</th>
+            <th>Departamento</th> <!-- Nueva columna para el nombre del departamento -->
             <th>Acciones</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="item : ${empresas}">
+        <tr th:each="item : ${municipios}"> <!-- Itera sobre la lista de municipios -->
             <td th:text="${item.id}"></td>
-            <td th:text="${item.idMunicipio}"></td>
             <td th:text="${item.nombre}"></td>
-            <td th:text="${item.NIT}"></td>
-            <td th:text="${item.NRC}"></td>
-            <td th:text="${item.sucursal}"></td>
-            <td th:text="${item.telefono}"></td>
-            <td th:text="${item.direccion}"></td>
-            <td th:text="${item.email}"></td>
+            <!-- Muestra el nombre del departamento asociado al municipio -->
+            <td th:text="${item.departamento.nombre}"></td>
             <td>
-                <a th:href="@{/empresas/details/{id} (id = ${item.id}) }" class="btn btn-outline-secondary">Detalles</a>
-                <a th:href="@{/empresas/edit/{id} (id = ${item.id}) }" class="btn btn-outline-info">Editar</a>
-                <a th:href="@{/empresas/remove/{id} (id = ${item.id}) }" class="btn btn-outline-danger">Eliminar</a>
+                <a th:href="@{/municipios/details/{id} (id = ${item.id}) }" class="btn btn-outline-secondary">Detalles</a>
+                <a th:href="@{/municipios/edit/{id} (id = ${item.id}) }" class="btn btn-outline-info">Editar</a>
+                <a th:href="@{/municipios/remove/{id} (id = ${item.id}) }" class="btn btn-outline-danger">Eliminar</a>
             </td>
         </tr>
         </tbody>
@@ -67,7 +56,7 @@
     <nav aria-label="Page navigation example">
         <ul class="pagination">
             <li class="page-item" th:each="pageNumber : ${pageNumbers}">
-                <a class="page-link" th:href="@{|/empresas?page=${pageNumber}|}" th:text="${pageNumber}"></a>
+                <a class="page-link" th:href="@{|/municipios?page=${pageNumber}|}" th:text="${pageNumber}"></a>
             </li>
         </ul>
     </nav>

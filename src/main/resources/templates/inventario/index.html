@@ -1,0 +1,70 @@
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="/layouts/_mainLayout">
+<div layout:fragment="content">
+
+  <!-- Mostrar mensaje de confirmación en caso de éxito -->
+  <div th:if="${msg != null}">
+    <script>
+      Swal.fire({
+          title:"Confirmación",
+          text: '[[${msg}]]',
+          icon: "success"
+      })
+    </script>
+  </div>
+
+  <!-- Mostrar mensaje de error en caso de error -->
+  <div th:if="${error != null}">
+    <script>
+      Swal.fire({
+          title: "Error",
+          text: '[[${error}]]',
+          icon: "error"
+      })
+    </script>
+  </div>
+
+  <h1>Listado del inventario</h1>
+
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>Id</th>
+      <th>Producto</th>
+      <th>Stock Actual</th>
+      <th>Stock Minimo</th>
+      <th>Fecha Compra</th>
+      <th>Fecha Actual</th>
+      <th>Movimiento</th>
+      <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="item : ${inventarios}">
+      <td th:text="${item.id}"></td>
+      <td th:text="${item.idProducto}"></td>
+      <td th:text="${item.stockActual}"></td>
+      <td th:text="${item.stockMinimo}"></td>
+      <td th:text="${item.fechaCompra}"></td>
+      <td th:text="${item.fechaActual}"></td>
+      <td th:text="${item.movimiento}"></td>
+      <td>
+        <a th:href="@{/inventarios/details/{id} (id = ${item.id}) }" class="btn btn-outline-secondary">Detalles</a>
+        <a th:href="@{/inventarios/edit/{id} (id = ${item.id}) }" class="btn btn-outline-info">Editar</a>
+        <a th:href="@{/inventarios/remove/{id} (id = ${item.id}) }" class="btn btn-outline-danger">Eliminar</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <nav aria-label="Page navigation example">
+    <ul class="pagination">
+      <li class="page-item" th:each="pageNumber : ${pageNumbers}">
+        <a class="page-link" th:href="@{|/empresas?page=${pageNumber}|}" th:text="${pageNumber}"></a>
+      </li>
+    </ul>
+  </nav>
+
+</div>

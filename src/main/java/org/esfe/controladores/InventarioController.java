@@ -1,7 +1,7 @@
 package org.esfe.controladores;
 
-import org.esfe.modelos.Empresa;
-import org.esfe.servicios.interfaces.IEmpresaService;
+import org.esfe.modelos.Inventario;
+import org.esfe.servicios.interfaces.IInventarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,10 +18,10 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Controller
-@RequestMapping("/empresas")
-public class EmpresaController {
+@RequestMapping("/inventarios")
+public class InventarioController {
     @Autowired
-    private IEmpresaService empresaService;
+    private IInventarioService inventarioService;
 
     @GetMapping
     public String index(Model model, @RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size){
@@ -29,10 +29,10 @@ public class EmpresaController {
         int pageSize = size.orElse(5); // Tamaño de la página, se asigna 5
         Pageable pageable = PageRequest.of(currentPage, pageSize);
 
-        Page<Empresa> empresas = empresaService.buscarTodosPaginados(pageable);
-        model.addAttribute("empresas", empresas);
+        Page<Inventario> inventarios = inventarioService.buscarTodosPaginados(pageable);
+        model.addAttribute("inventarios", inventarios);
 
-        int totalPages = empresas.getTotalPages();
+        int totalPages = inventarios.getTotalPages();
         if (totalPages > 0) {
             List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
                     .boxed()
@@ -40,6 +40,6 @@ public class EmpresaController {
             model.addAttribute("pageNumbers", pageNumbers);
         }
 
-        return "empresa/index";
+        return "inventario/index";
     }
 }
