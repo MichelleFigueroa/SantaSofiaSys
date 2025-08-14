@@ -2,3 +2,71 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="/layouts/_mainLayout">
+
+<div layout:fragment="content">
+
+    <!-- Mostrar mensaje de confirmación en caso de éxito -->
+    <div th:if="${msg != null}">
+        <script>
+            Swal.fire({
+                title:"Confirmación",
+                text: '[[${msg}]]',
+                icon: "success"
+            })
+        </script>
+    </div>
+
+    <!-- Mostrar mensaje de error en caso de error -->
+    <div th:if="${error != null}">
+        <script>
+            Swal.fire({
+                title: "Error",
+                text: '[[${error}]]',
+                icon: "error"
+            })
+        </script>
+    </div>
+
+    <h1>Listado de Clientes</h1>
+    <a th:href="@{/clientes/create}" class="btn btn-outline-primary">Nuevo Cliente</a>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Nombre Completo</th> <!-- Combina Nombre y Apellido -->
+            <th>Teléfono</th>
+            <th>Email</th>
+            <th>DUI</th>
+            <th>Dirección</th>
+            <th>Municipio</th> <!-- Nueva columna para el nombre del municipio -->
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${clientes}"> <!-- Itera sobre la lista de clientes -->
+            <td th:text="${item.id}"></td>
+            <td th:text="${item.nombre + ' ' + item.apellido}"></td> <!-- Muestra nombre y apellido juntos -->
+            <td th:text="${item.telefono}"></td>
+            <td th:text="${item.email}"></td>
+            <td th:text="${item.DUI}"></td>
+            <td th:text="${item.direccion}"></td>
+            <!-- Muestra el nombre del municipio asociado al cliente -->
+            <td th:text="${item.municipio.nombre}"></td>
+            <td>
+                <a th:href="@{/clientes/details/{id} (id = ${item.id}) }" class="btn btn-outline-secondary">Detalles</a>
+                <a th:href="@{/clientes/edit/{id} (id = ${item.id}) }" class="btn btn-outline-info">Editar</a>
+                <a th:href="@{/clientes/remove/{id} (id = ${item.id}) }" class="btn btn-outline-danger">Eliminar</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item" th:each="pageNumber : ${pageNumbers}">
+                <a class="page-link" th:href="@{|/clientes?page=${pageNumber}|}" th:text="${pageNumber}"></a>
+            </li>
+        </ul>
+    </nav>
+
+</div>
