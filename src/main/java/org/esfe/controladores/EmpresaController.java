@@ -23,7 +23,7 @@ public class EmpresaController {
     @Autowired
     private IEmpresaService empresaService;
 
-
+    @GetMapping
     public String index(Model model, @RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size){
         int currentPage = page.orElse(1) - 1; // Si no está seteado, se asigna 0
         int pageSize = size.orElse(5); // Tamaño de la página, se asigna 5
