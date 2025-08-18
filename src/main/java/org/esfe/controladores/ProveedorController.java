@@ -42,6 +42,7 @@ public class ProveedorController {
             model.addAttribute("pageNumbers", pageNumbers);
         }
         return "proveedor/index";
+
     }
 
 

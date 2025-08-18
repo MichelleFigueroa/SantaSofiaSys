@@ -43,6 +43,7 @@ public class CompraController {
             model.addAttribute("pageNumbers", pageNumbers);
         }
         return "compra/index";
+
     }
 
 }
