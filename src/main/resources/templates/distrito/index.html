@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="/layouts/_mainLayout">
+
+<div layout:fragment="content" class="container mt-4">
+
+  <!-- Mensaje de éxito -->
+  <div th:if="${msg != null}">
+    <script>
+      Swal.fire({
+          title:"Confirmación",
+          text: '[[${msg}]]',
+          icon: "success"
+      })
+    </script>
+  </div>
+
+
+  <div th:if="${error != null}">
+    <script>
+      Swal.fire({
+          title: "Error",
+          text: '[[${error}]]',
+          icon: "error"
+      })
+    </script>
+  </div>
+
+  <h2 class="mb-4">Listado de Distritos</h2>
+  <a th:href="@{/distritos/crear}" class="btn btn-primary mb-3">Nuevo Distrito</a>
+
+  <table class="table table-bordered table-striped">
+    <thead class="table-dark">
+    <tr>
+      <th>ID</th>
+      <th>Nombre</th>
+      <th>Municipio</th>
+      <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="distrito : ${listaDistritos}">
+      <td th:text="${distrito.idDistrito}"></td>
+      <td th:text="${distrito.nombre}"></td>
+      <td th:text="${distrito.municipio.nombre}"></td>
+      <td>
+        <a th:href="@{'/distritos/editar/' + ${distrito.idDistrito}}" class="btn btn-warning btn-sm">Editar</a>
+        <a th:href="@{'/distritos/eliminar/' + ${distrito.idDistrito}}"
+           class="btn btn-danger btn-sm"
+           onclick="return confirm('¿Seguro que quieres eliminar este distrito?');">
+          Eliminar
+        </a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <nav th:if="${listaDistritos.totalPages > 1}">
+    <ul class="pagination">
+      <li class="page-item" th:classappend="${listaDistritos.first} ? 'disabled'">
+        <a class="page-link" th:href="@{/distritos(page=${listaDistritos.number - 1}, size=${listaDistritos.size})}">Anterior</a>
+      </li>
+      <li class="page-item" th:each="i : ${#numbers.sequence(0, listaDistritos.totalPages - 1)}"
+          th:classappend="${listaDistritos.number == i} ? 'active'">
+        <a class="page-link" th:href="@{/distritos(page=${i}, size=${listaDistritos.size})}" th:text="${i + 1}"></a>
+      </li>
+      <li class="page-item" th:classappend="${listaDistritos.last} ? 'disabled'">
+        <a class="page-link" th:href="@{/distritos(page=${listaDistritos.number + 1}, size=${listaDistritos.size})}">Siguiente</a>
+      </li>
+    </ul>
+  </nav>
+
+</div>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="/layouts/_mainLayout">
+
+<div layout:fragment="content" class="container mt-4">
+
+    <div th:if="${msg != null}">
+        <script>
+            Swal.fire({ title:"Confirmación", text: '[[${msg}]]', icon: "success" })
+        </script>
+    </div>
+    <div th:if="${error != null}">
+        <script>
+            Swal.fire({ title:"Error", text: '[[${error}]]', icon: "error" })
+        </script>
+    </div>
+
+    <h2 class="mb-4">Listado de Usuarios</h2>
+    <a th:href="@{/usuarios/crear}" class="btn btn-primary mb-3">Nuevo Usuario</a>
+
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Usuario</th>
+            <th>Email</th>
+            <th>Rol</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="usuario : ${listaUsuarios}">
+            <td th:text="${usuario.idUsuario}"></td>
+            <td th:text="${usuario.username}"></td>
+            <td th:text="${usuario.email}"></td>
+            <td th:text="${usuario.rol.nombre}"></td>
+            <td>
+                <a th:href="@{'/usuarios/editar/' + ${usuario.idUsuario}}" class="btn btn-warning btn-sm">Editar</a>
+                <a th:href="@{'/usuarios/eliminar/' + ${usuario.idUsuario}}"
+                   class="btn btn-danger btn-sm"
+                   onclick="return confirm('¿Seguro que quieres eliminar este usuario?');">
+                    Eliminar
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <nav th:if="${listaUsuarios.totalPages > 1}">
+        <ul class="pagination">
+            <li class="page-item" th:classappend="${listaUsuarios.first} ? 'disabled'">
+                <a class="page-link" th:href="@{/usuarios(page=${listaUsuarios.number - 1}, size=${listaUsuarios.size})}">Anterior</a>
+            </li>
+            <li class="page-item" th:each="i : ${#numbers.sequence(0, listaUsuarios.totalPages - 1)}"
+                th:classappend="${listaUsuarios.number == i} ? 'active'">
+                <a class="page-link" th:href="@{/usuarios(page=${i}, size=${listaUsuarios.size})}" th:text="${i + 1}"></a>
+            </li>
+            <li class="page-item" th:classappend="${listaUsuarios.last} ? 'disabled'">
+                <a class="page-link" th:href="@{/usuarios(page=${listaUsuarios.number + 1}, size=${listaUsuarios.size})}">Siguiente</a>
+            </li>
+        </ul>
+    </nav>
+
+</div>
+</html>
