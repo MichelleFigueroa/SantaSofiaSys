@@ -10,8 +10,10 @@ public class Empresa {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotBlank(message = "El municipio es requerido")
-    private Integer idMunicipio;
+    @NotBlank(message = "El distrito es requerido")
+    @ManyToOne
+    @JoinColumn(name = "id_distrito")
+    private Distrito distrito;
 
     @NotBlank(message = "El nombre es requerido")
     private String nombre;
@@ -42,12 +44,12 @@ public class Empresa {
         this.id = id;
     }
 
-    public Integer getIdMunicipio() {
-        return idMunicipio;
+    public Distrito getDistrito() {
+        return distrito;
     }
 
-    public void setIdMunicipio(Integer idMunicipio) {
-        this.idMunicipio = idMunicipio;
+    public void setDistrito(Distrito distrito) {
+        this.distrito = distrito;
     }
 
     public String getNombre() {

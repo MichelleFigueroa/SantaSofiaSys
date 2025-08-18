@@ -13,7 +13,9 @@ public class Inventario {
     private Integer id;
 
     @NotBlank(message = "El producto es requerido")
-    private Integer idProducto;
+    @ManyToOne
+    @JoinColumn(name = "id_producto")
+    private Producto producto;
 
     @NotBlank(message = "El stock actual es requerido")
     private int stockActual;
@@ -39,12 +41,12 @@ public class Inventario {
         this.id = id;
     }
 
-    public Integer getIdProducto() {
-        return idProducto;
+    public Producto getProducto() {
+        return producto;
     }
 
-    public void setIdProducto(Integer idProducto) {
-        this.idProducto = idProducto;
+    public void setProducto(Producto producto) {
+        this.producto = producto;
     }
 
     public int getStockActual() {

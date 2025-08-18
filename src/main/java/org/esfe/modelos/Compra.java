@@ -13,11 +13,15 @@ public class Compra {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "El usuario es requerido")
-    private Integer idUsuario;
+    @NotBlank(message = "El Usuario es requerido")
+    @ManyToOne
+    @JoinColumn(name = "id_usuario")
+    private Usuario usuario;
 
     @NotBlank(message = "El proveedor es requerido")
-    private Integer idProveedor;
+    @ManyToOne
+    @JoinColumn(name = "id_proveedor")
+    private Proveedor proveedor;
 
     @NotBlank(message = "El correlativo es requerido")
     private Long correlativo;
@@ -36,20 +40,20 @@ public class Compra {
         this.id = id;
     }
 
-    public Integer getIdUsuario() {
-        return idUsuario;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setIdUsuario(Integer idUsuario) {
-        this.idUsuario = idUsuario;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
-    public Integer getIdProveedor() {
-        return idProveedor;
+    public Proveedor getProveedor() {
+        return proveedor;
     }
 
-    public void setIdProveedor(Integer idProveedor) {
-        this.idProveedor = idProveedor;
+    public void setProveedor(Proveedor proveedor) {
+        this.proveedor = proveedor;
     }
 
     public Long getCorrelativo() {

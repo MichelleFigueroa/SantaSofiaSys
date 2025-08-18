@@ -13,10 +13,14 @@ public class DetalleVenta {
     private Long id;
 
     @NotBlank(message = "El producto es requerido")
-    private Integer idProducto;
+    @ManyToOne
+    @JoinColumn(name = "id_producto")
+    private Producto producto;
 
     @NotBlank(message = "La venta es requerida")
-    private Long idVenta;
+    @ManyToOne
+    @JoinColumn(name = "id_venta")
+    private Venta venta;
 
     @NotBlank(message = "La cantidad es requerida")
     private short cantidad;
@@ -35,20 +39,20 @@ public class DetalleVenta {
         this.id = id;
     }
 
-    public Integer getIdProducto() {
-        return idProducto;
+    public Producto getProducto() {
+        return producto;
     }
 
-    public void setIdProducto(Integer idProducto) {
-        this.idProducto = idProducto;
+    public void setProducto(Producto producto) {
+        this.producto = producto;
     }
 
-    public Long getIdVenta() {
-        return idVenta;
+    public Venta getVenta() {
+        return venta;
     }
 
-    public void setIdVenta(Long idVenta) {
-        this.idVenta = idVenta;
+    public void setVenta(Venta venta) {
+        this.venta = venta;
     }
 
     public short getCantidad() {

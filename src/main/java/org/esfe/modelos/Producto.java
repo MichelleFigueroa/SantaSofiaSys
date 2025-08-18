@@ -11,11 +11,15 @@ public class Producto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotBlank(message = "id_Marca")
-    private Integer idMarca;
+    @NotBlank(message = "La marca es requerida")
+    @ManyToOne
+    @JoinColumn(name = "id_marca")
+    private Marca marca;
 
-    @NotBlank(message = "La Categoria es requerida")
-    private Integer idCategoria;
+    @NotBlank(message = "La categoria es requerida")
+    @ManyToOne
+    @JoinColumn(name = "id_categoria")
+    private Categoria categoria;
 
     @NotBlank(message = "El nombre es requerido")
     private String nombre;
@@ -34,20 +38,20 @@ public class Producto {
         this.id = id;
     }
 
-    public int getIdMarca() {
-        return idMarca;
+    public Marca getMarca() {
+        return marca;
     }
 
-    public void setIdMarca(int idMarca) {
-        this.idMarca = idMarca;
+    public void setMarca(Marca marca) {
+        this.marca = marca;
     }
 
-    public int getIdCategoria() {
-        return idCategoria;
+    public Categoria getCategoria() {
+        return categoria;
     }
 
-    public void setIdCategoria(int idCategoria) {
-        this.idCategoria = idCategoria;
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
     }
 
     public String getNombre() {

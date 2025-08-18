@@ -31,10 +31,10 @@ public class Cliente {
     @NotBlank(message = "La dirección del cliente es requerida")
     private String direccion;
 
-    @NotNull(message = "El municipio es requerido")
+    @NotNull(message = "El distrito es requerido")
     @ManyToOne
-    @JoinColumn(name = "id_municipio", nullable = false)
-    private Municipio municipio;
+    @JoinColumn(name = "id_distrito", nullable = false)
+    private Distrito distrito;
 
     // Getters y Setters
 
@@ -94,11 +94,11 @@ public class Cliente {
         this.direccion = direccion;
     }
 
-    public Municipio getMunicipio() {
-        return municipio;
+    public Distrito getDistrito() {
+        return distrito;
     }
 
-    public void setMunicipio(Municipio municipio) {
-        this.municipio = municipio;
+    public void setDistrito(Distrito distrito) {
+        this.distrito = distrito;
     }
 }

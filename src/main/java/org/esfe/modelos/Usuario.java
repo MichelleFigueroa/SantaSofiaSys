@@ -9,62 +9,66 @@ import java.math.BigInteger;
 @Table(name = "usuarios")
 public class Usuario {
 
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-        @NotBlank(message = "El rol es obligatorio")
-        private Integer idRol;
+    @NotBlank(message = "El rol es requerido")
+    @ManyToOne
+    @JoinColumn(name = "id_rol")
+    private Rol rol;
 
-        @NotBlank(message = "El empleado es obligatorio")
-        private Integer idEmpleado;
+    @NotBlank(message = "El empleado es obligatorio")
+    @ManyToOne
+    @JoinColumn(name = "id_empleado")
+    private Empleado empleado;
 
-        @NotBlank(message = "El nombre de usuario es obligatorio")
-        private String nombreUsuario;
+    @NotBlank(message = "El nombre de usuario es obligatorio")
+    private String nombreUsuario;
 
-        @NotBlank(message = "La clave del usuario es obligatoria")
-        private String clave;
+    @NotBlank(message = "La clave del usuario es obligatoria")
+    private String clave;
 
 
 
-        public Integer getId() {
-            return id;
-        }
+    public Integer getId() {
+        return id;
+    }
 
-        public void setId(Integer id) {
-            this.id = id;
-        }
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-        public Integer getIdRol() {
-            return idRol;
-        }
+    public Rol getRol() {
+        return rol;
+    }
 
-        public void setIdRol(Integer idRol) {
-            this.idRol = idRol;
-        }
+    public void setRol(Rol rol) {
+        this.rol = rol;
+    }
 
-        public Integer getIdEmpleado() {
-            return idEmpleado;
-        }
+    public Empleado getEmpleado() {
+        return empleado;
+    }
 
-        public void setIdEmpleado(Integer idEmpleado) {
-            this.idEmpleado = idEmpleado;
-        }
+    public void setEmpleado(Empleado empleado) {
+        this.empleado = empleado;
+    }
 
-        public String getNombreUsuario() {
-            return nombreUsuario;
-        }
+    public String getNombreUsuario() {
+        return nombreUsuario;
+    }
 
-        public void setNombreUsuario(String nombreUsuario) {
-            this.nombreUsuario = nombreUsuario;
-        }
+    public void setNombreUsuario(String nombreUsuario) {
+        this.nombreUsuario = nombreUsuario;
+    }
 
-        public String getClave() {
-            return clave;
-        }
+    public String getClave() {
+        return clave;
+    }
 
-        public void setClave(String clave) {
-            this.clave = clave;
-        }
+    public void setClave(String clave) {
+        this.clave = clave;
+    }
 }
 

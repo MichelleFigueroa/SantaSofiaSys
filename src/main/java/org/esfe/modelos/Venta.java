@@ -14,10 +14,14 @@ public class Venta {
     private Long id;
 
     @NotBlank(message = "El usuario es requerido")
-    private Integer idUsuario;
+    @ManyToOne
+    @JoinColumn(name = "id_usuario")
+    private Usuario usuario;
 
     @NotBlank(message = "El cliente es requerido")
-    private Integer idCliente;
+    @ManyToOne
+    @JoinColumn(name = "id_cliente")
+    private Cliente cliente;
 
     @NotBlank(message = "El correlativo es requerido")
     private Long correlativo;
@@ -40,20 +44,20 @@ public class Venta {
         this.id = id;
     }
 
-    public Integer getIdUsuario() {
-        return idUsuario;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setIdUsuario(Integer idUsuario) {
-        this.idUsuario = idUsuario;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
-    public Integer getIdCliente() {
-        return idCliente;
+    public Cliente getCliente() {
+        return cliente;
     }
 
-    public void setIdCliente(Integer idCliente) {
-        this.idCliente = idCliente;
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 
     public Long getCorrelativo() {

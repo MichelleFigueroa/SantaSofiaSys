@@ -13,10 +13,14 @@ public class DetalleCompra {
     private Long id;
 
     @NotBlank(message = "El producto es requerido")
-    private Integer idProducto;
+    @ManyToOne
+    @JoinColumn(name = "id_producto")
+    private Producto producto;
 
-    @NotBlank(message = "La compra es requerido")
-    private Long idCompra;
+    @NotBlank(message = "La compra es requerida")
+    @ManyToOne
+    @JoinColumn(name = "id_compra")
+    private Compra compra;
 
     @NotBlank(message = "La cantidad es requerido")
     private Short cantidad;
@@ -35,20 +39,20 @@ public class DetalleCompra {
         this.id = id;
     }
 
-    public Integer getIdProducto() {
-        return idProducto;
+    public Producto getProducto() {
+        return producto;
     }
 
-    public void setIdProducto(Integer idProducto) {
-        this.idProducto = idProducto;
+    public void setProducto(Producto producto) {
+        this.producto = producto;
     }
 
-    public Long getIdCompra() {
-        return idCompra;
+    public Compra getCompra() {
+        return compra;
     }
 
-    public void setIdCompra(Long idCompra) {
-        this.idCompra = idCompra;
+    public void setCompra(Compra compra) {
+        this.compra = compra;
     }
 
     public Short getCantidad() {
