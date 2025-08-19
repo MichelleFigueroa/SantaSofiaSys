@@ -27,34 +27,26 @@
         </script>
     </div>
 
-    <h1>Listado de Productos</h1>
-    <a th:href="@{/productos/create}" class="btn btn-outline-primary">Nuevo Producto</a>
+    <h1>Listado de Categorias</h1>
+    <a th:href="@{/categorias/create}" class="btn btn-outline-primary">Nueva Categoria</a>
 
     <table class="table table-striped">
         <thead>
         <tr>
             <th>ID</th>
-            <th>Categoría</th>
-            <th>Marca</th>
             <th>Nombre</th>
-            <th>Precio</th>
-            <th>Cantidad</th>
             <th>Acciones</th>
         </tr>
         </thead>
         <tbody>
         <!-- CORREGIDO: productos.content -->
-        <tr th:each="item : ${productos.content}">
+        <tr th:each="item : ${categorias.content}">
             <td th:text="${item.id}"></td>
-            <td th:text="${item.idCategoria}"></td>
-            <td th:text="${item.idMarca}"></td>
             <td th:text="${item.nombre}"></td>
-            <td th:text="${item.precio}"></td>
-            <td th:text="${item.cantidad}"></td>
             <td>
-                <a th:href="@{/productos/details/{id}(id=${item.id})}" class="btn btn-outline-secondary">Detalles</a>
-                <a th:href="@{/productos/edit/{id}(id=${item.id})}" class="btn btn-outline-info">Editar</a>
-                <a th:href="@{/productos/remove/{id}(id=${item.id})}" class="btn btn-outline-danger">Eliminar</a>
+                <a th:href="@{/categorias/details/{id}(id=${item.id})}" class="btn btn-outline-secondary">Detalles</a>
+                <a th:href="@{/categorias/edit/{id}(id=${item.id})}" class="btn btn-outline-info">Editar</a>
+                <a th:href="@{/categorias/remove/{id}(id=${item.id})}" class="btn btn-outline-danger">Eliminar</a>
             </td>
         </tr>
         </tbody>
@@ -64,7 +56,7 @@
     <nav aria-label="Page navigation example">
         <ul class="pagination">
             <li class="page-item" th:each="pageNumber : ${pageNumbers}">
-                <a class="page-link" th:href="@{/productos(page=${pageNumber})}" th:text="${pageNumber}"></a>
+                <a class="page-link" th:href="@{/categorias(page=${pageNumber})}" th:text="${pageNumber}"></a>
             </li>
         </ul>
     </nav>
