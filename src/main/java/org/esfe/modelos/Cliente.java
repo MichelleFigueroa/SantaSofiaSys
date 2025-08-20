@@ -31,13 +31,14 @@ public class Cliente {
     @NotBlank(message = "La dirección del cliente es requerida")
     private String direccion;
 
-    @NotNull(message = "El distrito es requerido")
-    @ManyToOne
-    @JoinColumn(name = "id_distrito", nullable = false)
+    // Aquí está el mapeo de la relación con Distrito
+    @NotNull(message = "El distrito es requerido") // Valida que el objeto Distrito no sea nulo
+    @ManyToOne(fetch = FetchType.LAZY) // Buena práctica para carga perezosa
+    @JoinColumn(name = "id_distrito", nullable = false, referencedColumnName = "id")
+
     private Distrito distrito;
 
     // Getters y Setters
-
     public Integer getId() {
         return id;
     }

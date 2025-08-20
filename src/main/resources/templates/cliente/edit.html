@@ -1,0 +1,231 @@
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="/layouts/_mainLayout" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Estilos para mensajes de error de validación */
+        .input-error {
+            border-color: #ef4444; /* red-500 */
+        }
+        .error-message {
+            color: #ef4444; /* red-500 */
+            font-size: 0.875rem; /* text-sm */
+            margin-top: 0.25rem; /* mt-1 */
+        }
+        /* Estilos para el enfoque */
+        .form-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.45); /* ring-blue-500 con opacidad */
+            border-color: #3b82f6; /* blue-500 */
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="min-h-screen bg-gradient-to-br from-gray-50 to-blue-100 flex items-center justify-center p-6 sm:p-8">
+        <div class="bg-white p-8 sm:p-10 rounded-3xl shadow-xl w-full max-w-3xl border border-gray-200">
+            <h1 class="text-4xl font-extrabold text-gray-800 mb-8 text-center flex items-center justify-center gap-4">
+                <!-- Icono SVG para 'Edit' -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-edit text-green-600">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                </svg>
+                Editar Cliente
+            </h1>
+            <p class="text-center text-gray-600 mb-8 text-lg">
+                Modifica los datos del cliente: <span th:text="${cliente.nombre + ' ' + cliente.apellido}" class="font-semibold text-blue-600"></span>
+            </p>
+            <hr class="mb-8 border-gray-300" />
+
+            <!-- th:object="${cliente}" hace referencia al objeto Cliente que el controlador pasa al modelo -->
+            <!-- Importante: th:action cambia para /update/{id} -->
+            <form th:action="@{/clientes/update/{id}(id=${cliente.id})}" th:object="${cliente}" method="post" class="space-y-6">
+                <!-- Sección de Información Personal -->
+                <div class="space-y-6">
+                    <h2 class="text-2xl font-bold text-gray-700 mb-4 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user text-blue-500">
+                            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+                        </svg>
+                        Información Personal
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Campo Nombre -->
+                        <div>
+                            <label for="nombre" class="block text-lg font-medium text-gray-700 mb-2">
+                                Nombre <span class="text-red-500">*</span>
+                            </label>
+                            <input
+                                    type="text"
+                                    id="nombre"
+                                    name="nombre"
+                                    th:field="*{nombre}"
+                                    th:classappend="${#fields.hasErrors('nombre')} ? 'input-error'"
+                                    placeholder="Nombre del cliente"
+                                    class="form-input block w-full px-4 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-400 transition duration-200 ease-in-out text-base"
+                            />
+                            <p th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}" class="error-message"></p>
+                        </div>
+
+                        <!-- Campo Apellido -->
+                        <div>
+                            <label for="apellido" class="block text-lg font-medium text-gray-700 mb-2">
+                                Apellido <span class="text-red-500">*</span>
+                            </label>
+                            <input
+                                    type="text"
+                                    id="apellido"
+                                    name="apellido"
+                                    th:field="*{apellido}"
+                                    th:classappend="${#fields.hasErrors('apellido')} ? 'input-error'"
+                                    placeholder="Apellido del cliente"
+                                    class="form-input block w-full px-4 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-400 transition duration-200 ease-in-out text-base"
+                            />
+                            <p th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}" class="error-message"></p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Campo Teléfono -->
+                        <div>
+                            <label for="telefono" class="block text-lg font-medium text-gray-700 mb-2">
+                                Teléfono <span class="text-red-500">*</span>
+                            </label>
+                            <input
+                                    type="tel"
+                                    id="telefono"
+                                    name="telefono"
+                                    th:field="*{telefono}"
+                                    th:classappend="${#fields.hasErrors('telefono')} ? 'input-error'"
+                                    placeholder="Ej: 7890-1234"
+                                    class="form-input block w-full px-4 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-400 transition duration-200 ease-in-out text-base"
+                            />
+                            <p th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}" class="error-message"></p>
+                        </div>
+
+                        <!-- Campo Email -->
+                        <div>
+                            <label for="email" class="block text-lg font-medium text-gray-700 mb-2">
+                                Correo Electrónico <span class="text-red-500">*</span>
+                            </label>
+                            <input
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    th:field="*{email}"
+                                    th:classappend="${#fields.hasErrors('email')} ? 'input-error'"
+                                    placeholder="ejemplo@dominio.com"
+                                    class="form-input block w-full px-4 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-400 transition duration-200 ease-in-out text-base"
+                            />
+                            <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error-message"></p>
+                        </div>
+                    </div>
+
+                    <!-- Campo DUI -->
+                    <div>
+                        <label for="dui" class="block text-lg font-medium text-gray-700 mb-2">
+                            DUI <span class="text-red-500">*</span>
+                        </label>
+                        <input
+                                type="text"
+                                id="dui"
+                                name="dui"
+                                th:field="*{dui}"
+                                th:classappend="${#fields.hasErrors('dui')} ? 'input-error'"
+                                placeholder="Ej: 00000000-0"
+                                class="form-input block w-full px-4 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-400 transition duration-200 ease-in-out text-base"
+                        />
+                        <p th:if="${#fields.hasErrors('dui')}" th:errors="*{dui}" class="error-message"></p>
+                    </div>
+                </div>
+
+                <hr class="my-8 border-gray-300" />
+
+                <!-- Sección de Información de Residencia -->
+                <div class="space-y-6">
+                    <h2 class="text-2xl font-bold text-gray-700 mb-4 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin text-blue-500">
+                            <path d="M12 18.7c-3.3-3.2-6-6.9-6-10.7C6 4.3 8.7 2 12 2s6 2.3 6 5c0 3.8-2.7 7.5-6 10.7z"/>
+                            <circle cx="12" cy="7" r="2"/>
+                        </svg>
+                        Información de Residencia
+                    </h2>
+                    <!-- Campo Dirección -->
+                    <div>
+                        <label for="direccion" class="block text-lg font-medium text-gray-700 mb-2">
+                            Dirección Completa <span class="text-red-500">*</span>
+                        </label>
+                        <textarea
+                                id="direccion"
+                                name="direccion"
+                                th:field="*{direccion}"
+                                rows="3"
+                                th:classappend="${#fields.hasErrors('direccion')} ? 'input-error'"
+                                placeholder="Colonia, calle, número de casa, etc."
+                                class="form-input block w-full px-4 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-400 resize-y transition duration-200 ease-in-out text-base"
+                        ></textarea>
+                        <p th:if="${#fields.hasErrors('direccion')}" th:errors="*{direccion}" class="error-message"></p>
+                    </div>
+
+                    <!-- Campo Municipio -->
+                    <div>
+                        <label for="municipio" class="block text-lg font-medium text-gray-700 mb-2">
+                            Municipio <span class="text-red-500">*</span>
+                        </label>
+                        <div class="relative">
+                            <select
+                                    id="municipio"
+                                    name="municipio"
+                                    th:field="*{municipio}"
+                                    th:classappend="${#fields.hasErrors('municipio')} ? 'input-error'"
+                                    class="form-input block appearance-none w-full bg-white border border-gray-300 text-gray-900 py-2.5 px-4 pr-8 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 ease-in-out text-base"
+                            >
+                                <option value="" disabled selected>-- Selecciona un municipio --</option>
+                                <option th:each="mun : ${municipiosDisponibles}"
+                                        th:value="${mun.id}"
+                                        th:text="${mun.nombre}"
+                                        th:selected="${cliente.municipio != null and mun.id == cliente.municipio.id}">
+                                </option>
+                            </select>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 6.757 7.586 5.343 9l4.95 4.95z"/></svg>
+                            </div>
+                        </div>
+                        <p th:if="${#fields.hasErrors('municipio')}" th:errors="*{municipio}" class="error-message"></p>
+                    </div>
+                </div>
+
+                <hr class="my-8 border-gray-300" />
+
+                <!-- Botones de Acción -->
+                <div class="flex flex-col sm:flex-row justify-end gap-4">
+                    <a
+                            th:href="@{/clientes/details/{id}(id=${cliente.id})}"
+                            class="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 border border-gray-300 text-lg font-semibold rounded-lg shadow-sm text-gray-700 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-200 ease-in-out transform hover:-translate-y-0.5 hover:shadow-md"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x">
+                            <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+                        </svg>
+                        Cancelar Edición
+                    </a>
+                    <button
+                            type="submit"
+                            class="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 border border-transparent text-lg font-semibold rounded-lg shadow-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition duration-200 ease-in-out transform hover:-translate-y-0.5 hover:shadow-lg"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-8.5"/><path d="m22 4-7 7-4-4"/>
+                        </svg>
+                        Actualizar Cliente
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

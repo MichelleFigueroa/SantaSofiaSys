@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crear Nuevo Municipio</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <!-- Font Awesome (opcional, si lo usas para íconos) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white text-center">
+          <h2 class="mb-0">Crear Nuevo Municipio</h2>
+        </div>
+        <div class="card-body">
+          <!-- Mensajes de éxito y error -->
+          <div th:if="${msg}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <span th:text="${msg}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+          <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <span th:text="${error}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+
+          <form th:action="@{/municipios/save}" th:object="${municipio}" method="post">
+            <!-- Campo para el nombre del municipio -->
+            <div class="mb-4">
+              <label for="nombre" class="form-label fw-bold">Nombre del Municipio:</label>
+              <input type="text" class="form-control" id="nombre" th:field="*{nombre}"
+                     th:classappend="${#fields.hasErrors('nombre')} ? 'is-invalid'" placeholder="Ej. Santa Ana">
+              <div class="invalid-feedback" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
+            </div>
+
+            <!-- Campo para seleccionar el Departamento -->
+            <div class="mb-4">
+              <label for="departamento" class="form-label fw-bold">Departamento:</label>
+              <select class="form-select" id="departamento" th:field="*{departamento}"
+                      th:classappend="${#fields.hasErrors('departamento')} ? 'is-invalid'">
+                <option value="">-- Seleccione un departamento --</option>
+                <option th:each="dep : ${departamentos}"
+                        th:value="${dep.id}"
+                        th:text="${dep.nombre}"
+                        th:selected="${municipio.departamento != null and municipio.departamento.id == dep.id}">
+                </option>
+              </select>
+              <div class="invalid-feedback" th:if="${#fields.hasErrors('departamento')}" th:errors="*{departamento}"></div>
+            </div>
+
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+              <button type="submit" class="btn btn-success btn-lg me-md-2">
+                <i class="fas fa-save me-2"></i> Guardar Municipio
+              </button>
+              <a th:href="@{/municipios}" class="btn btn-secondary btn-lg">
+                <i class="fas fa-arrow-left me-2"></i> Volver a la Lista
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

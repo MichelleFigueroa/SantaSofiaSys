@@ -1,61 +1,114 @@
-<html lang="en"
+<!DOCTYPE html>
+<html lang="es"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="/layouts/_mainLayout">
 
-<div layout:fragment="content">
+<div layout:fragment="content" class="d-flex justify-content-center align-items-center min-vh-100 bg-light">
 
-    <!-- Mostrar mensaje de confirmación en caso de éxito -->
-    <div th:if="${msg != null}">
-        <script>
-            Swal.fire({
-                title:"Confirmación",
-                text: '[[${msg}]]',
-                icon: "success"
-            })
-        </script>
+    <!-- CONTENEDOR PRINCIPAL -->
+    <div class="card shadow-lg border-0 w-100" style="max-width: 1100px; border-radius: 20px;">
+        <div class="card-body p-4">
+
+            <!-- Mensajes de confirmación y error (usando SweetAlert2) -->
+            <div th:if="${msg != null}">
+                <script th:inline="javascript">
+                    Swal.fire({
+                        title: "✅ Confirmación",
+                        text: /*[[${msg}]]*/ '', // Escapa el texto del mensaje
+                        icon: "success",
+                        confirmButtonColor: "#3085d6"
+                    });
+                </script>
+            </div>
+
+            <div th:if="${error != null}">
+                <script th:inline="javascript">
+                    Swal.fire({
+                        title: "❌ Error",
+                        text: /*[[${error}]]*/ '', // Escapa el texto del mensaje
+                        icon: "error",
+                        confirmButtonColor: "#d33"
+                    });
+                </script>
+            </div>
+
+            <!-- ENCABEZADO -->
+            <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
+                <h2 class="fw-bold text-primary mb-0">
+                    <i class="bi bi-geo-alt-fill"></i> Listado de Departamentos
+                </h2>
+                <a th:href="@{/departamentos/create}" class="btn btn-primary shadow-sm">
+                    <i class="bi bi-plus-circle-fill"></i> Nuevo Departamento
+                </a>
+            </div>
+
+            <!-- TABLA -->
+            <div class="table-responsive">
+                <table class="table table-hover align-middle table-bordered mb-0"
+                       style="border-radius: 12px; overflow: hidden;">
+                    <thead class="table-primary text-center">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- Usar departamentos.content para iterar sobre los elementos de la página -->
+                    <tr th:each="item : ${departamentos.content}">
+                        <td th:text="${item.id}" class="text-center fw-bold"></td>
+                        <td th:text="${item.nombre}"></td>
+                        <td class="text-center">
+                            <div class="btn-group">
+                                <a th:href="@{/departamentos/details/{id} (id = ${item.id}) }"
+                                   class="btn btn-sm btn-outline-secondary" title="Detalles">
+                                    <i class="bi bi-eye-fill"></i>
+                                </a>
+                                <a th:href="@{/departamentos/edit/{id} (id = ${item.id}) }"
+                                   class="btn btn-sm btn-outline-info" title="Editar">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+                                <!-- Cambiado a /delete para coincidir con el controlador -->
+                                <a th:href="@{/departamentos/delete/{id} (id = ${item.id}) }"
+                                   class="btn btn-sm btn-outline-danger" title="Eliminar"
+                                   onclick="return confirm('¿Estás seguro de que quieres eliminar este departamento?');">
+                                    <i class="bi bi-trash-fill"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Usar departamentos.empty para verificar si la página actual está vacía -->
+                    <tr th:if="${departamentos.empty}">
+                        <td colspan="3" class="text-center text-muted py-4">
+                            <i class="bi bi-inbox fs-3"></i><br>
+                            No hay departamentos registrados
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- PAGINACIÓN -->
+            <nav class="mt-4" aria-label="Navegación de página">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:classappend="${departamentos.first} ? 'disabled'">
+                        <a class="page-link" th:href="@{/departamentos(page=${departamentos.number})}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item" th:each="pageNumber : ${pageNumbers}"
+                        th:classappend="${pageNumber == departamentos.number + 1} ? 'active'">
+                        <a class="page-link" th:href="@{/departamentos(page=${pageNumber})}" th:text="${pageNumber}"></a>
+                    </li>
+                    <li class="page-item" th:classappend="${departamentos.last} ? 'disabled'">
+                        <a class="page-link" th:href="@{/departamentos(page=${departamentos.number + 2})}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
     </div>
-
-    <!-- Mostrar mensaje de error en caso de error -->
-    <div th:if="${error != null}">
-        <script>
-            Swal.fire({
-                title: "Error",
-                text: '[[${error}]]',
-                icon: "error"
-            })
-        </script>
-    </div>
-
-    <h1>Listado de Departamentos</h1>
-    <a th:href="@{/departamentos/create}" class="btn btn-outline-primary">Nuevo Departamento</a>
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>Id</th>
-            <th>Nombre</th>
-            <th>Acciones</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="item : ${departamentos}"> <!-- Itera sobre la lista de departamentos -->
-            <td th:text="${item.id}"></td>
-            <td th:text="${item.nombre}"></td>
-            <td>
-                <a th:href="@{/departamentos/details/{id} (id = ${item.id}) }" class="btn btn-outline-secondary">Detalles</a>
-                <a th:href="@{/departamentos/edit/{id} (id = ${item.id}) }" class="btn btn-outline-info">Editar</a>
-                <a th:href="@{/departamentos/remove/{id} (id = ${item.id}) }" class="btn btn-outline-danger">Eliminar</a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-
-    <nav aria-label="Page navigation example">
-        <ul class="pagination">
-            <li class="page-item" th:each="pageNumber : ${pageNumbers}">
-                <a class="page-link" th:href="@{|/departamentos?page=${pageNumber}|}" th:text="${pageNumber}"></a>
-            </li>
-        </ul>
-    </nav>
-
 </div>
+</html>

@@ -1,7 +1,7 @@
 package org.esfe.servicios.implementaciones;
 
 import org.esfe.modelos.Municipio;
-import org.esfe.repositorios.IMunicipioRepository;
+import org.esfe.repositorios.IMunicipioRepository; // Importa tu interfaz de repositorio
 import org.esfe.servicios.interfaces.IMunicipioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,21 +13,26 @@ import java.util.Optional;
 
 @Service
 public class MunicipioService implements IMunicipioService {
+
     @Autowired
     private IMunicipioRepository municipioRepository;
 
     @Override
-    public Page<Municipio> buscarTodosPaginados(Pageable pageable) {
-        return municipioRepository.findAll(pageable);
+    public List<Municipio> obtenerTodos() {
+        return municipioRepository.findAll(); // Esto usa el findAll de JpaRepository (sin FETCH)
+        // O si quieres con FETCH siempre: return municipioRepository.findAllWithDepartamento();
     }
 
     @Override
-    public List<Municipio> obtenerTodos() {
-        return municipioRepository.findAll();
+    public Page<Municipio> buscarTodosPaginados(Pageable pageable) {
+        return municipioRepository.findAll(pageable); // Esto usa tu método @Query con FETCH
     }
 
     @Override
     public Optional<Municipio> buscarPorId(Integer id) {
+        // Podrías necesitar una consulta con FETCH para un solo elemento si accedes al departamento
+        // en la vista de detalles. Si no, findById está bien.
+        // Ejemplo: return municipioRepository.findByIdWithDepartamento(id); (tendrías que crearla en el repo)
         return municipioRepository.findById(id);
     }
 

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="/layouts/_mainLayout"
+      xmlns:th="http://www.thymeleaf.org"> <!-- Asegúrate de usar xmlns:th para Thymeleaf -->
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .input-error { border-color: #ef4444; }
+        .error-message { color: #ef4444; font-size: 0.875rem; margin-top: 0.25rem; }
+        .form-input {
+            padding: 0.625rem 1rem; /* px-4 py-2.5 */
+            border-width: 1px;
+            border-color: #d1d5db; /* gray-300 */
+            border-radius: 0.5rem; /* rounded-lg */
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+        .form-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.45); /* blue-500 with 45% opacity */
+            border-color: #3b82f6; /* blue-500 */
+        }
+        .form-input.input-error {
+            border-color: #ef4444; /* red-500 */
+        }
+
+        /* Estilos para el select personalizado (ajusta si es necesario para tu Tailwind) */
+        .form-input.appearance-none {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: none; /* Eliminar flecha por defecto */
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="flex items-center justify-center p-6 sm:p-8">
+        <div class="bg-white p-8 sm:p-10 rounded-3xl shadow-xl w-full max-w-3xl border border-gray-200">
+
+            <h1 class="text-4xl font-extrabold text-gray-800 mb-8 text-center flex items-center justify-center gap-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                     class="lucide lucide-user-plus text-blue-600">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                    <circle cx="9" cy="7" r="4"/>
+                    <line x1="19" x2="19" y1="8" y2="14"/>
+                    <line x1="22" x2="16" y1="11" y2="11"/>
+                </svg>
+                Registrar Nuevo Cliente
+            </h1>
+
+            <p class="text-center text-gray-600 mb-8 text-lg">
+                Completa los datos para añadir un nuevo cliente a tu sistema.
+            </p>
+
+            <hr class="mb-8 border-gray-300"/>
+
+            <!-- Mensaje de error global (si lo envía el controlador) -->
+            <div th:if="${error}" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6" role="alert">
+                <strong class="font-bold">¡Error!</strong>
+                <span class="block sm:inline" th:text="${error}"></span>
+                <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+                    <svg class="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" onclick="this.parentElement.parentElement.style.display='none';">
+                        <title>Close</title>
+                        <path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.172l-2.651 2.651a1.2 1.2 0 1 1-1.697-1.697L8.303 9.475 5.652 6.823a1.2 1.2 0 0 1 1.697-1.697L10 8.001l2.651-2.651a1.2 1.2 0 0 1 1.697 1.697l-2.651 2.651 2.651 2.651a1.2 1.2 0 0 1 0 1.697z"/>
+                    </svg>
+                </span>
+            </div>
+
+            <!-- FORMULARIO -->
+            <form th:action="@{/clientes/save}" th:object="${cliente}" method="post" class="space-y-6">
+
+                <!-- Información Personal -->
+                <div class="space-y-6">
+                    <h2 class="text-2xl font-bold text-gray-700 mb-4 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                             stroke-linejoin="round" class="lucide lucide-user text-blue-500">
+                            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+                            <circle cx="12" cy="7" r="4"/>
+                        </svg>
+                        Información Personal
+                    </h2>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Nombre -->
+                        <div>
+                            <label for="nombre" class="block text-lg font-medium text-gray-700 mb-2">
+                                Nombre <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" id="nombre" th:field="*{nombre}"
+                                   th:classappend="${#fields.hasErrors('nombre')} ? 'input-error'"
+                                   placeholder="Nombre del cliente"
+                                   class="form-input block w-full"/>
+                            <p th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}" class="error-message"></p>
+                        </div>
+
+                        <!-- Apellido -->
+                        <div>
+                            <label for="apellido" class="block text-lg font-medium text-gray-700 mb-2">
+                                Apellido <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" id="apellido" th:field="*{apellido}"
+                                   th:classappend="${#fields.hasErrors('apellido')} ? 'input-error'"
+                                   placeholder="Apellido del cliente"
+                                   class="form-input block w-full"/>
+                            <p th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}" class="error-message"></p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Teléfono -->
+                        <div>
+                            <label for="telefono" class="block text-lg font-medium text-gray-700 mb-2">
+                                Teléfono <span class="text-red-500">*</span>
+                            </label>
+                            <input type="tel" id="telefono" th:field="*{telefono}"
+                                   th:classappend="${#fields.hasErrors('telefono')} ? 'input-error'"
+                                   placeholder="Ej: 7890-1234"
+                                   class="form-input block w-full"/>
+                            <p th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}" class="error-message"></p>
+                        </div>
+
+                        <!-- Email -->
+                        <div>
+                            <label for="email" class="block text-lg font-medium text-gray-700 mb-2">
+                                Correo Electrónico <span class="text-red-500">*</span>
+                            </label>
+                            <input type="email" id="email" th:field="*{email}"
+                                   th:classappend="${#fields.hasErrors('email')} ? 'input-error'"
+                                   placeholder="ejemplo@dominio.com"
+                                   class="form-input block w-full"/>
+                            <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error-message"></p>
+                        </div>
+                    </div>
+
+                    <!-- DUI -->
+                    <div>
+                        <label for="dui" class="block text-lg font-medium text-gray-700 mb-2">
+                            DUI <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" id="dui" th:field="*{dui}"
+                               th:classappend="${#fields.hasErrors('dui')} ? 'input-error'"
+                               placeholder="Ej: 00000000-0"
+                               class="form-input block w-full"/>
+                        <p th:if="${#fields.hasErrors('dui')}" th:errors="*{dui}" class="error-message"></p>
+                    </div>
+                </div>
+
+                <hr class="my-8 border-gray-300"/>
+
+                <!-- Información de Residencia -->
+                <div class="space-y-6">
+                    <h2 class="text-2xl font-bold text-gray-700 mb-4 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             class="lucide lucide-map-pin text-blue-500">
+                            <path d="M12 18.7c-3.3-3.2-6-6.9-6-10.7C6 4.3 8.7 2 12 2s6 2.3 6 5c0 3.8-2.7 7.5-6 10.7z"/>
+                            <circle cx="12" cy="7" r="2"/>
+                        </svg>
+                        Información de Residencia
+                    </h2>
+
+                    <!-- Dirección -->
+                    <div>
+                        <label for="direccion" class="block text-lg font-medium text-gray-700 mb-2">
+                            Dirección Completa <span class="text-red-500">*</span>
+                        </label>
+                        <textarea id="direccion" th:field="*{direccion}" rows="3"
+                                  th:classappend="${#fields.hasErrors('direccion')} ? 'input-error'"
+                                  placeholder="Colonia, calle, número de casa, etc."
+                                  class="form-input block w-full"></textarea>
+                        <p th:if="${#fields.hasErrors('direccion')}" th:errors="*{direccion}" class="error-message"></p>
+                    </div>
+
+                    <!-- Distrito -->
+                    <div class="mb-4">
+                        <label for="distrito" class="block text-lg font-medium text-gray-700 mb-2">
+                            Distrito <span class="text-red-500">*</span>
+                        </label>
+                        <div class="relative">
+                            <select id="distrito" th:field="*{distrito}"
+                                    th:classappend="${#fields.hasErrors('distrito')} ? 'input-error' : ''"
+                                    class="form-input block appearance-none w-full bg-white">
+                                <option value="" disabled selected>-- Selecciona un Distrito --</option>
+                                <!-- Iteramos sobre 'distritos' que es la lista que enviamos desde el controlador -->
+                                <option th:each="dist : ${distritos}"
+                                        th:value="${dist.id}"
+                                        th:text="${dist.nombre + ' (' + dist.municipio?.nombre + ', ' + dist.municipio?.departamento?.nombre + ')'}"
+                                        th:selected="${cliente.distrito != null and cliente.distrito.id == dist.id}">
+                                </option>
+                            </select>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 6.757 7.586 5.343 9l4.95 4.95z"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <p th:if="${#fields.hasErrors('distrito')}" th:errors="*{distrito}" class="error-message"></p>
+                    </div>
+                </div>
+
+                <hr class="my-8 border-gray-300"/>
+
+                <!-- Botones -->
+                <div class="flex flex-col sm:flex-row justify-end gap-4 mt-8">
+                    <a th:href="@{/clientes}"
+                       class="w-full sm:w-auto flex items-center justify-center px-6 py-3 border border-gray-300 text-lg font-semibold rounded-lg shadow-sm text-gray-700 bg-white hover:bg-gray-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-undo mr-2"><path d="M2.5 12a10.9 10.9 0 0 1 2.83-7.6L7 2"/><path d="M2 12V2h10"/><path d="M21.5 12a10.9 10.9 0 0 0-2.83 7.6L17 22"/><path d="M22 12h-9.5a10.9 10.9 0 0 0 .5-3.5c0-1.7-.3-3.4-1-5"/></svg>
+                        Cancelar
+                    </a>
+                    <button type="submit"
+                            class="w-full sm:w-auto flex items-center justify-center px-6 py-3 border border-transparent text-lg font-semibold rounded-lg shadow-md text-white bg-blue-600 hover:bg-blue-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-save mr-2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                        Guardar
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

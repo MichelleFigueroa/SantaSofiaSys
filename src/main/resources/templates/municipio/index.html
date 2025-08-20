@@ -1,64 +1,112 @@
-<html lang="en"
+<!DOCTYPE html>
+<html lang="es"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="/layouts/_mainLayout">
+      layout:decorate="/layouts/_mainLayout"> <!-- Asumo que tienes un layout principal -->
 
-<div layout:fragment="content">
+<div layout:fragment="content" class="d-flex justify-content-center align-items-center min-vh-100 bg-light">
 
-    <!-- Mostrar mensaje de confirmación en caso de éxito -->
-    <div th:if="${msg != null}">
-        <script>
-            Swal.fire({
-                title:"Confirmación",
-                text: '[[${msg}]]',
-                icon: "success"
-            })
-        </script>
+    <!-- CONTENEDOR PRINCIPAL -->
+    <div class="card shadow-lg border-0 w-100" style="max-width: 1100px; border-radius: 20px;">
+        <div class="card-body p-4">
+
+            <!-- Mensajes de confirmación y error (SweetAlert2) -->
+            <div th:if="${msg != null}">
+                <script th:inline="javascript">
+                    Swal.fire({
+                        title: "✅ Confirmación",
+                        text: /*[[${msg}]]*/ '',
+                        icon: "success",
+                        confirmButtonColor: "#3085d6"
+                    });
+                </script>
+            </div>
+            <div th:if="${error != null}">
+                <script th:inline="javascript">
+                    Swal.fire({
+                        title: "❌ Error",
+                        text: /*[[${error}]]*/ '',
+                        icon: "error",
+                        confirmButtonColor: "#d33"
+                    });
+                </script>
+            </div>
+
+            <!-- ENCABEZADO -->
+            <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
+                <h2 class="fw-bold text-primary mb-0">
+                    <i class="bi bi-geo-alt-fill"></i> Listado de Municipios
+                </h2>
+                <a th:href="@{/municipios/create}" class="btn btn-primary shadow-sm">
+                    <i class="bi bi-plus-circle-fill"></i> Nuevo Municipio
+                </a>
+            </div>
+
+            <!-- TABLA -->
+            <div class="table-responsive">
+                <table class="table table-hover align-middle table-bordered mb-0"
+                       style="border-radius: 12px; overflow: hidden;">
+                    <thead class="table-primary text-center">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Departamento</th>
+                        <th>Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="item : ${municipios.content}"> <!-- municipios es un Page<Municipio> -->
+                        <td th:text="${item.id}" class="text-center fw-bold"></td>
+                        <td th:text="${item.nombre}"></td>
+                        <td th:text="${item.departamento.nombre}"></td> <!-- Acceso directo al nombre del departamento -->
+                        <td class="text-center">
+                            <div class="btn-group">
+                                <a th:href="@{/municipios/details/{id} (id = ${item.id}) }"
+                                   class="btn btn-sm btn-outline-secondary" title="Detalles">
+                                    <i class="bi bi-eye-fill"></i>
+                                </a>
+                                <a th:href="@{/municipios/edit/{id} (id = ${item.id}) }"
+                                   class="btn btn-sm btn-outline-info" title="Editar">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+                                <a th:href="@{/municipios/remove/{id} (id = ${item.id}) }"
+                                   class="btn btn-sm btn-outline-danger" title="Eliminar"
+                                   onclick="return confirm('¿Estás seguro de que quieres eliminar este municipio?');">
+                                    <i class="bi bi-trash-fill"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(municipios.content)}">
+                        <td colspan="4" class="text-center text-muted py-4">
+                            <i class="bi bi-inbox fs-3"></i><br>
+                            No hay municipios registrados
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- PAGINACIÓN -->
+            <nav class="mt-4" aria-label="Navegación de página">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:classappend="${municipios.number == 0 ? 'disabled' : ''}">
+                        <a class="page-link" th:href="@{/municipios(page=${municipios.number - 1}, size=${municipios.size})}" aria-label="Anterior">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item" th:each="i : ${pageNumbers}"
+                        th:classappend="${(i - 1) == municipios.number ? 'active' : ''}">
+                        <a class="page-link" th:href="@{/municipios(page=${i - 1}, size=${municipios.size})}" th:text="${i}"></a>
+                    </li>
+                    <li class="page-item" th:classappend="${municipios.number == municipios.totalPages - 1 ? 'disabled' : ''}">
+                        <a class="page-link" th:href="@{/municipios(page=${municipios.number + 1}, size=${municipios.size})}" aria-label="Siguiente">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
     </div>
-
-    <!-- Mostrar mensaje de error en caso de error -->
-    <div th:if="${error != null}">
-        <script>
-            Swal.fire({
-                title: "Error",
-                text: '[[${error}]]',
-                icon: "error"
-            })
-        </script>
-    </div>
-
-    <h1>Listado de Municipios</h1>
-    <a th:href="@{/municipios/create}" class="btn btn-outline-primary">Nuevo Municipio</a>
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>Id</th>
-            <th>Nombre</th>
-            <th>Departamento</th> <!-- Nueva columna para el nombre del departamento -->
-            <th>Acciones</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="item : ${municipios}"> <!-- Itera sobre la lista de municipios -->
-            <td th:text="${item.id}"></td>
-            <td th:text="${item.nombre}"></td>
-            <!-- Muestra el nombre del departamento asociado al municipio -->
-            <td th:text="${item.departamento.nombre}"></td>
-            <td>
-                <a th:href="@{/municipios/details/{id} (id = ${item.id}) }" class="btn btn-outline-secondary">Detalles</a>
-                <a th:href="@{/municipios/edit/{id} (id = ${item.id}) }" class="btn btn-outline-info">Editar</a>
-                <a th:href="@{/municipios/remove/{id} (id = ${item.id}) }" class="btn btn-outline-danger">Eliminar</a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-
-    <nav aria-label="Page navigation example">
-        <ul class="pagination">
-            <li class="page-item" th:each="pageNumber : ${pageNumbers}">
-                <a class="page-link" th:href="@{|/municipios?page=${pageNumber}|}" th:text="${pageNumber}"></a>
-            </li>
-        </ul>
-    </nav>
-
 </div>
+</html>
