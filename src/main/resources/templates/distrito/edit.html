@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="/layouts/_mainLayout">
+
+<div layout:fragment="content">
+  <h1>Editar Distrito</h1>
+
+  <form th:action="@{/distritos/update/{id}(id=${distrito.id})}" th:object="${distrito}" method="post">
+    <div class="mb-3">
+      <label for="nombre" class="form-label">Nombre del Distrito:</label>
+      <input type="text" th:field="*{nombre}" class="form-control" id="nombre">
+    </div>
+
+    <div class="mb-3">
+      <label for="municipio" class="form-label">Municipio:</label>
+      <select th:field="*{municipio}" class="form-select">
+        <option value="">-- Seleccione un municipio --</option>
+        <option th:each="mun : ${municipios}"
+                th:value="${mun.id}"
+                th:text="${mun.nombre}"
+                th:selected="${distrito.municipio != null and distrito.municipio.id == mun.id}">
+        </option>
+      </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Actualizar Distrito</button>
+    <a th:href="@{/distritos}" class="btn btn-secondary">Volver a la Lista</a>
+  </form>
+</div>
+</html>

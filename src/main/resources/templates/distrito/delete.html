@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Eliminar Distrito</title>
+</head>
+<body>
+<h1>Eliminar Distrito</h1>
+
+<!-- Mensajes -->
+<div th:if="${msg}">
+    <p style="color: green;" th:text="${msg}"></p>
+</div>
+<div th:if="${error}">
+    <p style="color: red;" th:text="${error}"></p>
+</div>
+
+<p>¿Estás seguro de que deseas eliminar este distrito?</p>
+
+<form th:action="@{/distritos/delete/{id}(id=${distrito.id})}" method="post">
+    <input type="hidden" th:field="*{id}"/>
+
+    <div>
+        <button type="submit">Sí, eliminar</button>
+        <a th:href="@{/distritos}">Cancelar</a>
+    </div>
+</form>
+
+</body>
+</html>
