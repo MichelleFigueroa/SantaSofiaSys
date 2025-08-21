@@ -33,7 +33,7 @@
         <thead>
         <tr>
             <th>Id</th>
-            <th>Municipio</th>
+            <th>Distrito</th>
             <th>Nombre</th><!-- Combina Nombre y Apellido -->
             <th>Telefono</th>
             <th>Email</th>
@@ -45,7 +45,7 @@
         <tbody>
         <tr th:each="item : ${proveedores}"> <!-- Itera sobre la lista de proveedores -->
             <td th:text="${item.id}"></td>
-            <td th:text="${item.idMunicipio}"></td>
+            <td th:text="${item.distrito.nombre}"></td>
             <td th:text="${item.nombre + ' ' + item.apellido}"></td> <!-- Muestra nombre y apellido juntos -->
             <td th:text="${item.telefono}"></td>
             <td th:text="${item.email}"></td>

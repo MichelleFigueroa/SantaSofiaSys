@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layouts/_mainLayout}">
+<head>
+  <meta charset="UTF-8">
+  <title>Crear Proveedor</title>
+</head>
+<body>
+<div layout:fragment="content">
+  <h1>Crear nuevo proveedor</h1>
+  <form th:action="@{/proveedores/save}" th:object="${proveedor}" method="post">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="nombre">Nombre</label>
+          <input type="text" class="form-control" th:field="*{nombre}" id="nombre" placeholder="Escribe el nombre del proveedor" required>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="distrito">Distrito</label>
+          <input type="text" class="form-control" th:field="*{distrito}" id="distrito" required>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="telefono">Teléfono</label>
+          <input type="text" class="form-control" th:field="*{telefono}" id="telefono" required>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" class="form-control" th:field="*{email}" id="email" required>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="detalle">Detalle</label>
+          <textarea class="form-control" th:field="*{detalle}" id="detalle" required></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="direccion">Dirección</label>
+          <input type="text" class="form-control" th:field="*{direccion}" id="direccion" required>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+    <button type="submit" class="btn btn-primary">Guardar</button> |
+    <a th:href="@{/proveedores}">Regresar</a>
+  </form>
+</div>
+</body>
+</html>

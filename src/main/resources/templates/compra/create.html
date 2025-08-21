@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layouts/_mainLayout}">
+<head>
+  <meta charset="UTF-8">
+  <title>Crear Compra</title>
+</head>
+<body>
+<div layout:fragment="content">
+  <h1>Crear nueva compra</h1>
+  <form th:action="@{/compras/save}" th:object="${compra}" method="post">
+    <div class="row">
+      </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="usuario">Usuario</label>
+          <input type="text" class="form-control" th:field="*{usuario}" id="usuario" required>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="proveedor">Proveedor</label>
+          <input type="text" class="form-control" th:field="*{proveedor}" id="proveedor" required>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="correlativo">Correlativo</label>
+          <textarea class="form-control" th:field="*{correlativo}" id="correlativo" required></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="fecha">Fecha</label>
+          <input type="text" class="form-control" th:field="*{fecha}" id="fecha" required>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="total">Total</label>
+          <input type="text" class="form-control" th:field="*{total}" id="total" required>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+    <button type="submit" class="btn btn-primary">Guardar</button> |
+    <a th:href="@{/compras}">Regresar</a>
+  </form>
+</div>
+</body>
+</html>
