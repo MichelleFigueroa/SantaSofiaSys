@@ -115,5 +115,13 @@ public class ProductoController {
         attributes.addFlashAttribute("msg", "Producto eliminado correctamente");
         return "redirect:/producto";
     }
+    @GetMapping("/buscar")
+    public String buscarPorId(@RequestParam(value = "id", required = false) Integer id, Model model) {
+        if (id != null) {
+            Optional<Producto> producto = productoService.buscarPorId(id); // usa tu método existente
+            model.addAttribute("producto", producto.orElse(null));         // si no existe, pasa null
+        }
+        return "productos/buscarPorId"; // la misma vista para formulario y resultado
+    }
 }
 

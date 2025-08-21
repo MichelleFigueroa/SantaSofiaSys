@@ -4,18 +4,17 @@
       layout:decorate="/layouts/_mainLayout">
 
 <div layout:fragment="content" class="container mt-4">
-    <h1 class="mb-4">Editar Categoria</h1>
+    <h1 class="mb-4">Editar Marca</h1>
 
-    <form th:action="@{/categorias/save}" th:object="${categoria}" method="post">
+    <form th:action="@{/marcas/save}" th:object="${marca}" method="post">
         <input type="hidden" th:field="*{id}">
         <div class="mb-3">
             <label for="nombre" class="form-label">Nombre</label>
-            <input type="text" class="form-control" th:field="*{nombre}" id="nombre"
-                   placeholder="Escriba el nombre de la categoria" required>
+            <input type="text" class="form-control" th:field="*{nombre}" id="nombre" placeholder="Escriba el nombre de la Marca" required>
         </div>
         <hr>
         <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-        <a th:href="@{/categorias/edit/{id}(id=${categoria.id})}" class="btn btn-warning">Editar</a>
+        <a th:href="@{/marcas/edit/{id}(id=${marca.id})}" class="btn btn-warning">Editar</a>
     </form>
 </div>
 </html>

@@ -21,10 +21,10 @@
       <dt class="col-ms-2">Cantidad</dt>
       <dd class="col-ms-10" th:text="${producto.cantidad}"></dd>
     </dl>
-    <form th:action="@{productos/delete}" method="post">
+    <form th:action="@{producto/delete}" method="post">
       <input type="hidden" name="id" th:value="${producto.id}">
       <input type="submit" value="Eliminar" class="btn btn-danger">
-    <a th:href="@{/productos}">Regresar</a>
+    <a th:href="@{/producto}">Regresar</a>
     </form>
   </div>
 </div>

@@ -100,4 +100,12 @@ public class MarcaController {
         attributes.addFlashAttribute("msg", "Marca eliminada correctamente");
         return "redirect:/marca";
     }
+    @GetMapping("/buscar")
+    public String buscarPorId(@RequestParam(value = "id", required = false) Integer id, Model model) {
+        if (id != null) {
+            Optional<Marca> marca = marcaService.buscarPorId(id);
+            model.addAttribute("marca", marca.orElse(null));
+        }
+        return "marcas/buscarPorId"; // la misma vista para formulario y resultado
+    }
 }

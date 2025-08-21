@@ -4,18 +4,18 @@
       layout:decorate="/layouts/_mainLayout">
 
 <div layout:fragment="content">
-    <h1>Detalles de la Categoria</h1>
+    <h1>Detalles de Marca</h1>
     <div>
         <hr  />
         <dl class="row">
             <dt class="col-sm-2">ID</dt>
-            <dd class="col-sm-10" th:text="${categoria.id}"></dd>
+            <dd class="col-sm-10" th:text="${marca.id}"></dd>
 
             <dt class="col-sm-2">Nombre</dt>
-            <dd class="col-sm-10" th:text="${categoria.nombre}"></dd>
+            <dd class="col-sm-10" th:text="${marca.nombre}"></dd>
 
         </dl>
-        <a th:href="@{/categorias/edit/{id}(id=${categoria.id})}" class="btn btn-outline-info">Editar</a>
-        <a th:href="@{/categorias}" class="btn btn-secondary">Regresar</a>
+        <a th:href="@{/marcas/edit/{id}(id=${marca.id})}" class="btn btn-outline-info">Editar</a>
+        <a th:href="@{/marcas}" class="btn btn-secondary">Regresar</a>
     </div>
 </div>

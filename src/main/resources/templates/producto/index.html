@@ -1,34 +1,26 @@
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="/layouts/_mainLayout">
 
 <div layout:fragment="content">
-
-    <!-- Mostrar mensaje de confirmación en caso de éxito -->
     <div th:if="${not #strings.isEmpty(msg)}">
         <script>
-            Swal.fire({
-                title: "Confirmación",
-                text: [[${msg}]],
-                icon: "success"
-            });
+            Swal.fire({ title: "Confirmación", text: [[${msg}]], icon: "success" });
         </script>
     </div>
 
-    <!-- Mostrar mensaje de error en caso de fallo -->
     <div th:if="${not #strings.isEmpty(error)}">
         <script>
-            Swal.fire({
-                title: "Error",
-                text: [[${error}]],
-                icon: "error"
-            });
+            Swal.fire({ title: "Error", text: [[${error}]], icon: "error" });
         </script>
     </div>
 
-    <h1>Listado de Productos</h1>
-    <a th:href="@{/productos/create}" class="btn btn-outline-primary">Nuevo Producto</a>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1>Lista de Productos</h1>
+        <button type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#buscarModal">
+            Buscar Producto por ID
+        </button>
+    </div>
 
     <table class="table table-striped">
         <thead>
@@ -43,24 +35,42 @@
         </tr>
         </thead>
         <tbody>
-        <!-- CORREGIDO: productos.content -->
         <tr th:each="item : ${productos.content}">
             <td th:text="${item.id}"></td>
-            <td th:text="${item.idCategoria}"></td>
-            <td th:text="${item.idMarca}"></td>
+            <td th:text="${item.categoria.id}"></td>
+            <td th:text="${item.marca.id}"></td>
             <td th:text="${item.nombre}"></td>
             <td th:text="${item.precio}"></td>
             <td th:text="${item.cantidad}"></td>
-            <td>
-                <a th:href="@{/productos/details/{id}(id=${item.id})}" class="btn btn-outline-secondary">Detalles</a>
+            <td class="d-flex gap-1">
+                <a th:href="@{/productos/details/{id}(id=${item.id})}" class="btn btn-outline-secondary">Detalle</a>
                 <a th:href="@{/productos/edit/{id}(id=${item.id})}" class="btn btn-outline-info">Editar</a>
                 <a th:href="@{/productos/remove/{id}(id=${item.id})}" class="btn btn-outline-danger">Eliminar</a>
+                <a th:href="@{/productos/create}" class="btn btn-outline-primary">Crear</a>
             </td>
         </tr>
         </tbody>
     </table>
 
-    <!-- Paginación -->
+    <div class="modal fade" id="buscarModal" tabindex="-1" aria-labelledby="buscarModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="buscarModalLabel">Buscar</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <form th:action="@{/productos/buscar}" method="get">
+                        <div class="mb-3">
+                            <label for="idProducto" class="form-label">ID del Producto:</label>
+                            <input type="number" class="form-control" id="idProducto" name="id" required>
+                        </div>
+                        <button type="submit" class="btn btn-warning">Buscar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <nav aria-label="Page navigation example">
         <ul class="pagination">
             <li class="page-item" th:each="pageNumber : ${pageNumbers}">
@@ -70,3 +80,6 @@
     </nav>
 
 </div>
+</html>
+
+

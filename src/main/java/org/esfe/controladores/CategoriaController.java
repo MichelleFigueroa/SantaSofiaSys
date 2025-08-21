@@ -100,4 +100,12 @@ public class CategoriaController {
         attributes.addFlashAttribute("msg", "Categoria eliminada correctamente");
         return "redirect:/categoria";
     }
+    @GetMapping("/buscar")
+    public String buscarPorId(@RequestParam(value = "id", required = false) Integer id, Model model) {
+        if (id != null) {
+            Optional<Categoria> categoria = categoriaService.buscarPorId(id); // usa tu método existente
+            model.addAttribute("categoria", categoria.orElse(null));         // si no existe, pasa null
+        }
+        return "categorias/buscarPorId"; // la misma vista para formulario y resultado
+    }
 }

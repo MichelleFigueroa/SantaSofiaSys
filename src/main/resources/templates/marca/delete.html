@@ -1,0 +1,25 @@
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="/layouts/_mainLayout">
+
+<div layout:fragment="content">
+  <h1>Eliminar Marca</h1>
+  <h3>¿Estas seguro que quieres eliminar este registro</h3>
+  <div>
+    <hr  />
+    <dl class="row">
+      <dt class="col-ms-2">ID</dt>
+      <dd class="col-ms-10" th:text="${marca.id}"></dd>
+
+      <dt class="col-ms-2">Nombre</dt>
+      <dd class="col-ms-10" th:text="${marca.nombre}"></dd>
+
+    </dl>
+    <form th:action="@{marca/delete}" method="post">
+      <input type="hidden" name="id" th:value="${marca.id}">
+      <input type="submit" value="Eliminar" class="btn btn-danger">
+      <a th:href="@{/marca}">Regresar</a>
+    </form>
+  </div>
+</div>

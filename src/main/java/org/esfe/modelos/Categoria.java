@@ -3,6 +3,9 @@ package org.esfe.modelos;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "categorias")
 public class Categoria {
@@ -29,5 +32,7 @@ public class Categoria {
     public void setId(Integer id) {
         this.id = id;
     }
+//    @ManyToMany
+//    private Set<Producto> productos = new HashSet<>();
 }
 

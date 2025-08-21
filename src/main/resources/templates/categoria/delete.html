@@ -16,10 +16,10 @@
             <dd class="col-ms-10" th:text="${categoria.nombre}"></dd>
 
         </dl>
-        <form th:action="@{categorias/delete}" method="post">
+        <form th:action="@{categoria/delete}" method="post">
             <input type="hidden" name="id" th:value="${categoria.id}">
             <input type="submit" value="Eliminar" class="btn btn-danger">
-            <a th:href="@{/categorias}">Regresar</a>
+            <a th:href="@{/categoria}">Regresar</a>
         </form>
     </div>
 </div>
