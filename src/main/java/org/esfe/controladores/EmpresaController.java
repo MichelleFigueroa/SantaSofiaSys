@@ -8,9 +8,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Optional;
@@ -41,5 +41,51 @@ public class EmpresaController {
         }
 
         return "empresa/index";
+    }
+
+    @GetMapping("/create")
+    public String create (Empresa empresa){
+        return "empresa/create";
+    }
+
+    @PostMapping("/save")
+    public String save(Empresa empresa, BindingResult result, Model model, RedirectAttributes attributes){
+        if (result.hasErrors()){
+            model.addAttribute(empresa);
+            attributes.addFlashAttribute("error", "No se pudo guardar debido a un error.");
+            return "empresa/create";
+        }
+
+        empresaService.crearOEditar(empresa);
+        attributes.addFlashAttribute("msg", "Empresa creada con exito.");
+        return "redirect:/empresas";
+    }
+
+    @GetMapping("/details/{id}")
+    public String details(@PathVariable("id") Integer id, Model model){
+        Empresa empresa = empresaService.buscarPorId(id).get();
+        model.addAttribute("empresa", empresa);
+        return "empresa/details";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String edit(@PathVariable("id") Integer id, Model model){
+        Empresa empresa = empresaService.buscarPorId(id).get();
+        model.addAttribute("empresa", empresa);
+        return "empresa/edit";
+    }
+
+    @GetMapping("/remove/{id}")
+    public String remove(@PathVariable("id") Integer id, Model model){
+        Empresa empresa = empresaService.buscarPorId(id).get();
+        model.addAttribute("empresa", empresa);
+        return "empresa/delete";
+    }
+
+    @PostMapping("/delete")
+    public String delete(Empresa empresa, RedirectAttributes attributes){
+        empresaService.eliminarPorId(empresa.getId());
+        attributes.addFlashAttribute("msg", "Empresa eliminada correctamente");
+        return "redirect:/empresas";
     }
 }

@@ -47,7 +47,7 @@
         <tbody>
         <tr th:each="item : ${empresas}">
             <td th:text="${item.id}"></td>
-            <td th:text="${item.idMunicipio}"></td>
+            <td th:text="${item.distrito.nombre}"></td>
             <td th:text="${item.nombre}"></td>
             <td th:text="${item.NIT}"></td>
             <td th:text="${item.NRC}"></td>

@@ -8,9 +8,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Optional;
@@ -41,5 +41,30 @@ public class InventarioController {
         }
 
         return "inventario/index";
+    }
+
+    @GetMapping("/create")
+    public String create (Inventario inventario){
+        return "inventario/create";
+    }
+
+    @PostMapping("/save")
+    public String save(Inventario inventario, BindingResult result, Model model, RedirectAttributes attributes){
+        if (result.hasErrors()){
+            model.addAttribute(inventario);
+            attributes.addFlashAttribute("error", "No se pudo guardar debido a un error.");
+            return "inventario/create";
+        }
+
+        inventarioService.crearOEditar(inventario);
+        attributes.addFlashAttribute("msg", "Inventario creado con exito.");
+        return "redirect:/inventarios";
+    }
+
+    @GetMapping("/details/{id}")
+    public String details(@PathVariable("id") Integer id, Model model){
+        Inventario inventario = inventarioService.buscarPorId(id).get();
+        model.addAttribute("inventario", inventario);
+        return "inventario/details";
     }
 }

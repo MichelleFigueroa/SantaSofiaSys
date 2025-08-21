@@ -45,6 +45,7 @@
             <div class="sb-sidenav-menu">
                 <div class="nav">
                     <div class="sb-sidenav-menu-heading">Mantenimientos</div>
+
                     <a class="nav-link" th:href="@{/empleados}">
                         <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
                         Empleados
@@ -61,11 +62,15 @@
                         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                         Productos
                     </a>
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" th:href="@{/inventarios}">
                         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                         Inventario
                     </a>
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" th:href="@{/empresas}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        Empresa
+                    </a>
+                    <a class="nav-link" th:href="@{/ventas}>
                         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                         Ventas
                     </a>
