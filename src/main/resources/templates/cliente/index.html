@@ -10,12 +10,12 @@
     <div class="card shadow-lg border-0 w-100" style="max-width: 1200px; border-radius: 20px;">
         <div class="card-body p-4">
 
-            <!-- Mensajes de confirmación y error (usando SweetAlert2) -->
+            <!-- Mensajes de confirmación y error -->
             <div th:if="${msg != null}">
                 <script th:inline="javascript">
                     Swal.fire({
                         title: "✅ Confirmación",
-                        text: /*[[${msg}]]*/ '', // Escapa el texto del mensaje
+                        text: /*[[${msg}]]*/ '',
                         icon: "success",
                         confirmButtonColor: "#3085d6"
                     });
@@ -26,7 +26,7 @@
                 <script th:inline="javascript">
                     Swal.fire({
                         title: "❌ Error",
-                        text: /*[[${error}]]*/ '', // Escapa el texto del mensaje
+                        text: /*[[${error}]]*/ '',
                         icon: "error",
                         confirmButtonColor: "#d33"
                     });
@@ -36,10 +36,10 @@
             <!-- ENCABEZADO -->
             <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
                 <h2 class="fw-bold text-primary mb-0">
-                    <i class="bi bi-people-fill"></i> Gestión de Clientes
+                    <i class="bi bi-person-badge-fill"></i> Gestión de Empleados
                 </h2>
-                <a th:href="@{/clientes/create}" class="btn btn-primary shadow-sm">
-                    <i class="bi bi-plus-circle-fill"></i> Nuevo Cliente
+                <a th:href="@{/empleados/create}" class="btn btn-primary shadow-sm">
+                    <i class="bi bi-plus-circle-fill"></i> Nuevo Empleado
                 </a>
             </div>
 
@@ -54,44 +54,40 @@
                         <th>Teléfono</th>
                         <th>Email</th>
                         <th>DUI</th>
-                        <th>Dirección</th>
-                        <th>Distrito</th>
+                        <th>Municipio</th>
                         <th>Acciones</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <!-- Usar clientes.content para iterar sobre los elementos de la página -->
-                    <tr th:each="cliente : ${clientes.content}">
-                        <td th:text="${cliente.id}" class="text-center fw-bold"></td>
-                        <td th:text="${cliente.nombre + ' ' + cliente.apellido}"></td>
-                        <td th:text="${cliente.telefono}"></td>
-                        <td th:text="${cliente.email}"></td>
-                        <td th:text="${cliente.dui}"></td>
-                        <td th:text="${cliente.direccion}"></td>
-                        <td th:text="${cliente.distrito?.nombre}"></td>
+                    <tr th:each="empleado : ${empleados.content}">
+                        <td th:text="${empleado.idCliente}" class="text-center fw-bold"></td>
+                        <td th:text="${empleado.nombre + ' ' + empleado.apellido}"></td>
+                        <td th:text="${empleado.telefono}"></td>
+                        <td th:text="${empleado.correoElectronico}"></td>
+                        <td th:text="${empleado.dui}"></td>
+                        <td th:text="${empleado.idMunicipio != null ? empleado.idMunicipio.nombre : ''}"></td>
                         <td class="text-center">
                             <div class="btn-group">
-                                <a th:href="@{/clientes/details/{id}(id=${cliente.id})}"
+                                <a th:href="@{/empleados/details/{id}(id=${empleado.idCliente})}"
                                    class="btn btn-sm btn-outline-secondary" title="Ver Detalles">
                                     <i class="bi bi-eye-fill"></i>
                                 </a>
-                                <a th:href="@{/clientes/edit/{id}(id=${cliente.id})}"
+                                <a th:href="@{/empleados/edit/{id}(id=${empleado.idCliente})}"
                                    class="btn btn-sm btn-outline-info" title="Editar">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
-                                <a th:href="@{/clientes/delete/{id}(id=${cliente.id})}"
+                                <a th:href="@{/empleados/delete/{id}(id=${empleado.idCliente})}"
                                    class="btn btn-sm btn-outline-danger" title="Eliminar"
-                                   onclick="return confirm('¿Estás seguro de que quieres eliminar este cliente?');">
+                                   onclick="return confirm('¿Estás seguro de que quieres eliminar este empleado?');">
                                     <i class="bi bi-trash-fill"></i>
                                 </a>
                             </div>
                         </td>
                     </tr>
-                    <!-- Usar clientes.empty para verificar si la página actual está vacía -->
-                    <tr th:if="${clientes.empty}">
-                        <td colspan="8" class="text-center text-muted py-4">
+                    <tr th:if="${empleados.empty}">
+                        <td colspan="7" class="text-center text-muted py-4">
                             <i class="bi bi-inbox fs-3"></i><br>
-                            No hay clientes registrados
+                            No hay empleados registrados
                         </td>
                     </tr>
                     </tbody>
@@ -101,22 +97,23 @@
             <!-- PAGINACIÓN -->
             <nav class="mt-4" aria-label="Navegación de página">
                 <ul class="pagination justify-content-center">
-                    <li class="page-item" th:classappend="${clientes.first} ? 'disabled'">
-                        <a class="page-link" th:href="@{/clientes(page=${clientes.number})}" aria-label="Previous">
+                    <li class="page-item" th:classappend="${empleados.first} ? 'disabled'">
+                        <a class="page-link" th:href="@{/empleados(page=${empleados.number})}" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
                     <li class="page-item" th:each="pageNumber : ${pageNumbers}"
-                        th:classappend="${pageNumber - 1 == clientes.number} ? 'active'">
-                        <a class="page-link" th:href="@{/clientes(page=${pageNumber})}" th:text="${pageNumber}"></a>
+                        th:classappend="${pageNumber - 1 == empleados.number} ? 'active'">
+                        <a class="page-link" th:href="@{/empleados(page=${pageNumber})}" th:text="${pageNumber}"></a>
                     </li>
-                    <li class="page-item" th:classappend="${clientes.last} ? 'disabled'">
-                        <a class="page-link" th:href="@{/clientes(page=${clientes.number + 2})}" aria-label="Next">
+                    <li class="page-item" th:classappend="${empleados.last} ? 'disabled'">
+                        <a class="page-link" th:href="@{/empleados(page=${empleados.number + 2})}" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
                 </ul>
             </nav>
+
         </div>
     </div>
 </div>

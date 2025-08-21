@@ -3,8 +3,6 @@ package org.esfe.modelos;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
-import java.math.BigInteger;
-
 @Entity
 @Table(name = "usuarios")
 public class Usuario {
@@ -13,62 +11,29 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotBlank(message = "El rol es requerido")
-    @ManyToOne
-    @JoinColumn(name = "id_rol")
-    private Rol rol;
+    private Integer idRol;
 
-    @NotBlank(message = "El empleado es obligatorio")
-    @ManyToOne
-    @JoinColumn(name = "id_empleado")
-    private Empleado empleado;
+    private Integer idEmpleado;
 
     @NotBlank(message = "El nombre de usuario es obligatorio")
     private String nombreUsuario;
 
-    @NotBlank(message = "La clave del usuario es obligatoria")
+    @NotBlank(message = "La clave es obligatoria")
     private String clave;
 
+    // Getters y Setters
+    public Integer getId() { return id; }
+    public void setId(Integer id) { this.id = id; }
 
+    public Integer getIdRol() { return idRol; }
+    public void setIdRol(Integer idRol) { this.idRol = idRol; }
 
-    public Integer getId() {
-        return id;
-    }
+    public Integer getIdEmpleado() { return idEmpleado; }
+    public void setIdEmpleado(Integer idEmpleado) { this.idEmpleado = idEmpleado; }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    public String getNombreUsuario() { return nombreUsuario; }
+    public void setNombreUsuario(String nombreUsuario) { this.nombreUsuario = nombreUsuario; }
 
-    public Rol getRol() {
-        return rol;
-    }
-
-    public void setRol(Rol rol) {
-        this.rol = rol;
-    }
-
-    public Empleado getEmpleado() {
-        return empleado;
-    }
-
-    public void setEmpleado(Empleado empleado) {
-        this.empleado = empleado;
-    }
-
-    public String getNombreUsuario() {
-        return nombreUsuario;
-    }
-
-    public void setNombreUsuario(String nombreUsuario) {
-        this.nombreUsuario = nombreUsuario;
-    }
-
-    public String getClave() {
-        return clave;
-    }
-
-    public void setClave(String clave) {
-        this.clave = clave;
-    }
+    public String getClave() { return clave; }
+    public void setClave(String clave) { this.clave = clave; }
 }
-

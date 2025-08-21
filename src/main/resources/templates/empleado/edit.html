@@ -1,0 +1,60 @@
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="/layouts/_mainLayout">
+
+<div layout:fragment="content">
+    <h1>Editar Empleado</h1>
+
+    <!-- ID oculto para edición -->
+    <input type="hidden" th:field="*{id}">
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="nombre">Nombre</label>
+                <input type="text" class="form-control" th:field="*{nombre}" id="nombre" placeholder="Ingrese el nombre" required>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="apellido">Apellido</label>
+                <input type="text" class="form-control" th:field="*{apellido}" id="apellido" placeholder="Ingrese el apellido" required>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="telefono">Teléfono</label>
+                <input type="text" class="form-control" th:field="*{telefono}" id="telefono" placeholder="Ingrese el teléfono" required>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" th:field="*{email}" id="email" placeholder="Ingrese el correo electrónico" required>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="dui">DUI</label>
+                <input type="text" class="form-control" th:field="*{dui}" id="dui" placeholder="Ingrese el DUI" required>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+    <a th:href="@{/empleados}" class="btn btn-secondary">Regresar</a>
+</div>

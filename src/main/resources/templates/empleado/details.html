@@ -1,0 +1,33 @@
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="/layouts/_mainLayout">
+
+<div layout:fragment="content">
+    <h1>Detalles del Empleado</h1>
+    <div>
+        <hr />
+        <dl class="row">
+            <dt class="col-ms-2">ID</dt>
+            <dd class="col-ms-10" th:text="${empleado.id}"></dd>
+
+            <dt class="col-ms-2">Nombre</dt>
+            <dd class="col-ms-10" th:text="${empleado.nombre}"></dd>
+
+            <dt class="col-ms-2">Apellido</dt>
+            <dd class="col-ms-10" th:text="${empleado.apellido}"></dd>
+
+            <dt class="col-ms-2">Teléfono</dt>
+            <dd class="col-ms-10" th:text="${empleado.telefono}"></dd>
+
+            <dt class="col-ms-2">Email</dt>
+            <dd class="col-ms-10" th:text="${empleado.email}"></dd>
+
+            <dt class="col-ms-2">DUI</dt>
+            <dd class="col-ms-10" th:text="${empleado.dui}"></dd>
+        </dl>
+
+        <a th:href="@{/empleados/edit/{id}(id=${empleado.id})}" class="btn btn-outline-info">Editar</a>
+        <a th:href="@{/empleados}" class="btn btn-secondary">Regresar</a>
+    </div>
+</div>

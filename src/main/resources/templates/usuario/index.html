@@ -1,67 +1,55 @@
 <!DOCTYPE html>
-<html lang="en"
+<html lang="es"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="/layouts/_mainLayout">
 
-<div layout:fragment="content" class="container mt-4">
+<div layout:fragment="content">
+    <h1>Listado de Usuarios</h1>
 
-    <div th:if="${msg != null}">
-        <script>
-            Swal.fire({ title:"Confirmación", text: '[[${msg}]]', icon: "success" })
-        </script>
-    </div>
-    <div th:if="${error != null}">
-        <script>
-            Swal.fire({ title:"Error", text: '[[${error}]]', icon: "error" })
-        </script>
-    </div>
+    <!-- Mensajes de éxito/error -->
+    <div th:if="${msg}" class="alert alert-success" th:text="${msg}"></div>
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
-    <h2 class="mb-4">Listado de Usuarios</h2>
-    <a th:href="@{/usuarios/crear}" class="btn btn-primary mb-3">Nuevo Usuario</a>
+    <a th:href="@{/usuarios/create}" class="btn btn-outline-primary mb-3">Nuevo Usuario</a>
 
-    <table class="table table-bordered table-striped">
-        <thead class="table-dark">
+    <table class="table table-striped">
+        <thead>
         <tr>
             <th>ID</th>
-            <th>Usuario</th>
-            <th>Email</th>
             <th>Rol</th>
+            <th>Empleado</th>
+            <th>Nombre de Usuario</th>
+            <th>Clave</th>
             <th>Acciones</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="usuario : ${listaUsuarios}">
-            <td th:text="${usuario.idUsuario}"></td>
-            <td th:text="${usuario.username}"></td>
-            <td th:text="${usuario.email}"></td>
-            <td th:text="${usuario.rol.nombre}"></td>
-            <td>
-                <a th:href="@{'/usuarios/editar/' + ${usuario.idUsuario}}" class="btn btn-warning btn-sm">Editar</a>
-                <a th:href="@{'/usuarios/eliminar/' + ${usuario.idUsuario}}"
-                   class="btn btn-danger btn-sm"
-                   onclick="return confirm('¿Seguro que quieres eliminar este usuario?');">
-                    Eliminar
-                </a>
+        <tr th:each="usuario : ${usuarios.content}">
+            <td th:text="${usuario.id}"></td>
+            <td th:text="${usuario.idRol}"></td>
+            <td th:text="${usuario.idEmpleado}"></td>
+            <td th:text="${usuario.nombreUsuario}"></td>
+            <td th:text="${usuario.clave}"></td>
+            <td class="d-flex gap-1">
+                <a th:href="@{/usuarios/details/{id}(id=${usuario.id})}" class="btn btn-outline-secondary btn-sm">Detalles</a>
+                <a th:href="@{/usuarios/edit/{id}(id=${usuario.id})}" class="btn btn-outline-info btn-sm">Editar</a>
+                <form th:action="@{/usuarios/delete}" method="post" style="display:inline;">
+                    <input type="hidden" name="id" th:value="${usuario.id}">
+                    <input type="submit" value="Eliminar" class="btn btn-outline-danger btn-sm">
+                </form>
             </td>
         </tr>
         </tbody>
     </table>
 
-    <nav th:if="${listaUsuarios.totalPages > 1}">
+    <!-- Paginación -->
+    <nav aria-label="Page navigation">
         <ul class="pagination">
-            <li class="page-item" th:classappend="${listaUsuarios.first} ? 'disabled'">
-                <a class="page-link" th:href="@{/usuarios(page=${listaUsuarios.number - 1}, size=${listaUsuarios.size})}">Anterior</a>
-            </li>
-            <li class="page-item" th:each="i : ${#numbers.sequence(0, listaUsuarios.totalPages - 1)}"
-                th:classappend="${listaUsuarios.number == i} ? 'active'">
-                <a class="page-link" th:href="@{/usuarios(page=${i}, size=${listaUsuarios.size})}" th:text="${i + 1}"></a>
-            </li>
-            <li class="page-item" th:classappend="${listaUsuarios.last} ? 'disabled'">
-                <a class="page-link" th:href="@{/usuarios(page=${listaUsuarios.number + 1}, size=${listaUsuarios.size})}">Siguiente</a>
+            <li class="page-item" th:each="pageNumber : ${pageNumbers}">
+                <a class="page-link" th:href="@{/usuarios(page=${pageNumber})}" th:text="${pageNumber}"></a>
             </li>
         </ul>
     </nav>
-
 </div>
 </html>

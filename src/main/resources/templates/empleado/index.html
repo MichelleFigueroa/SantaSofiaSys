@@ -1,69 +1,80 @@
-<!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="/layouts/_mainLayout">
 
-<div layout:fragment="content" class="container mt-4">
+<div layout:fragment="content">
 
-    <div th:if="${msg != null}">
+    <!-- Mostrar mensaje de confirmación en caso de éxito -->
+    <div th:if="${not #strings.isEmpty(msg)}">
         <script>
-            Swal.fire({ title:"Confirmación", text: '[[${msg}]]', icon: "success" })
+            Swal.fire({
+                title: "Confirmación",
+                text: [[${msg}]],
+                icon: "success"
+            });
         </script>
     </div>
-    <div th:if="${error != null}">
+
+    <!-- Mostrar mensaje de error en caso de fallo -->
+    <div th:if="${not #strings.isEmpty(error)}">
         <script>
-            Swal.fire({ title:"Error", text: '[[${error}]]', icon: "error" })
+            Swal.fire({
+                title: "Error",
+                text: [[${error}]],
+                icon: "error"
+            });
         </script>
     </div>
 
-    <h2 class="mb-4">Listado de Empleados</h2>
-    <a th:href="@{/empleados/crear}" class="btn btn-primary mb-3">Nuevo Empleado</a>
+    <h1>Listado de Empleados</h1>
+    <a th:href="@{/empleados/create}" class="btn btn-outline-primary">Nuevo Empleado</a>
 
-    <table class="table table-bordered table-striped">
-        <thead class="table-dark">
+    <table class="table table-striped mt-3">
+        <thead>
         <tr>
             <th>ID</th>
             <th>Nombre</th>
             <th>Apellido</th>
-            <th>Cargo</th>
             <th>Teléfono</th>
+            <th>Email</th>
+            <th>DUI</th>
             <th>Acciones</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="empleado : ${listaEmpleados}">
-            <td th:text="${empleado.idEmpleado}"></td>
+        <tr th:each="empleado : ${empleados.content}">
+            <td th:text="${empleado.id}"></td>
             <td th:text="${empleado.nombre}"></td>
             <td th:text="${empleado.apellido}"></td>
-            <td th:text="${empleado.cargo}"></td>
             <td th:text="${empleado.telefono}"></td>
+            <td th:text="${empleado.email}"></td>
+            <td th:text="${empleado.dui}"></td>
             <td>
-                <a th:href="@{'/empleados/editar/' + ${empleado.idEmpleado}}" class="btn btn-warning btn-sm">Editar</a>
-                <a th:href="@{'/empleados/eliminar/' + ${empleado.idEmpleado}}"
-                   class="btn btn-danger btn-sm"
-                   onclick="return confirm('¿Seguro que quieres eliminar este empleado?');">
-                    Eliminar
-                </a>
+            <td class="d-flex gap-1">
+                <!-- Detalles -->
+                <a th:href="@{/empleados/details/{id}(id=${empleado.id})}" class="btn btn-outline-secondary btn-sm">Detalles</a>
+                <!-- Editar -->
+                <a th:href="@{/empleados/edit/{id}(id=${empleado.id})}" class="btn btn-outline-info btn-sm">Editar</a>
+                <!-- Eliminar -->
+                <form th:action="@{/empleados/delete}" method="post" style="display:inline;">
+                    <input type="hidden" name="id" th:value="${empleado.id}">
+                    <input type="submit" value="Eliminar" class="btn btn-outline-danger btn-sm">
+                </form>
+            </td>
+
             </td>
         </tr>
         </tbody>
     </table>
 
-    <nav th:if="${listaEmpleados.totalPages > 1}">
+    <!-- Paginación -->
+    <nav aria-label="Page navigation example">
         <ul class="pagination">
-            <li class="page-item" th:classappend="${listaEmpleados.first} ? 'disabled'">
-                <a class="page-link" th:href="@{/empleados(page=${listaEmpleados.number - 1}, size=${listaEmpleados.size})}">Anterior</a>
-            </li>
-            <li class="page-item" th:each="i : ${#numbers.sequence(0, listaEmpleados.totalPages - 1)}"
-                th:classappend="${listaEmpleados.number == i} ? 'active'">
-                <a class="page-link" th:href="@{/empleados(page=${i}, size=${listaEmpleados.size})}" th:text="${i + 1}"></a>
-            </li>
-            <li class="page-item" th:classappend="${listaEmpleados.last} ? 'disabled'">
-                <a class="page-link" th:href="@{/empleados(page=${listaEmpleados.number + 1}, size=${listaEmpleados.size})}">Siguiente</a>
+            <li class="page-item" th:each="pageNumber : ${pageNumbers}">
+                <a class="page-link" th:href="@{/empleados(page=${pageNumber})}" th:text="${pageNumber}"></a>
             </li>
         </ul>
     </nav>
 
 </div>
-</html>

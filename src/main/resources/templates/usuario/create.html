@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="/layouts/_mainLayout">
+
+<div layout:fragment="content">
+    <h1>Crear Usuario</h1>
+
+    <form th:action="@{/usuarios/save}" th:object="${usuario}" method="post">
+        <div class="mb-3">
+            <label for="idRol" class="form-label">Rol</label>
+            <input type="number" class="form-control" th:field="*{idRol}" id="idRol" placeholder="Ingrese ID del rol" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="idEmpleado" class="form-label">Empleado</label>
+            <input type="number" class="form-control" th:field="*{idEmpleado}" id="idEmpleado" placeholder="Ingrese ID del empleado" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="nombreUsuario" class="form-label">Nombre de Usuario</label>
+            <input type="text" class="form-control" th:field="*{nombreUsuario}" id="nombreUsuario" placeholder="Ingrese nombre de usuario" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="clave" class="form-label">Clave</label>
+            <input type="password" class="form-control" th:field="*{clave}" id="clave" placeholder="Ingrese la clave" required>
+        </div>
+
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <a th:href="@{/usuarios}" class="btn btn-secondary">Regresar</a>
+        </div>
+    </form>
+</div>
+</html>
