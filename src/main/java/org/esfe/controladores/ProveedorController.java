@@ -9,9 +9,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Optional;
@@ -45,5 +45,52 @@ public class ProveedorController {
 
     }
 
+    @GetMapping("/create")
+    public String create(Proveedor proveedor) {
+        return "proveedor/create";
+    }
 
+    @PostMapping("/save")
+    public String save(Proveedor proveedor, BindingResult result, Model model, RedirectAttributes attributes) {
+        if (result.hasErrors()) {
+            model.addAttribute(proveedor);
+            attributes.addFlashAttribute("error", "error no se pudo guardar debido a un error.");
+            return "proveedor/create";
+        }
+
+        proveedorService.createOrEditone(proveedor);
+        attributes.addFlashAttribute("msg", "Proveedor creado correctamente");
+        return "redirect:/proveedores";
+
+    }
+
+    @GetMapping("/details/{id}")
+    public String details(@PathVariable("id") Integer id, Model model) {
+        Proveedor proveedor = proveedorService.buscarPorId(id).get();
+        model.addAttribute("proveedor", proveedor);
+        return "proveedor/details";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String edit(@PathVariable("id") Integer id, Model model) {
+        Proveedor proveedor = proveedorService.buscarPorId(id).get();
+        model.addAttribute("proveedor", proveedor);
+        return "proveedor/edit";
+    }
+
+    @GetMapping("/remove/{id}")
+    public String remove(@PathVariable("id") Integer id, Model model) {
+        Proveedor proveedor = proveedorService.buscarPorId(id).get();
+        model.addAttribute("proveedor", proveedor);
+        return "proveedor/delete";
+    }
+
+
+    @PostMapping("/delete")
+    public String delete(Proveedor proveedor, RedirectAttributes attributes) {
+        proveedorService.eliminarPorld(proveedor.getId());
+        attributes.addFlashAttribute("msg", "Proveedor eliminado correctamente");
+        return "redirect:/proveedores";
+
+    }
 }

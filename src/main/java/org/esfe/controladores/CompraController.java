@@ -10,9 +10,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Optional;
@@ -44,6 +44,30 @@ public class CompraController {
         }
         return "compra/index";
 
+    }
+    @GetMapping("/create")
+    public String create(Compra compra) {
+        return "compra/create";
+    }
+
+    @PostMapping("/save")
+    public String save(Compra compra, BindingResult result, Model model, RedirectAttributes attributes) {
+        if (result.hasErrors()) {
+            model.addAttribute(compra);
+            attributes.addFlashAttribute("error", "error no se pudo guardar debido a un error.");
+            return "compra/create";
+        }
+
+        compraService.crearOEditar(compra);
+        attributes.addFlashAttribute("msg", "Proveedor creado correctamente");
+        return "redirect:/compras";
+    }
+
+    @GetMapping("/details/{id}")
+    public String details(@PathVariable("id") Integer id, Model model) {
+        Compra compra = compraService.buscarPorId(id).get();
+        model.addAttribute("compra", compra);
+        return "compra/details";
     }
 
 }

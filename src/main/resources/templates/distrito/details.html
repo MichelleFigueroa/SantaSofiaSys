@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="/layouts/_mainLayout">
+
+<div layout:fragment="content">
+    <h1>Detalles del Distrito</h1>
+
+    <ul class="list-group">
+        <li class="list-group-item"><strong>ID:</strong> <span th:text="${distrito.id}"></span></li>
+        <li class="list-group-item"><strong>Nombre:</strong> <span th:text="${distrito.nombre}"></span></li>
+        <li class="list-group-item"><strong>Municipio:</strong> <span th:text="${distrito.municipio != null ? distrito.municipio.nombre : 'Sin asignar'}"></span></li>
+    </ul>
+
+    <a th:href="@{/distritos}" class="btn btn-secondary mt-3">Volver a la Lista</a>
+    <a th:href="@{/distritos/edit/{id}(id=${distrito.id})}" class="btn btn-primary mt-3">Editar</a>
+</div>
+</html>

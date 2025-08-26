@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="/layouts/_mainLayout">
+
+<div layout:fragment="content" class="d-flex justify-content-center align-items-center min-vh-100 bg-light">
+
+    <div class="card shadow-lg border-0 w-100" style="max-width: 900px; border-radius: 20px;">
+        <div class="card-body p-4">
+
+            <!-- Encabezado -->
+            <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
+                <h2 class="fw-bold text-danger mb-0">
+                    <i class="bi bi-exclamation-triangle-fill"></i> Eliminar Empresa
+                </h2>
+            </div>
+
+            <!-- Mensaje de confirmación -->
+            <div class="alert alert-warning text-center fw-bold mb-4" role="alert" style="border-radius: 12px;">
+                ¿Está seguro que desea eliminar este registro?
+            </div>
+
+            <!-- Campos -->
+            <div class="row mb-3">
+                <div class="col-md-3 fw-bold">ID:</div>
+                <div class="col-md-9" th:text="${empresa.id}"></div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-3 fw-bold">Distrito:</div>
+                <div class="col-md-9" th:text="${empresa.distrito.nombre}"></div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-3 fw-bold">Nombre:</div>
+                <div class="col-md-9" th:text="${empresa.nombre}"></div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-3 fw-bold">NIT:</div>
+                <div class="col-md-9" th:text="${empresa.NIT}"></div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-3 fw-bold">NRC:</div>
+                <div class="col-md-9" th:text="${empresa.NRC}"></div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-3 fw-bold">Sucursal:</div>
+                <div class="col-md-9" th:text="${empresa.sucursal}"></div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-3 fw-bold">Teléfono:</div>
+                <div class="col-md-9" th:text="${empresa.telefono}"></div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-3 fw-bold">Dirección:</div>
+                <div class="col-md-9" th:text="${empresa.direccion}"></div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-3 fw-bold">Email:</div>
+                <div class="col-md-9" th:text="${empresa.email}"></div>
+            </div>
+
+            <!-- Botones -->
+            <form th:action="@{/empresas/delete}" method="post" class="d-flex justify-content-end gap-2">
+                <input type="hidden" name="Id" th:value="${empresa.id}" />
+
+                <button type="submit" class="btn btn-danger shadow-sm">
+                    <i class="bi bi-trash-fill"></i> Eliminar
+                </button>
+
+                <a th:href="@{/empresas}" class="btn btn-secondary shadow-sm">
+                    <i class="bi bi-arrow-left-circle-fill"></i> Cancelar
+                </a>
+            </form>
+
+        </div>
+    </div>
+</div>
+</html>

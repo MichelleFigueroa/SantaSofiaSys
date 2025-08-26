@@ -1,0 +1,36 @@
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="/layouts/_mainLayout">
+
+<div layout:fragment="content">
+    <h1>Detalles del proveedor</h1>
+    <div>
+      <hr />
+      <dl class="row">
+        <dt class="col-sm-2">ID</dt>
+        <dd class="col-sm-10" th:text=${proveedor.id}"></dd>
+
+        <dt class="col-sm-2">Distrito</dt>
+        <dd class="col-sm-10" th:text="${proveedor.distrito}"></dd>
+
+        <dt class="col-sm-2">Nombre</dt>
+        <dd class="col-sm-10" th:text=${proveedor.nombre}"></dd>
+
+        <dt class="col-sm-2">Telefono</dt>
+        <dd class="col-sm-10" th:text="${proveedor.telefono}"></dd>
+
+        <dt class="col-sm-2">Email</dt>
+        <dd class="col-sm-10" th:text="${proveedor.email}"></dd>
+
+        <dt class="col-sm-2">Detalle</dt>
+        <dd class="col-sm-10" th:text="${proveedor.detalle}"></dd>
+
+        <dt class="col-sm-2">Direccion</dt>
+        <dd class="col-sm-10" th:text="${proveedor.direccion}"></dd>
+      </dl>
+
+      <a th:href="@{/proveedores/edit/{id} (id = ${proveedor.id}) }" class="btn btn-outline-info">Editar</a> |
+      <a th:href="@{/proveedores}">Regresar</a>
+    </div>
+</div>

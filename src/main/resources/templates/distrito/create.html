@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="/layouts/_mainLayout">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Crear Distrito</title>
+</head>
+
+<div layout:fragment="content" class="container mt-4">
+    <h2>Crear Distrito</h2>
+    <form th:action="@{/distrito/guardar}" th:object="${distrito}" method="post">
+        <!-- Selección de Municipio -->
+        <div class="mb-3">
+            <label for="municipio" class="form-label">Municipio</label>
+            <select class="form-select" th:field="*{municipio}" id="municipio">
+                <option th:each="mun : ${municipios}"
+                        th:value="${mun.id}"
+                        th:text="${mun.nombre}">Municipio</option>
+            </select>
+        </div>
+
+        <!-- Nombre del Distrito -->
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre del Distrito</label>
+            <input type="text" class="form-control" id="nombre" th:field="*{nombre}" placeholder="Ingrese nombre" required>
+        </div>
+
+        <!-- Botones -->
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <a th:href="@{/distrito}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+
+</html>
