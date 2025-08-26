@@ -1,6 +1,8 @@
 package org.esfe.controladores;
 
+import org.esfe.modelos.Distrito;
 import org.esfe.modelos.Empresa;
+import org.esfe.servicios.interfaces.IDistritoService;
 import org.esfe.servicios.interfaces.IEmpresaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,6 +25,9 @@ public class EmpresaController {
     @Autowired
     private IEmpresaService empresaService;
 
+    @Autowired
+    private IDistritoService distritoService;
+
     @GetMapping
     public String index(Model model, @RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size){
         int currentPage = page.orElse(1) - 1; // Si no está seteado, se asigna 0
@@ -44,20 +49,34 @@ public class EmpresaController {
     }
 
     @GetMapping("/create")
-    public String create (Empresa empresa){
+    public String create (Model model){
+        model.addAttribute("distritos", distritoService.obtenerTodos());
         return "empresa/create";
     }
 
     @PostMapping("/save")
-    public String save(Empresa empresa, BindingResult result, Model model, RedirectAttributes attributes){
-        if (result.hasErrors()){
-            model.addAttribute(empresa);
-            attributes.addFlashAttribute("error", "No se pudo guardar debido a un error.");
-            return "empresa/create";
+    public String save(@RequestParam Integer distritoId, @RequestParam String nombre,
+                       @RequestParam String NIT, @RequestParam String NRC,
+                       @RequestParam String sucursal, @RequestParam String telefono,
+                       @RequestParam String direccion, @RequestParam String email,
+                       RedirectAttributes attributes){
+        Distrito distrito = distritoService.buscarPorId(distritoId).get();
+
+        if (distrito != null){
+            Empresa empresa = new Empresa();
+            empresa.setDistrito(distrito);
+            empresa.setNombre(nombre);
+            empresa.setNIT(NIT);
+            empresa.setNRC(NRC);
+            empresa.setSucursal(sucursal);
+            empresa.setTelefono(telefono);
+            empresa.setDireccion(direccion);
+            empresa.setEmail(email);
+
+            empresaService.crearOEditar(empresa);
+            attributes.addFlashAttribute("msg", "Empresa creada con exito.");
         }
 
-        empresaService.crearOEditar(empresa);
-        attributes.addFlashAttribute("msg", "Empresa creada con exito.");
         return "redirect:/empresas";
     }
 
@@ -71,8 +90,36 @@ public class EmpresaController {
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") Integer id, Model model){
         Empresa empresa = empresaService.buscarPorId(id).get();
+        model.addAttribute("distritos", distritoService.obtenerTodos());
         model.addAttribute("empresa", empresa);
         return "empresa/edit";
+    }
+
+    @PostMapping("/update")
+    public String update(@RequestParam Integer id, @RequestParam Integer distritoId,
+                         @RequestParam String nombre, @RequestParam String NIT,
+                         @RequestParam String NRC, @RequestParam String sucursal,
+                         @RequestParam String telefono, @RequestParam String direccion,
+                         @RequestParam String email, RedirectAttributes attributes){
+        Distrito distrito = distritoService.buscarPorId(distritoId).get();
+
+        if (distrito != null){
+            Empresa empresa = new Empresa();
+            empresa.setId(id);
+            empresa.setDistrito(distrito);
+            empresa.setNombre(nombre);
+            empresa.setNIT(NIT);
+            empresa.setNRC(NRC);
+            empresa.setSucursal(sucursal);
+            empresa.setTelefono(telefono);
+            empresa.setDireccion(direccion);
+            empresa.setEmail(email);
+
+            empresaService.crearOEditar(empresa);
+            attributes.addFlashAttribute("msg", "Empresa modificada correctamente");
+        }
+
+        return "redirect:/empresas";
     }
 
     @GetMapping("/remove/{id}")

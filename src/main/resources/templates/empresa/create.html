@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="/layouts/_mainLayout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .form-input {
+        padding: 0.625rem 1rem;
+        border-width: 1px;
+        border-color: #d1d5db;
+        border-radius: 0.5rem;
+        box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05);
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+    .form-input:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(59,130,246,0.45);
+        border-color: #3b82f6;
+    }
+  </style>
+</head>
+<body>
+<div layout:fragment="content">
+  <div class="flex items-center justify-center p-6 sm:p-8">
+    <div class="bg-white p-8 sm:p-10 rounded-3xl shadow-xl w-full max-w-3xl border border-gray-200">
+
+      <!-- TÍTULO -->
+      <h1 class="text-4xl font-extrabold text-gray-800 mb-6 text-center flex items-center justify-center gap-3">
+        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24"
+             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+             class="lucide lucide-building text-blue-600">
+          <path d="M3 21V7a2 2 0 0 1 2-2h3V3h4v2h3a2 2 0 0 1 2 2v14"/>
+          <path d="M9 21V12h6v9"/>
+        </svg>
+        Crear Nueva Empresa
+      </h1>
+
+      <p class="text-center text-gray-600 mb-6 text-lg">
+        Completa la información para registrar una nueva empresa.
+      </p>
+
+      <hr class="mb-8 border-gray-300"/>
+
+      <!-- FORMULARIO -->
+      <form th:action="@{/empresas/save}" method="post" class="space-y-6">
+
+        <!-- Distrito -->
+        <div>
+          <label for="distrito" class="block text-lg font-medium text-gray-700 mb-2">Distrito <span class="text-red-500">*</span></label>
+          <select id="distrito" name="distritoId" class="form-input block w-full bg-white" required>
+            <option value="" disabled selected>-- Selecciona un distrito --</option>
+            <option th:each="distrito : ${distritos}" th:value="${distrito.id}" th:text="${distrito.nombre}"></option>
+          </select>
+        </div>
+
+        <!-- Nombre -->
+        <div>
+          <label for="nombre" class="block text-lg font-medium text-gray-700 mb-2">Nombre <span class="text-red-500">*</span></label>
+          <input type="text" id="nombre" name="nombre" placeholder="Nombre de la empresa"
+                 class="form-input block w-full" required>
+        </div>
+
+        <!-- NIT y NRC -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label for="NIT" class="block text-lg font-medium text-gray-700 mb-2">NIT <span class="text-red-500">*</span></label>
+            <input type="text" id="NIT" name="NIT" placeholder="Ej: 0614-123456-102-3"
+                   class="form-input block w-full" required>
+          </div>
+          <div>
+            <label for="NRC" class="block text-lg font-medium text-gray-700 mb-2">NRC <span class="text-red-500">*</span></label>
+            <input type="text" id="NRC" name="NRC" placeholder="Número de registro"
+                   class="form-input block w-full" required>
+          </div>
+        </div>
+
+        <!-- Sucursal -->
+        <div>
+          <label for="sucursal" class="block text-lg font-medium text-gray-700 mb-2">Sucursal <span class="text-red-500">*</span></label>
+          <input type="text" id="sucursal" name="sucursal" placeholder="Sucursal principal"
+                 class="form-input block w-full" required>
+        </div>
+
+        <!-- Teléfono y Email -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label for="telefono" class="block text-lg font-medium text-gray-700 mb-2">Teléfono <span class="text-red-500">*</span></label>
+            <input type="text" id="telefono" name="telefono" placeholder="Ej: 2222-3333"
+                   class="form-input block w-full" required>
+          </div>
+          <div>
+            <label for="email" class="block text-lg font-medium text-gray-700 mb-2">Email <span class="text-red-500">*</span></label>
+            <input type="email" id="email" name="email" placeholder="ejemplo@empresa.com"
+                   class="form-input block w-full" required>
+          </div>
+        </div>
+
+        <!-- Dirección -->
+        <div>
+          <label for="direccion" class="block text-lg font-medium text-gray-700 mb-2">
+            Dirección <span class="text-red-500">*</span>
+          </label>
+          <textarea id="direccion" name="direccion" rows="3" placeholder="Escribe la dirección completa"
+                    class="form-input block w-full resize-none" required></textarea>
+        </div>
+
+
+        <!-- BOTONES -->
+        <div class="flex flex-col sm:flex-row justify-end gap-4 mt-8">
+          <a href="/empresas"
+             class="w-full sm:w-auto flex items-center justify-center px-6 py-3 border border-gray-300 text-lg font-semibold rounded-lg shadow-sm text-gray-700 bg-white hover:bg-gray-100">
+            Cancelar
+          </a>
+          <button type="submit"
+                  class="w-full sm:w-auto flex items-center justify-center px-6 py-3 border border-transparent text-lg font-semibold rounded-lg shadow-md text-white bg-blue-600 hover:bg-blue-700">
+            Guardar
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+</body>
+</html>

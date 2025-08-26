@@ -2,6 +2,7 @@ package org.esfe.modelos;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "empresas")
@@ -10,9 +11,9 @@ public class Empresa {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotBlank(message = "El distrito es requerido")
+    @NotNull(message = "El distrito es requerido")
     @ManyToOne
-    @JoinColumn(name = "id_distrito")
+    @JoinColumn(name = "id_distrito", nullable = false)
     private Distrito distrito;
 
     @NotBlank(message = "El nombre es requerido")
