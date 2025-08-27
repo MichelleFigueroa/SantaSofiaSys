@@ -1,74 +1,71 @@
-<!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{/layouts/_mainLayout}">
-<head>
-  <meta charset="UTF-8">
-  <title>Crear Proveedor</title>
-</head>
-<body>
+      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="/layouts/_mainLayout">
 <div layout:fragment="content">
-  <h1>Crear nuevo proveedor</h1>
-  <form th:action="@{/proveedores/save}" th:object="${proveedor}" method="post">
-    <div class="row">
-      <div class="col-md-6">
-        <div class="form-group">
-          <label for="nombre">Nombre</label>
-          <input type="text" class="form-control" th:field="*{nombre}" id="nombre" placeholder="Escribe el nombre del proveedor" required>
-        </div>
+  <h1>Crear nuevo Proveedor</h1> <form th:action="@{/proveedores/save}" method="post">
+  <div class="row"> <div class="col-md-6">
+    <div class="form-group">
+      <label for="distrito">Distrito:</label>
+      <select id="distrito" name="distritoId" class="form-control" required>
+        <option th:each="distrito : ${distritos}" th:value="${distrito.id}" th:text="${distrito.nombre}"></option>
+      </select>
+    </div>
+  </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="nombre">Nombre:</label>
+        <input type="text" class="form-control" id="nombre" name="nombre" required>
       </div>
     </div>
+  </div>
 
-    <div class="row">
-      <div class="col-md-6">
-        <div class="form-group">
-          <label for="distrito">Distrito</label>
-          <input type="text" class="form-control" th:field="*{distrito}" id="distrito" required>
-        </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="telefono">Telefono:</label>
+        <input type="text" class="form-control" id="telefono" name="telefono" required>
       </div>
     </div>
+  </div>
 
-    <div class="row">
-      <div class="col-md-6">
-        <div class="form-group">
-          <label for="telefono">Teléfono</label>
-          <input type="text" class="form-control" th:field="*{telefono}" id="telefono" required>
-        </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="direccion">Direccion:</label>
+        <input type="text" class="form-control" id="direccion" name="direccion" required>
       </div>
     </div>
+  </div>
 
-    <div class="row">
-      <div class="col-md-6">
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" class="form-control" th:field="*{email}" id="email" required>
-        </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" class="form-control" id="email" name="email" required>
       </div>
     </div>
+  </div>
 
-    <div class="row">
-      <div class="col-md-6">
-        <div class="form-group">
-          <label for="detalle">Detalle</label>
-          <textarea class="form-control" th:field="*{detalle}" id="detalle" required></textarea>
-        </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="detalle">Detalle:</label>
+        <input type="email" class="form-control" id="detalle" name="detalle" required>
       </div>
     </div>
+  </div>
 
-    <div class="row">
-      <div class="col-md-6">
-        <div class="form-group">
-          <label for="direccion">Dirección</label>
-          <input type="text" class="form-control" th:field="*{direccion}" id="direccion" required>
-        </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary">Guardar</button> |
+        <a href="/proveedores"> Volver</a>
       </div>
     </div>
-
-    <hr>
-    <button type="submit" class="btn btn-primary">Guardar</button> |
-    <a th:href="@{/proveedores}">Regresar</a>
-  </form>
+  </div>
+</form>
 </div>
-</body>
-</html>

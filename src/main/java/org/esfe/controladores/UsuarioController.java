@@ -8,7 +8,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -24,7 +23,7 @@ public class UsuarioController {
     @Autowired
     private IUsuarioService usuarioService;
 
-    // LISTAR USUARIOS CON PAGINACIÓN
+    // INDEX con paginación
     @GetMapping
     public String index(Model model,
                         @RequestParam("page") Optional<Integer> page,
@@ -32,10 +31,9 @@ public class UsuarioController {
 
         int currentPage = page.orElse(1) - 1;
         int pageSize = size.orElse(5);
-
         Pageable pageable = PageRequest.of(currentPage, pageSize);
-        Page<Usuario> usuarios = usuarioService.buscarTodosPaginados(pageable);
 
+        Page<Usuario> usuarios = usuarioService.buscarTodosPaginados(pageable);
         model.addAttribute("usuarios", usuarios);
 
         int totalPages = usuarios.getTotalPages();
@@ -49,54 +47,81 @@ public class UsuarioController {
         return "usuario/index";
     }
 
-    // FORMULARIO CREAR USUARIO
+    // CREATE
     @GetMapping("/create")
-    public String create(Model model){
+    public String create(Model model) {
         model.addAttribute("usuario", new Usuario());
         return "usuario/create";
     }
 
-    // GUARDAR USUARIO
     @PostMapping("/save")
-    public String save(Usuario usuario, BindingResult result, Model model, RedirectAttributes attributes){
-        if(result.hasErrors()){
-            model.addAttribute("usuario", usuario);
-            attributes.addFlashAttribute("error", "No se pudo guardar debido a un error.");
-            return "usuario/create";
-        }
+    public String save(@RequestParam Integer idRol,
+                       @RequestParam Integer idEmpleado,
+                       @RequestParam String nombreUsuario,
+                       @RequestParam String clave,
+                       RedirectAttributes attributes) {
+
+        Usuario usuario = new Usuario();
+        usuario.setIdRol(idRol);
+        usuario.setIdEmpleado(idEmpleado);
+        usuario.setNombreUsuario(nombreUsuario);
+        usuario.setClave(clave);
 
         usuarioService.crearOEditar(usuario);
-        attributes.addFlashAttribute("msg", "Usuario guardado correctamente");
+        attributes.addFlashAttribute("msg", "Usuario creado con éxito.");
+
         return "redirect:/usuarios";
     }
 
-    // EDITAR USUARIO
-    @GetMapping("/edit/{id}")
-    public String edit(@PathVariable("id") Integer id, Model model) {
-        Optional<Usuario> usuarioOpt = usuarioService.buscarPorId(id);
-        if (usuarioOpt.isEmpty()) {
-            return "redirect:/usuarios";
-        }
-        model.addAttribute("usuario", usuarioOpt.get());
-        return "usuario/create"; // Reusa el formulario de creación
-    }
-
-    // DETALLES DE UN USUARIO
+    // DETAILS
     @GetMapping("/details/{id}")
     public String details(@PathVariable("id") Integer id, Model model) {
-        Optional<Usuario> usuarioOpt = usuarioService.buscarPorId(id);
-        if (usuarioOpt.isEmpty()) {
-            return "redirect:/usuarios";
-        }
-        model.addAttribute("usuario", usuarioOpt.get());
+        Usuario usuario = usuarioService.buscarPorId(id).orElse(null);
+        model.addAttribute("usuario", usuario);
         return "usuario/details";
     }
 
-    // ELIMINAR USUARIO (POST)
+    // EDIT
+    @GetMapping("/edit/{id}")
+    public String edit(@PathVariable("id") Integer id, Model model) {
+        Usuario usuario = usuarioService.buscarPorId(id).orElse(null);
+        model.addAttribute("usuario", usuario);
+        return "usuario/edit";
+    }
+
+    @PostMapping("/update")
+    public String update(@RequestParam Integer id,
+                         @RequestParam Integer idRol,
+                         @RequestParam Integer idEmpleado,
+                         @RequestParam String nombreUsuario,
+                         @RequestParam String clave,
+                         RedirectAttributes attributes) {
+
+        Usuario usuario = new Usuario();
+        usuario.setId(id);
+        usuario.setIdRol(idRol);
+        usuario.setIdEmpleado(idEmpleado);
+        usuario.setNombreUsuario(nombreUsuario);
+        usuario.setClave(clave);
+
+        usuarioService.crearOEditar(usuario);
+        attributes.addFlashAttribute("msg", "Usuario modificado correctamente.");
+
+        return "redirect:/usuarios";
+    }
+
+    // DELETE
+    @GetMapping("/remove/{id}")
+    public String remove(@PathVariable("id") Integer id, Model model) {
+        Usuario usuario = usuarioService.buscarPorId(id).orElse(null);
+        model.addAttribute("usuario", usuario);
+        return "usuario/delete";
+    }
+
     @PostMapping("/delete")
-    public String delete(@RequestParam("id") Integer id, RedirectAttributes attributes) {
-        usuarioService.eliminarPorId(id);
-        attributes.addFlashAttribute("msg", "Usuario eliminado correctamente");
+    public String delete(Usuario usuario, RedirectAttributes attributes) {
+        usuarioService.eliminarPorId(usuario.getId());
+        attributes.addFlashAttribute("msg", "Usuario eliminado correctamente.");
         return "redirect:/usuarios";
     }
 }

@@ -1,37 +1,109 @@
 <!DOCTYPE html>
 <html lang="es"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="/layouts/_mainLayout">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="/layouts/_mainLayout"
+      xmlns:th="http://www.thymeleaf.org">
 
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .form-input {
+            padding: 0.625rem 1rem;
+            border-width: 1px;
+            border-color: #d1d5db;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05);
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+        .form-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.45);
+            border-color: #3b82f6;
+        }
+    </style>
+</head>
+<body>
 <div layout:fragment="content">
-    <h1>Crear Usuario</h1>
+    <div class="flex items-center justify-center p-6 sm:p-8">
+        <div class="bg-white p-8 sm:p-10 rounded-3xl shadow-xl w-full max-w-3xl border border-gray-200">
 
-    <form th:action="@{/usuarios/save}" th:object="${usuario}" method="post">
-        <div class="mb-3">
-            <label for="idRol" class="form-label">Rol</label>
-            <input type="number" class="form-control" th:field="*{idRol}" id="idRol" placeholder="Ingrese ID del rol" required>
-        </div>
+            <!-- TÍTULO -->
+            <h1 class="text-4xl font-extrabold text-gray-800 mb-6 text-center flex items-center justify-center gap-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24"
+                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                     class="lucide lucide-user text-blue-600">
+                    <path d="M20 21v-2a4 4 0 0 0-3-3.87"/>
+                    <circle cx="12" cy="7" r="4"/>
+                </svg>
+                Crear Nuevo Usuario
+            </h1>
 
-        <div class="mb-3">
-            <label for="idEmpleado" class="form-label">Empleado</label>
-            <input type="number" class="form-control" th:field="*{idEmpleado}" id="idEmpleado" placeholder="Ingrese ID del empleado" required>
-        </div>
+            <p class="text-center text-gray-600 mb-6 text-lg">
+                Completa la información para registrar un nuevo usuario.
+            </p>
 
-        <div class="mb-3">
-            <label for="nombreUsuario" class="form-label">Nombre de Usuario</label>
-            <input type="text" class="form-control" th:field="*{nombreUsuario}" id="nombreUsuario" placeholder="Ingrese nombre de usuario" required>
-        </div>
+            <hr class="mb-8 border-gray-300"/>
 
-        <div class="mb-3">
-            <label for="clave" class="form-label">Clave</label>
-            <input type="password" class="form-control" th:field="*{clave}" id="clave" placeholder="Ingrese la clave" required>
-        </div>
+            <!-- FORMULARIO -->
+            <form th:action="@{/usuarios/save}" method="post" class="space-y-6">
 
-        <div class="d-flex gap-2">
-            <button type="submit" class="btn btn-primary">Guardar</button>
-            <a th:href="@{/usuarios}" class="btn btn-secondary">Regresar</a>
+                <!-- Rol -->
+                <div>
+                    <label for="rol" class="block text-lg font-medium text-gray-700 mb-2">Rol <span class="text-red-500">*</span></label>
+                    <select id="rol" name="rolId" class="form-input block w-full bg-white" required>
+                        <option value="" disabled selected>-- Selecciona un rol --</option>
+                        <option th:each="rol : ${roles}" th:value="${rol.id}" th:text="${rol.nombre}"></option>
+                    </select>
+                </div>
+
+                <!-- Empleado -->
+                <div>
+                    <label for="empleado" class="block text-lg font-medium text-gray-700 mb-2">Empleado <span class="text-red-500">*</span></label>
+                    <select id="empleado" name="empleadoId" class="form-input block w-full bg-white" required>
+                        <option value="" disabled selected>-- Selecciona un empleado --</option>
+                        <option th:each="empleado : ${empleados}" th:value="${empleado.id}" th:text="${empleado.nombre} + ' ' + ${empleado.apellido}"></option>
+                    </select>
+                </div>
+
+                <!-- Nombre de Usuario -->
+                <div>
+                    <label for="username" class="block text-lg font-medium text-gray-700 mb-2">Nombre de Usuario <span class="text-red-500">*</span></label>
+                    <input type="text" id="username" name="username" placeholder="Nombre de usuario"
+                           class="form-input block w-full" required>
+                </div>
+
+                <!-- Correo y Contraseña -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="email" class="block text-lg font-medium text-gray-700 mb-2">Correo <span class="text-red-500">*</span></label>
+                        <input type="email" id="email" name="email" placeholder="ejemplo@correo.com"
+                               class="form-input block w-full" required>
+                    </div>
+                    <div>
+                        <label for="password" class="block text-lg font-medium text-gray-700 mb-2">Contraseña <span class="text-red-500">*</span></label>
+                        <input type="password" id="password" name="password" placeholder="********"
+                               class="form-input block w-full" required>
+                    </div>
+                </div>
+
+                <!-- BOTONES -->
+                <div class="flex flex-col sm:flex-row justify-end gap-4 mt-8">
+                    <a href="/usuarios"
+                       class="w-full sm:w-auto flex items-center justify-center px-6 py-3 border border-gray-300 text-lg font-semibold rounded-lg shadow-sm text-gray-700 bg-white hover:bg-gray-100">
+                        Cancelar
+                    </a>
+                    <button type="submit"
+                            class="w-full sm:w-auto flex items-center justify-center px-6 py-3 border border-transparent text-lg font-semibold rounded-lg shadow-md text-white bg-blue-600 hover:bg-blue-700">
+                        Guardar
+                    </button>
+                </div>
+
+            </form>
         </div>
-    </form>
+    </div>
 </div>
+</body>
 </html>
