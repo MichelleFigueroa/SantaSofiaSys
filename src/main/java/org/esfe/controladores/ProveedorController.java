@@ -1,7 +1,9 @@
 package org.esfe.controladores;
 
 
+import org.esfe.modelos.Distrito;
 import org.esfe.modelos.Proveedor;
+import org.esfe.servicios.interfaces.IDistritoService;
 import org.esfe.servicios.interfaces.IProveedorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,6 +25,8 @@ import java.util.stream.IntStream;
 public class ProveedorController {
     @Autowired
     private IProveedorService proveedorService;
+    @Autowired
+    private IDistritoService distritoService;
 
     @GetMapping
     public String index(Model model, @RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size) {
@@ -46,20 +50,33 @@ public class ProveedorController {
     }
 
     @GetMapping("/create")
-    public String create(Proveedor proveedor) {
+    public String create(Model model) {
+        model.addAttribute("distrito", distritoService.obtenerTodos());
         return "proveedor/create";
     }
 
     @PostMapping("/save")
-    public String save(Proveedor proveedor, BindingResult result, Model model, RedirectAttributes attributes) {
-        if (result.hasErrors()) {
-            model.addAttribute(proveedor);
-            attributes.addFlashAttribute("error", "error no se pudo guardar debido a un error.");
-            return "proveedor/create";
+    public String save(@RequestParam Integer distritoId,
+                       @RequestParam String nombre, @RequestParam String telefono,
+                       @RequestParam String email,
+                       @RequestParam String detalle, @RequestParam String direccion,
+                       RedirectAttributes attributes) {
+        Distrito distrito = distritoService.buscarPorId(distritoId).get();
+
+        if (distrito != null ) {
+            Proveedor proveedor = new Proveedor();
+            proveedor.setNombre(nombre);
+            proveedor.setDistrito(distrito);
+            proveedor.setTelefono(telefono);
+            proveedor.setEmail(email);
+            proveedor.setDetalle(detalle);
+            proveedor.setDireccion(direccion);
+
+            proveedorService.createOrEditone(proveedor);
+            attributes.addFlashAttribute("msg", "Proveedor creado correctamente");
+
         }
 
-        proveedorService.createOrEditone(proveedor);
-        attributes.addFlashAttribute("msg", "Proveedor creado correctamente");
         return "redirect:/proveedores";
 
     }
@@ -74,7 +91,8 @@ public class ProveedorController {
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") Integer id, Model model) {
         Proveedor proveedor = proveedorService.buscarPorId(id).get();
-        model.addAttribute("proveedor", proveedor);
+        model.addAttribute("proveedor", proveedorService.obtenerTodos());
+        model.addAttribute("distrito", distritoService.obtenerTodos());
         return "proveedor/edit";
     }
 
