@@ -1,25 +1,44 @@
-<html lang="en"
+<!DOCTYPE html>
+<html lang="es"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="/layouts/_mainLayout">
 
-<div layout:fragment="content">
-    <h1>Eliminar Categoria</h1>
-    <h3>¿Estas seguro que quieres eliminar este registro</h3>
-    <div>
-        <hr  />
-        <dl class="row">
-            <dt class="col-ms-2">ID</dt>
-            <dd class="col-ms-10" th:text="${categoria.id}"></dd>
+<div layout:fragment="content" class="d-flex justify-content-center align-items-center min-vh-100 bg-light">
 
-            <dt class="col-ms-2">Nombre</dt>
-            <dd class="col-ms-10" th:text="${categoria.nombre}"></dd>
+    <!-- CONTENEDOR PRINCIPAL -->
+    <div class="card shadow-lg border-0 w-100" style="max-width: 700px; border-radius: 20px;">
+        <div class="card-body p-4 text-center">
 
-        </dl>
-        <form th:action="@{categoria/delete}" method="post">
-            <input type="hidden" name="id" th:value="${categoria.id}">
-            <input type="submit" value="Eliminar" class="btn btn-danger">
-            <a th:href="@{/categoria}">Regresar</a>
-        </form>
+            <!-- ENCABEZADO -->
+            <div class="mb-4 border-bottom pb-3">
+                <h2 class="fw-bold text-danger mb-0">🗑 Eliminar Categoría</h2>
+            </div>
+
+            <!-- MENSAJE DE CONFIRMACIÓN -->
+            <h5 class="text-danger fw-bold mb-3">
+                ⚠ ¿Estás seguro que deseas eliminar este registro?
+            </h5>
+            <hr/>
+
+            <!-- DETALLES -->
+            <dl class="row text-start mb-4">
+                <dt class="col-ms-3 fw-bold">ID</dt>
+                <dd class="col-ms-9" th:text="${categoria.id}"></dd>
+
+                <dt class="col-ms-3 fw-bold">Nombre</dt>
+                <dd class="col-ms-9" th:text="${categoria.nombre}"></dd>
+            </dl>
+
+            <!-- BOTONES -->
+            <form th:action="@{/categorias/delete}" method="post" class="d-flex justify-content-between">
+                <input type="hidden" name="id" th:value="${categoria.id}"/>
+                <a th:href="@{/categorias}" class="btn btn-outline-secondary px-4">⬅ Cancelar</a>
+                <button type="submit" class="btn btn-danger px-4">🗑 Eliminar</button>
+            </form>
+
+        </div>
     </div>
+
 </div>
+</html>

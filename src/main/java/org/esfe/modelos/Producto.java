@@ -2,6 +2,7 @@ package org.esfe.modelos;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "productos")
@@ -11,12 +12,12 @@ public class Producto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotBlank(message = "La marca es requerida")
+    @NotNull(message = "La marca es requerida")
     @ManyToOne
     @JoinColumn(name = "id_marca")
     private Marca marca;
 
-    @NotBlank(message = "La categoria es requerida")
+    @NotNull(message = "La categoria es requerida")
     @ManyToOne
     @JoinColumn(name = "id_categoria")
     private Categoria categoria;
@@ -24,10 +25,10 @@ public class Producto {
     @NotBlank(message = "El nombre es requerido")
     private String nombre;
 
-    @NotBlank(message = "El precio es requerido")
+    @NotNull(message = "El precio es requerido")
     private double precio;
 
-    @NotBlank(message = " La cantidad es requerida")
+    @NotNull(message = " La cantidad es requerida")
     private int cantidad;
 
     public Integer getId() {

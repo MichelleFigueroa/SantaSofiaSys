@@ -2,6 +2,8 @@ package org.esfe.controladores;
 
 import jakarta.validation.Valid;
 import org.esfe.modelos.Producto;
+import org.esfe.servicios.interfaces.ICategoriaService;
+import org.esfe.servicios.interfaces.IMarcaService;
 import org.esfe.servicios.interfaces.IProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,6 +26,12 @@ public class ProductoController {
 
     @Autowired
     private IProductoService productoService;
+
+    @Autowired
+    private ICategoriaService categoriaService;
+
+    @Autowired
+    private IMarcaService marcaService;
 
     @GetMapping
     public String index(Model model,
@@ -49,10 +57,12 @@ public class ProductoController {
     }
 
     @GetMapping("/create")
-    public String create(Producto producto) {
+    public String create(Producto producto, Model model)
+    {
+        model.addAttribute("categorias", categoriaService.obtenerTodos());
+        model.addAttribute("marcas", marcaService.obtenerTodos());
         return "producto/create";
     }
-
     @PostMapping("/save")
     public String save(@Valid Producto producto,
                        BindingResult result,
@@ -65,9 +75,8 @@ public class ProductoController {
         }
         productoService.crearOEditar(producto);
         attributes.addFlashAttribute("msg", "Producto creado correctamente");
-        return "redirect:/producto";
+        return "redirect:/productos";
     }
-
     @GetMapping("/details/{id}")
     public String details(@PathVariable("id") Integer id,
                           Model model,
@@ -78,50 +87,51 @@ public class ProductoController {
             return "producto/details";
         } else {
             attributes.addFlashAttribute("error", "El producto no existe");
-            return "redirect:/producto";
+            return "redirect:/productos";
         }
     }
 
     @GetMapping("/edit/{id}")
-    public String edit(@PathVariable("id") Integer id,
-                       Model model,
-                       RedirectAttributes attributes) {
+    public String edit(@PathVariable("id") Integer id, Model model, RedirectAttributes attributes) {
         Optional<Producto> producto = productoService.buscarPorId(id);
         if (producto.isPresent()) {
             model.addAttribute("producto", producto.get());
+            model.addAttribute("categorias", categoriaService.obtenerTodos()); // 👈 agregar
+            model.addAttribute("marcas", marcaService.obtenerTodos());         // 👈 agregar
             return "producto/edit";
         } else {
             attributes.addFlashAttribute("error", "El producto no existe");
-            return "redirect:/producto";
+            return "redirect:/productos";
         }
     }
 
     @GetMapping("/remove/{id}")
-    public String remove(@PathVariable("id") Integer id,
-                         Model model,
-                         RedirectAttributes attributes) {
+    public String remove(@PathVariable("id") Integer id, Model model, RedirectAttributes attributes) {
         Optional<Producto> producto = productoService.buscarPorId(id);
         if (producto.isPresent()) {
             model.addAttribute("producto", producto.get());
-            return "producto/delete"; // Vista de confirmación
+            return "producto/delete";
         } else {
             attributes.addFlashAttribute("error", "El producto no existe");
-            return "redirect:/producto";
+            return "redirect:/productos";
         }
     }
+
     @PostMapping("/delete")
-    public String delete(Producto producto, RedirectAttributes attributes) {
-        productoService.eliminarPorId(producto.getId());
+    public String delete(@RequestParam("id") Integer id, RedirectAttributes attributes) {
+        productoService.eliminarPorId(id);
         attributes.addFlashAttribute("msg", "Producto eliminado correctamente");
-        return "redirect:/producto";
+        return "redirect:/productos";
     }
+
+
     @GetMapping("/buscar")
     public String buscarPorId(@RequestParam(value = "id", required = false) Integer id, Model model) {
         if (id != null) {
-            Optional<Producto> producto = productoService.buscarPorId(id); // usa tu método existente
-            model.addAttribute("producto", producto.orElse(null));         // si no existe, pasa null
+            Optional<Producto> producto = productoService.buscarPorId(id);
+            model.addAttribute("producto", producto.orElse(null));
         }
-        return "productos/buscarPorId"; // la misma vista para formulario y resultado
+        return "producto/buscarPorId";
     }
 }
 

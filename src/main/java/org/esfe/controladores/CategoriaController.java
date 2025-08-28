@@ -1,7 +1,6 @@
 package org.esfe.controladores;
 
 import org.esfe.modelos.Categoria;
-import org.esfe.modelos.Producto;
 import org.esfe.servicios.interfaces.ICategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -59,7 +58,7 @@ public class CategoriaController {
         }
         categoriaService.crearOEditar(categoria);
         attributes.addFlashAttribute("msg", "categoria creada correctamente");
-        return "redirect:/categoria";
+        return "redirect:/categorias";
     }
     @GetMapping("/details/{id}")
     public String details (@PathVariable("id") Integer id, Model model){
@@ -77,7 +76,7 @@ public class CategoriaController {
             return "categoria/edit";
         } else {
             attributes.addFlashAttribute("error", "La categoria no existe");
-            return "redirect:/categoria";
+            return "redirect:/categorias";
         }
     }
 
@@ -88,17 +87,17 @@ public class CategoriaController {
         Optional<Categoria> categoria = categoriaService.buscarPorId(id);
         if (categoria.isPresent()) {
             model.addAttribute("categoria", categoria.get());
-            return "categoria/delete"; // Vista de confirmación
+            return "categoria/delete";
         } else {
             attributes.addFlashAttribute("error", "La categoria no existe");
-            return "redirect:/categoria";
+            return "redirect:/categorias";
         }
     }
     @PostMapping("/delete")
     public String delete(Categoria categoria, RedirectAttributes attributes) {
         categoriaService.eliminarPorId(categoria.getId());
         attributes.addFlashAttribute("msg", "Categoria eliminada correctamente");
-        return "redirect:/categoria";
+        return "redirect:/categorias";
     }
     @GetMapping("/buscar")
     public String buscarPorId(@RequestParam(value = "id", required = false) Integer id, Model model) {
@@ -106,6 +105,6 @@ public class CategoriaController {
             Optional<Categoria> categoria = categoriaService.buscarPorId(id); // usa tu método existente
             model.addAttribute("categoria", categoria.orElse(null));         // si no existe, pasa null
         }
-        return "categorias/buscarPorId"; // la misma vista para formulario y resultado
+        return "categoria/buscarPorId"; // la misma vista para formulario y resultado
     }
 }

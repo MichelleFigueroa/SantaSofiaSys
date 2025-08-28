@@ -1,20 +1,40 @@
-<html lang="en"
+<!DOCTYPE html>
+<html lang="es"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="/layouts/_mainLayout">
 
-<div layout:fragment="content">
-<div class="container mt-5">
-  <h1 class="mb-4">Crear nueva Categoria</h1>
+<div layout:fragment="content" class="d-flex justify-content-center align-items-center min-vh-100 bg-light">
 
-  <form th:action="@{/categorias/save}" th:object="${categoria}" method="post">
-    <div class="mb-4">
-      <label for="nombre" class="form-label">Nombre</label>
-      <input type="text" class="form-control" th:field="*{nombre}" id="nombre" placeholder="Escriba el nombre de categoria" required>
+  <!-- CONTENEDOR PRINCIPAL -->
+  <div class="card shadow-lg border-0 w-100" style="max-width: 700px; border-radius: 20px;">
+    <div class="card-body p-4">
+
+      <!-- ENCABEZADO -->
+      <div class="text-center mb-4 border-bottom pb-3">
+        <h2 class="fw-bold text-primary mb-0">➕ Crear Nueva Categoría</h2>
+      </div>
+
+      <!-- FORMULARIO -->
+      <form th:action="@{/categorias/save}" th:object="${categoria}" method="post" class="needs-validation" novalidate>
+
+        <!-- Nombre -->
+        <div class="mb-4">
+          <label for="nombre" class="form-label fw-bold">Nombre de la Categoría</label>
+          <input type="text" class="form-control" th:field="*{nombre}" id="nombre"
+                 placeholder="Escriba el nombre de la categoría" required>
+          <div class="invalid-feedback">El nombre es obligatorio.</div>
+        </div>
+
+        <!-- BOTONES -->
+        <div class="d-flex justify-content-between">
+          <a th:href="@{/categorias}" class="btn btn-outline-secondary px-4">⬅ Regresar</a>
+          <button type="submit" class="btn btn-success px-4">💾 Guardar</button>
+        </div>
+      </form>
+
     </div>
-    <div class="d-flex gap-2">
-      <button type="submit" class="btn btn-primary">Guardar</button>
-      <a th:href="@{/categorias}" class="btn btn-secondary">Regresar</a>
-    </div>
-  </form>
+  </div>
+
 </div>
+</html>

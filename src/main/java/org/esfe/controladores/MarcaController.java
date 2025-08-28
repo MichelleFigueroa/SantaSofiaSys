@@ -1,5 +1,6 @@
 package org.esfe.controladores;
 
+import org.esfe.modelos.Categoria;
 import org.esfe.modelos.Marca;
 import org.esfe.modelos.Producto;
 import org.esfe.servicios.interfaces.IMarcaService;
@@ -59,7 +60,7 @@ public class MarcaController {
         }
         marcaService.crearOEditar(marca);
         attributes.addFlashAttribute("msg", "marca  creada correctamente");
-        return "redirect:/marca";
+        return "redirect:/marcas";
     }
     @GetMapping("/details/{id}")
     public String details (@PathVariable("id") Integer id, Model model){
@@ -68,19 +69,16 @@ public class MarcaController {
         return "marca/details";
     }
     @GetMapping("/edit/{id}")
-    public String edit(@PathVariable("id") Integer id,
-                       Model model,
-                       RedirectAttributes attributes) {
+    public String edit(@PathVariable("id") Integer id, Model model, RedirectAttributes attributes) {
         Optional<Marca> marca = marcaService.buscarPorId(id);
         if (marca.isPresent()) {
             model.addAttribute("marca", marca.get());
             return "marca/edit";
         } else {
             attributes.addFlashAttribute("error", "La marca no existe");
-            return "redirect:/marca";
+            return "redirect:/marcas";
         }
     }
-
     @GetMapping("/remove/{id}")
     public String remove(@PathVariable("id") Integer id,
                          Model model,
@@ -88,24 +86,25 @@ public class MarcaController {
         Optional<Marca> marca = marcaService.buscarPorId(id);
         if (marca.isPresent()) {
             model.addAttribute("marca", marca.get());
-            return "marca/delete"; // Vista de confirmación
+            return "marca/delete";
         } else {
             attributes.addFlashAttribute("error", "La Marca no existe");
-            return "redirect:/marca";
+            return "redirect:/marcas";
         }
     }
     @PostMapping("/delete")
     public String delete(Marca marca, RedirectAttributes attributes) {
         marcaService.eliminarPorId(marca.getId());
         attributes.addFlashAttribute("msg", "Marca eliminada correctamente");
-        return "redirect:/marca";
+        return "redirect:/marcas";
     }
+
     @GetMapping("/buscar")
     public String buscarPorId(@RequestParam(value = "id", required = false) Integer id, Model model) {
         if (id != null) {
             Optional<Marca> marca = marcaService.buscarPorId(id);
             model.addAttribute("marca", marca.orElse(null));
         }
-        return "marcas/buscarPorId"; // la misma vista para formulario y resultado
+        return "marca/buscarPorId";
     }
 }

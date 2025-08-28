@@ -9,7 +9,7 @@
     <form th:action="@{/productos/buscar}" method="get">
         <label for="id">ID del Producto:</label>
         <input type="number" id="id" name="id" required
-               th:value="${param.id}"> <!-- mantiene el valor ingresado -->
+               th:value="${param.id}">
         <button type="submit">Buscar</button>
     </form>
 

@@ -28,11 +28,8 @@ public class Categoria {
     public Integer getId() {
         return id;
     }
-
     public void setId(Integer id) {
         this.id = id;
     }
-//    @ManyToMany
-//    private Set<Producto> productos = new HashSet<>();
 }
 

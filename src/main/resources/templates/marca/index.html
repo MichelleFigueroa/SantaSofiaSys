@@ -1,75 +1,112 @@
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="/layouts/_mainLayout">
 
-<div layout:fragment="content">
-    <div th:if="${not #strings.isEmpty(msg)}">
-        <script>
-            Swal.fire({ title: "Confirmación", text: [[${msg}]], icon: "success" });
-        </script>
-    </div>
+<div layout:fragment="content" class="d-flex justify-content-center align-items-center min-vh-100 bg-light">
 
-    <div th:if="${not #strings.isEmpty(error)}">
-        <script>
-            Swal.fire({ title: "Error", text: [[${error}]], icon: "error" });
-        </script>
-    </div>
 
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h1>Lista de Marca</h1>
-        <button type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#buscarModal">
-            Buscar Marca por ID
-        </button>
-    </div>
+    <div class="card shadow-lg border-0 w-100" style="max-width: 1100px; border-radius: 20px;">
+        <div class="card-body p-4">
 
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Acciones</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="item : ${marcas.content}">
-            <td th:text="${item.id}"></td>
-            <td th:text="${item.nombre}"></td>
-            <td class="d-flex gap-1">
-                <a th:href="@{/marcas/details/{id}(id=${item.id})}" class="btn btn-outline-secondary">Detalle</a>
-                <a th:href="@{/marcas/edit/{id}(id=${item.id})}" class="btn btn-outline-info">Editar</a>
-                <a th:href="@{/marcas/remove/{id}(id=${item.id})}" class="btn btn-outline-danger">Eliminar</a>
-                <a th:href="@{/marcas/create}" class="btn btn-outline-primary">Crear</a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+            <div th:if="${msg != null}">
+                <script th:inline="javascript">
+                    Swal.fire({
+                        title: "✅ Confirmación",
+                        text: /*[[${msg}]]*/ '',
+                        icon: "success",
+                        confirmButtonColor: "#3085d6"
+                    });
+                </script>
+            </div>
+            <div th:if="${error != null}">
+                <script th:inline="javascript">
+                    Swal.fire({
+                        title: "❌ Error",
+                        text: /*[[${error}]]*/ '',
+                        icon: "error",
+                        confirmButtonColor: "#d33"
+                    });
+                </script>
+            </div>
 
-    <div class="modal fade" id="buscarModal" tabindex="-1" aria-labelledby="buscarModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="buscarModalLabel">Buscar</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                </div>
-                <div class="modal-body">
-                    <form th:action="@{/marcas/buscar}" method="get">
-                        <div class="mb-3">
-                            <label for="idMarca" class="form-label">ID de la Marca:</label>
-                            <input type="number" class="form-control" id="idMarca" name="id" required>
+            <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
+                <h2 class="fw-bold text-primary mb-0">📋 Listado de Marcas</h2>
+                <a th:href="@{/marcas/create}" class="btn btn-primary shadow-sm">
+                    <i class="bi bi-plus-circle-fill"></i> Nueva Marca
+                </a>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle table-bordered mb-0" style="border-radius: 12px; overflow: hidden;">
+                    <thead class="table-primary text-center">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="item : ${marcas.content}">
+                        <td th:text="${item.id}" class="text-center fw-bold"></td>
+                        <td th:text="${item.nombre}"></td>
+                        <td class="text-center">
+                            <div class="btn-group">
+                                <a th:href="@{/marcas/details/{id}(id=${item.id})}" class="btn btn-sm btn-outline-secondary" title="Detalle">
+                                    📖
+                                </a>
+                                <a th:href="@{/marcas/edit/{id}(id=${item.id})}" class="btn btn-sm btn-outline-info" title="Editar">
+                                    ✏
+                                </a>
+                                <a th:href="@{/marcas/remove/{id}(id=${item.id})}" class="btn btn-sm btn-outline-danger" title="Eliminar">
+                                    🗑
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(marcas.content)}">
+                        <td colspan="3" class="text-center text-muted py-4">
+                            <i class="bi bi-inbox fs-3"></i><br>
+                            No hay marcas registradas
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="modal fade" id="buscarModal" tabindex="-1" aria-labelledby="buscarModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content shadow">
+                        <div class="modal-header bg-warning text-dark rounded-top">
+                            <h5 class="modal-title fw-bold" id="buscarModalLabel">🔎 Buscar Marca por ID</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                         </div>
-                        <button type="submit" class="btn btn-warning">Buscar</button>
-                    </form>
+                        <div class="modal-body">
+                            <form th:action="@{/marcas/buscar}" method="get">
+                                <div class="mb-3">
+                                    <label for="idMarca" class="form-label fw-bold">ID de la Marca:</label>
+                                    <input type="number" class="form-control" id="idMarca" name="id" placeholder="Ingrese el ID..." required>
+                                </div>
+                                <div class="d-flex justify-content-end">
+                                    <button type="submit" class="btn btn-warning">Buscar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
+
+            <nav class="mt-4" aria-label="Navegación de página">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:each="i : ${pageNumbers}" th:classappend="${(i - 1) == marcas.number ? 'active' : ''}">
+                        <a class="page-link" th:href="@{/marcas(page=${i - 1})}" th:text="${i}"></a>
+                    </li>
+                </ul>
+            </nav>
+
         </div>
     </div>
-    <nav aria-label="Page navigation example">
-        <ul class="pagination">
-            <li class="page-item" th:each="pageNumber : ${pageNumbers}">
-                <a class="page-link" th:href="@{/marcas(page=${pageNumber})}" th:text="${pageNumber}"></a>
-            </li>
-        </ul>
-    </nav>
 
 </div>
 </html>

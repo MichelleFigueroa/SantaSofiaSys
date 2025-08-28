@@ -1,21 +1,37 @@
-<html lang="en"
+<!DOCTYPE html>
+<html lang="es"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="/layouts/_mainLayout">
 
-<div layout:fragment="content">
-    <h1>Detalles de Marca</h1>
-    <div>
-        <hr  />
-        <dl class="row">
-            <dt class="col-sm-2">ID</dt>
-            <dd class="col-sm-10" th:text="${marca.id}"></dd>
+<div layout:fragment="content" class="d-flex justify-content-center align-items-center min-vh-100 bg-light">
 
-            <dt class="col-sm-2">Nombre</dt>
-            <dd class="col-sm-10" th:text="${marca.nombre}"></dd>
+    <!-- CONTENEDOR PRINCIPAL -->
+    <div class="card shadow-lg border-0 w-100" style="max-width: 700px; border-radius: 20px;">
+        <div class="card-body p-4">
 
-        </dl>
-        <a th:href="@{/marcas/edit/{id}(id=${marca.id})}" class="btn btn-outline-info">Editar</a>
-        <a th:href="@{/marcas}" class="btn btn-secondary">Regresar</a>
+            <!-- ENCABEZADO -->
+            <div class="text-center mb-4 border-bottom pb-3">
+                <h2 class="fw-bold text-primary mb-0">📖 Detalles de Marca</h2>
+            </div>
+
+            <!-- DETALLES -->
+            <dl class="row mb-4">
+                <dt class="col-ms-3 fw-bold">ID</dt>
+                <dd class="col-ms-9" th:text="${marca.id}"></dd>
+
+                <dt class="col-ms-3 fw-bold">Nombre</dt>
+                <dd class="col-ms-9" th:text="${marca.nombre}"></dd>
+            </dl>
+
+            <!-- BOTONES -->
+            <div class="d-flex justify-content-between">
+                <a th:href="@{/marcas}" class="btn btn-outline-secondary px-4">⬅ Regresar</a>
+                <a th:href="@{/marcas/edit/{id}(id=${marca.id})}" class="btn btn-info text-white px-4">✏ Editar</a>
+            </div>
+
+        </div>
     </div>
+
 </div>
+</html>
