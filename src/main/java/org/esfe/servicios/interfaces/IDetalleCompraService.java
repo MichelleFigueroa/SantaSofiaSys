@@ -12,11 +12,11 @@ public interface IDetalleCompraService {
 
     List<DetalleCompra> obtenerTodos();
 
-    Optional<DetalleCompra> buscarPorId(Integer id);
+    Optional<DetalleCompra> buscarPorId(Long id);
 
     DetalleCompra crearOEditar(DetalleCompra detalleCompra);
 
-    void eliminarPorId(Integer id);
+    void eliminarPorId(Long id);
 
 
 }

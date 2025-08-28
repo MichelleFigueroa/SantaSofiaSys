@@ -1,9 +1,8 @@
 package org.esfe.controladores;
 
 
-import org.esfe.modelos.Compra;
-import org.esfe.modelos.Proveedor;
-import org.esfe.servicios.interfaces.ICompraService;
+import org.esfe.modelos.*;
+import org.esfe.servicios.interfaces.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -24,6 +24,18 @@ import java.util.stream.IntStream;
 public class CompraController {
     @Autowired
     private ICompraService compraService;
+
+    @Autowired
+    private IUsuarioService usuarioService;
+
+    @Autowired
+    private IProveedorService proveedorService;
+
+    @Autowired
+    private IProductoService productoService;
+
+    @Autowired
+    private IInventarioService inventarioService;
 
     @GetMapping
     public String index(Model model, @RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size) {
@@ -46,7 +58,11 @@ public class CompraController {
 
     }
     @GetMapping("/create")
-    public String create(Compra compra) {
+    public String create(Compra compra, Model model) {
+        model.addAttribute("usuarios", usuarioService.obtenerTodos());
+        model.addAttribute("proveedores", proveedorService.obtenerTodos());
+        model.addAttribute("productos", productoService.obtenerTodos());
+        model.addAttribute("inventarios", inventarioService.obtenerTodos());
         return "compra/create";
     }
 
@@ -58,13 +74,36 @@ public class CompraController {
             return "compra/create";
         }
 
+        compra.setFechaHora(LocalDateTime.now());
+
+        double totalCompra = 0;
+
+        for (DetalleCompra detalle : compra.getDetalles()){
+            detalle.setSubtotal(detalle.getCantidad() * detalle.getPrecio());
+            totalCompra += detalle.getSubtotal();
+
+            Producto producto = productoService.buscarPorId(detalle.getProducto().getId()).get();
+
+            Inventario movimiento = new Inventario();
+            movimiento.setProducto(producto);
+            movimiento.setStockActual(producto.getCantidad());
+            movimiento.setFechaActual(LocalDateTime.now());
+            movimiento.setStockMinimo((short)5);
+            movimiento.setMovimiento("COMPRA_ID_" + compra.getId());
+            inventarioService.crearOEditar(movimiento);
+
+            detalle.setCompra(compra);
+        }
+
+        compra.setTotal(totalCompra);
+
         compraService.crearOEditar(compra);
-        attributes.addFlashAttribute("msg", "Proveedor creado correctamente");
+        attributes.addFlashAttribute("msg", "Compra creada correctamente");
         return "redirect:/compras";
     }
 
     @GetMapping("/details/{id}")
-    public String details(@PathVariable("id") Integer id, Model model) {
+    public String details(@PathVariable("id") Long id, Model model) {
         Compra compra = compraService.buscarPorId(id).get();
         model.addAttribute("compra", compra);
         return "compra/details";

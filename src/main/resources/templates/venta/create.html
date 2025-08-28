@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="/layouts/_mainLayout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .form-input {
+            padding: 0.625rem 1rem;
+            border-width: 1px;
+            border-color: #d1d5db;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05);
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+        .form-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.45);
+            border-color: #3b82f6;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="flex items-center justify-center p-6 sm:p-8">
+        <div class="bg-white p-8 sm:p-10 rounded-3xl shadow-xl w-full max-w-5xl border border-gray-200">
+
+            <!-- TÍTULO -->
+            <h1 class="text-4xl font-extrabold text-gray-800 mb-6 text-center flex items-center justify-center gap-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24"
+                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                     class="lucide lucide-shopping-cart text-blue-600">
+                    <circle cx="9" cy="21" r="1"/>
+                    <circle cx="20" cy="21" r="1"/>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                </svg>
+                Crear Venta
+            </h1>
+
+            <p class="text-center text-gray-600 mb-6 text-lg">
+                Completa la información de la venta y agrega los productos al detalle.
+            </p>
+
+            <hr class="mb-8 border-gray-300"/>
+
+            <!-- FORMULARIO -->
+            <form th:action="@{/ventas/save}" th:object="${venta}" method="post" class="space-y-6">
+
+                <!-- Cliente y Usuario -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="cliente" class="block text-lg font-medium text-gray-700 mb-2">Cliente <span class="text-red-500">*</span></label>
+                        <select id="cliente" th:field="*{cliente.id}" class="form-input block w-full bg-white" required>
+                            <option value="" disabled selected>-- Selecciona un cliente --</option>
+                            <option th:each="c : ${clientes}" th:value="${c.id}" th:text="${c.nombre}"></option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="usuario" class="block text-lg font-medium text-gray-700 mb-2">Usuario <span class="text-red-500">*</span></label>
+                        <select id="usuario" th:field="*{usuario.id}" class="form-input block w-full bg-white" required>
+                            <option value="" disabled selected>-- Selecciona un usuario --</option>
+                            <option th:each="u : ${usuarios}" th:value="${u.id}" th:text="${u.nombreUsuario}"></option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Correlativo -->
+                <div>
+                    <label for="correlativo" class="block text-lg font-medium text-gray-700 mb-2">Correlativo <span class="text-red-500">*</span></label>
+                    <input type="number" id="correlativo" th:field="*{correlativo}" placeholder="Número correlativo" class="form-input block w-full" required>
+                </div>
+
+                <!-- Tabla dinámica -->
+                <div>
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">Detalles de la Venta</h3>
+                    <table id="detallesTable" class="min-w-full border border-gray-300 rounded-lg overflow-hidden">
+                        <thead class="bg-gray-100 text-gray-700">
+                        <tr>
+                            <th class="px-4 py-2 text-left">Producto</th>
+                            <th class="px-4 py-2 text-left">Cantidad</th>
+                            <th class="px-4 py-2 text-left">Precio</th>
+                            <th class="px-4 py-2 text-left">Subtotal</th>
+                            <th class="px-4 py-2 text-center">Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="detalle-row border-t">
+                            <td class="px-4 py-2">
+                                <select name="detalles[0].producto.id" class="producto form-input w-full bg-white">
+                                    <option value="" disabled selected>-- Seleccione --</option>
+                                    <option th:each="p : ${productos}" th:value="${p.id}" th:data-precio="${p.precio}" th:text="${p.nombre}"></option>
+                                </select>
+                            </td>
+                            <td class="px-4 py-2">
+                                <input type="number" name="detalles[0].cantidad" class="cantidad form-input w-24 text-center" min="1" value="1"/>
+                            </td>
+                            <td class="px-4 py-2">
+                                <input type="number" name="detalles[0].precio" class="precio form-input w-28 text-center" step="0.01" value="0"/>
+                            </td>
+                            <td class="px-4 py-2">
+                                <input type="number" name="detalles[0].subTotal" class="subtotal form-input w-28 text-center bg-gray-100" step="0.01" readonly/>
+                            </td>
+                            <td class="px-4 py-2 text-center">
+                                <button type="button" class="removeRow text-red-600 hover:text-red-800 font-semibold">Eliminar</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- Total -->
+                    <div class="flex justify-end mt-4 text-xl font-bold text-gray-800">
+                        Total: $<span id="totalDisplay">0.00</span>
+                        <input type="hidden" id="total" name="total"/>
+                    </div>
+                </div>
+
+                <!-- Botón agregar producto -->
+                <div class="flex justify-end">
+                    <button type="button" id="addRow"
+                            class="mt-4 px-6 py-2 bg-green-600 text-white font-semibold rounded-lg shadow-md hover:bg-green-700">
+                        + Agregar Producto
+                    </button>
+                </div>
+
+                <!-- BOTONES -->
+                <div class="flex flex-col sm:flex-row justify-end gap-4 mt-8">
+                    <a th:href="@{/ventas}"
+                       class="w-full sm:w-auto flex items-center justify-center px-6 py-3 border border-gray-300 text-lg font-semibold rounded-lg shadow-sm text-gray-700 bg-white hover:bg-gray-100">
+                        Cancelar
+                    </a>
+                    <button type="submit"
+                            class="w-full sm:w-auto flex items-center justify-center px-6 py-3 border border-transparent text-lg font-semibold rounded-lg shadow-md text-white bg-blue-600 hover:bg-blue-700">
+                        Guardar Venta
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<script>
+    let index = 1;
+
+    // Función para actualizar subtotales y total
+    function actualizarTotales() {
+        let total = 0;
+        document.querySelectorAll("#detallesTable tbody tr").forEach(row => {
+            const cantidad = parseFloat(row.querySelector(".cantidad").value) || 0;
+            const precio = parseFloat(row.querySelector(".precio").value) || 0;
+            const subtotal = cantidad * precio;
+            row.querySelector(".subtotal").value = subtotal.toFixed(2);
+            total += subtotal;
+        });
+        document.getElementById("totalDisplay").textContent = total.toFixed(2);
+        document.getElementById("total").value = total.toFixed(2);
+    }
+
+    // Asignar precio cuando se selecciona un producto
+    function asignarPrecio(row) {
+        const productoSelect = row.querySelector(".producto");
+        const precioInput = row.querySelector(".precio");
+        const selectedOption = productoSelect.options[productoSelect.selectedIndex];
+        const precio = parseFloat(selectedOption.dataset.precio) || 0;
+        precioInput.value = precio.toFixed(2);
+        actualizarTotales();
+    }
+
+    // Evento cambio en productos
+    document.addEventListener("change", function (e) {
+        if (e.target.classList.contains("producto")) {
+            const row = e.target.closest("tr");
+            asignarPrecio(row);
+        }
+    });
+
+    // Agregar nueva fila
+    document.getElementById("addRow").addEventListener("click", function () {
+        const table = document.getElementById("detallesTable").getElementsByTagName("tbody")[0];
+        const newRow = table.querySelector(".detalle-row").cloneNode(true);
+
+        newRow.querySelectorAll("select, input").forEach(el => {
+            if (el.name) {
+                el.name = el.name.replace("[0]", "[" + index + "]");
+                if (el.classList.contains("cantidad")) el.value = 1;
+                if (el.classList.contains("precio")) el.value = 0;
+                if (el.classList.contains("subtotal")) el.value = 0;
+            }
+        });
+
+        // Botón eliminar
+        newRow.querySelector(".removeRow").addEventListener("click", function () {
+            newRow.remove();
+            actualizarTotales();
+        });
+
+        table.appendChild(newRow);
+        index++;
+        actualizarTotales();
+    });
+
+    // Inicializar eventos en la fila original
+    document.querySelectorAll(".cantidad").forEach(el => {
+        el.addEventListener("input", actualizarTotales);
+    });
+    document.querySelector(".removeRow").addEventListener("click", function () {
+        this.closest("tr").remove();
+        actualizarTotales();
+    });
+</script>

@@ -27,7 +27,7 @@ public class CompraService implements ICompraService {
     }
 
     @Override
-    public Optional<Compra> buscarPorId(Integer id) {
+    public Optional<Compra> buscarPorId(Long id) {
         return compraRepository.findById(id);
     }
 
@@ -36,7 +36,7 @@ public class CompraService implements ICompraService {
         return compraRepository.save(compra);
     }
     @Override
-    public void eliminarPorId(Integer id) {
+    public void eliminarPorId(Long id) {
         compraRepository.deleteById(id);
     }
 

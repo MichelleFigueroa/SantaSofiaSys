@@ -1,7 +1,7 @@
 package org.esfe.controladores;
 
-import org.esfe.modelos.Venta;
-import org.esfe.servicios.interfaces.IVentaService;
+import org.esfe.modelos.*;
+import org.esfe.servicios.interfaces.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,6 +12,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -22,6 +24,18 @@ import java.util.stream.IntStream;
 public class VentaController {
     @Autowired
     private IVentaService ventaService;
+
+    @Autowired
+    private IUsuarioService usuarioService;
+
+    @Autowired
+    private IClienteService clienteService;
+
+    @Autowired
+    private IProductoService productoService;
+
+    @Autowired
+    private IInventarioService inventarioService;
 
     @GetMapping
     public String index(Model model, @RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size){
@@ -44,7 +58,11 @@ public class VentaController {
     }
 
     @GetMapping("/create")
-    public String create (Venta venta){
+    public String create (Venta venta, Model model){
+        model.addAttribute("usuarios", usuarioService.obtenerTodos());
+        model.addAttribute("clientes", clienteService.obtenerTodos());
+        model.addAttribute("productos", productoService.obtenerTodos());
+        model.addAttribute("inventarios", inventarioService.obtenerTodos());
         return "venta/create";
     }
 
@@ -56,13 +74,49 @@ public class VentaController {
             return "venta/create";
         }
 
+        venta.setFechaHora(LocalDateTime.now());
+        venta.setEstado(true);
+
+//        Cliente cliente = clienteService.buscarPorId(venta.getCliente().getId()).get();
+//        Usuario usuario = usuarioService.buscarPorId(venta.getUsuario().getId()).get();
+//        venta.setCliente(cliente);
+//        venta.setUsuario(usuario);
+//
+//        venta.setDetalles(new ArrayList<>());
+        double totalVenta = 0;
+//
+        for (DetalleVenta detalle : venta.getDetalles()){
+            detalle.setSubTotal(detalle.getCantidad() * detalle.getPrecio());
+            totalVenta += detalle.getSubTotal();
+//
+            Producto producto = productoService.buscarPorId(detalle.getProducto().getId()).get();
+//            producto.setCantidad((int)(producto.getCantidad() - detalle.getCantidad()));
+//            productoService.crearOEditar(producto);
+//
+            Inventario movimiento = new Inventario();
+            movimiento.setProducto(producto);
+            movimiento.setStockActual(producto.getCantidad());
+            movimiento.setFechaActual(LocalDateTime.now());
+            movimiento.setStockMinimo((short)5);
+            movimiento.setMovimiento("VENTA_ID_" + venta.getId());
+            inventarioService.crearOEditar(movimiento);
+
+            detalle.setVenta(venta);
+//
+//            venta.getDetalles().add(detalle);
+        }
+//
+//        venta.setDetalles(detalles);
+//
+        venta.setTotal(totalVenta);
+
         ventaService.crearOEditar(venta);
         attributes.addFlashAttribute("msg", "Venta creada con exito.");
         return "redirect:/ventas";
     }
 
     @GetMapping("/details/{id}")
-    public String details(@PathVariable("id") Integer id, Model model){
+    public String details(@PathVariable("id") Long id, Model model){
         Venta venta = ventaService.buscarPorId(id).get();
         model.addAttribute("venta", venta);
         return "venta/details";

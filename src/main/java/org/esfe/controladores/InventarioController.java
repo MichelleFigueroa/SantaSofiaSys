@@ -62,7 +62,7 @@ public class InventarioController {
     }
 
     @GetMapping("/details/{id}")
-    public String details(@PathVariable("id") Integer id, Model model){
+    public String details(@PathVariable("id") Long id, Model model){
         Inventario inventario = inventarioService.buscarPorId(id).get();
         model.addAttribute("inventario", inventario);
         return "inventario/details";

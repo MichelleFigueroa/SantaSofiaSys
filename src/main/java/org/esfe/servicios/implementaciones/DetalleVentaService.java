@@ -27,7 +27,7 @@ public class DetalleVentaService implements IDetalleVentaService {
     }
 
     @Override
-    public Optional<DetalleVenta> buscarPorId(Integer id) {
+    public Optional<DetalleVenta> buscarPorId(Long id) {
         return detalleVentaRepository.findById(id);
     }
 
@@ -37,7 +37,7 @@ public class DetalleVentaService implements IDetalleVentaService {
     }
 
     @Override
-    public void eliminarPorId(Integer id) {
+    public void eliminarPorId(Long id) {
         detalleVentaRepository.deleteById(id);
     }
 }

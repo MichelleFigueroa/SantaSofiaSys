@@ -1,8 +1,8 @@
 package org.esfe.servicios.implementaciones;
 
-import org.esfe.modelos.Venta;
+import org.esfe.modelos.*;
 import org.esfe.repositorios.IVentaRepository;
-import org.esfe.servicios.interfaces.IVentaService;
+import org.esfe.servicios.interfaces.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,7 +27,7 @@ public class VentaService implements IVentaService {
     }
 
     @Override
-    public Optional<Venta> buscarPorId(Integer id) {
+    public Optional<Venta> buscarPorId(Long id) {
         return ventaRepository.findById(id);
     }
 
@@ -37,7 +37,7 @@ public class VentaService implements IVentaService {
     }
 
     @Override
-    public void eliminarPorId(Integer id) {
+    public void eliminarPorId(Long id) {
         ventaRepository.deleteById(id);
     }
 }

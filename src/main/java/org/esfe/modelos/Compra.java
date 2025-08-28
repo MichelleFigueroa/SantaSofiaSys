@@ -2,9 +2,11 @@ package org.esfe.modelos;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.math.BigInteger;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "compras")
@@ -13,24 +15,27 @@ public class Compra {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "El Usuario es requerido")
+    @NotNull(message = "El Usuario es requerido")
     @ManyToOne
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 
-    @NotBlank(message = "El proveedor es requerido")
+    @NotNull(message = "El proveedor es requerido")
     @ManyToOne
     @JoinColumn(name = "id_proveedor")
     private Proveedor proveedor;
 
-    @NotBlank(message = "El correlativo es requerido")
+    @NotNull(message = "El correlativo es requerido")
     private Long correlativo;
 
-    @NotBlank(message = "La fecha es requerida")
+    @NotNull(message = "La fecha es requerida")
     private LocalDateTime fechaHora;
 
-    @NotBlank(message = "El Total es requerido")
+    @NotNull(message = "El Total es requerido")
     private Double total;
+
+    @OneToMany(mappedBy = "compra", cascade = CascadeType.ALL)
+    private List<DetalleCompra> detalles;
 
     public Long getId() {
         return id;
@@ -78,5 +83,13 @@ public class Compra {
 
     public void setTotal(Double total) {
         this.total = total;
+    }
+
+    public List<DetalleCompra> getDetalles() {
+        return detalles;
+    }
+
+    public void setDetalles(List<DetalleCompra> detalles) {
+        this.detalles = detalles;
     }
 }

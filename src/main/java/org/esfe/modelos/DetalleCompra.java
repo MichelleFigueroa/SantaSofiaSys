@@ -2,6 +2,7 @@ package org.esfe.modelos;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.math.BigInteger;
 
@@ -12,23 +13,23 @@ public class DetalleCompra {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "El producto es requerido")
+    @NotNull(message = "El producto es requerido")
     @ManyToOne
     @JoinColumn(name = "id_producto")
     private Producto producto;
 
-    @NotBlank(message = "La compra es requerida")
+    @NotNull(message = "La compra es requerida")
     @ManyToOne
     @JoinColumn(name = "id_compra")
     private Compra compra;
 
-    @NotBlank(message = "La cantidad es requerido")
-    private Short cantidad;
+    @NotNull(message = "La cantidad es requerido")
+    private int cantidad;
 
-    @NotBlank(message = "El precio es requerido")
+    @NotNull(message = "El precio es requerido")
     private Double precio;
 
-    @NotBlank(message = "El subtotal es requerido")
+    @NotNull(message = "El subtotal es requerido")
     private Double subtotal;
 
     public Long getId() {
@@ -55,11 +56,11 @@ public class DetalleCompra {
         this.compra = compra;
     }
 
-    public Short getCantidad() {
+    public int getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(Short cantidad) {
+    public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
     }
 

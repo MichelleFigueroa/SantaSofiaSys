@@ -12,9 +12,9 @@ public interface IDetalleVentaService {
 
     List<DetalleVenta> obtenerTodos();
 
-    Optional<DetalleVenta> buscarPorId(Integer id);
+    Optional<DetalleVenta> buscarPorId(Long id);
 
     DetalleVenta crearOEditar(DetalleVenta detalleVenta);
 
-    void eliminarPorId(Integer id);
+    void eliminarPorId(Long id);
 }

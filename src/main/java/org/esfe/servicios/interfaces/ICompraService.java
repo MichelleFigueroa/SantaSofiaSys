@@ -13,11 +13,11 @@ public interface ICompraService {
 
     List<Compra> obtenerTodos();
 
-    Optional<Compra> buscarPorId(Integer id);
+    Optional<Compra> buscarPorId(Long id);
 
     Compra crearOEditar(Compra compra);
 
-    void eliminarPorId(Integer id);
+    void eliminarPorId(Long id);
 
 
 }

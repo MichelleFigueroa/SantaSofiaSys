@@ -27,7 +27,7 @@ public class InventarioService implements IInventarioService {
     }
 
     @Override
-    public Optional<Inventario> buscarPorId(Integer id) {
+    public Optional<Inventario> buscarPorId(Long id) {
         return inventarioRepository.findById(id);
     }
 
@@ -37,7 +37,7 @@ public class InventarioService implements IInventarioService {
     }
 
     @Override
-    public void eliminarPorId(Integer id) {
+    public void eliminarPorId(Long id) {
         inventarioRepository.deleteById(id);
     }
 }

@@ -12,9 +12,9 @@ public interface IInventarioService {
 
     List<Inventario> obtenerTodos();
 
-    Optional<Inventario> buscarPorId(Integer id);
+    Optional<Inventario> buscarPorId(Long id);
 
     Inventario crearOEditar(Inventario inventario);
 
-    void eliminarPorId(Integer id);
+    void eliminarPorId(Long id);
 }

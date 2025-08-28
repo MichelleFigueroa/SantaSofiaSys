@@ -12,9 +12,9 @@ public interface IVentaService {
 
     List<Venta> obtenerTodos();
 
-    Optional<Venta> buscarPorId(Integer id);
+    Optional<Venta> buscarPorId(Long id);
 
     Venta crearOEditar(Venta venta);
 
-    void eliminarPorId(Integer id);
+    void eliminarPorId(Long id);
 }

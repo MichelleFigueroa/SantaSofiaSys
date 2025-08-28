@@ -2,9 +2,11 @@ package org.esfe.modelos;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.math.BigInteger;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "ventas")
@@ -13,27 +15,31 @@ public class Venta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "El usuario es requerido")
+    @NotNull(message = "El usuario es requerido")
     @ManyToOne
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 
-    @NotBlank(message = "El cliente es requerido")
+    @NotNull(message = "El cliente es requerido")
     @ManyToOne
     @JoinColumn(name = "id_cliente")
     private Cliente cliente;
 
-    @NotBlank(message = "El correlativo es requerido")
+    @NotNull(message = "El correlativo es requerido")
     private Long correlativo;
 
-    @NotBlank(message = "La fecha es requerida")
+    @NotNull(message = "La fecha es requerida")
     private LocalDateTime fechaHora;
 
-    @NotBlank(message = "El total es requerido")
-    private double total;
+    @NotNull(message = "El total es requerido")
+    private Double total;
 
-    @NotBlank(message = "El estado es requerido")
-    private boolean estado;
+    @NotNull(message = "El estado es requerido")
+    private Boolean estado;
+
+    @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL)
+    private List<DetalleVenta> detalles;
+
 
 
     public Long getId() {
@@ -90,5 +96,13 @@ public class Venta {
 
     public void setEstado(boolean estado) {
         this.estado = estado;
+    }
+
+    public List<DetalleVenta> getDetalles() {
+        return detalles;
+    }
+
+    public void setDetalles(List<DetalleVenta> detalles) {
+        this.detalles = detalles;
     }
 }

@@ -2,6 +2,7 @@ package org.esfe.modelos;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
@@ -10,34 +11,34 @@ import java.time.LocalDateTime;
 public class Inventario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
-    @NotBlank(message = "El producto es requerido")
+    @NotNull(message = "El producto es requerido")
     @ManyToOne
     @JoinColumn(name = "id_producto")
     private Producto producto;
 
-    @NotBlank(message = "El stock actual es requerido")
+    @NotNull(message = "El stock actual es requerido")
     private int stockActual;
 
-    @NotBlank(message = "El stock minimo es requerido")
+    @NotNull(message = "El stock minimo es requerido")
     private short stockMinimo;
 
-    @NotBlank(message = "La fecha de compra es requerida")
+//    @NotNull(message = "La fecha de compra es requerida")
     private LocalDateTime fechaCompra;
 
-    @NotBlank(message = "La fecha actual es requerida")
+    @NotNull(message = "La fecha actual es requerida")
     private LocalDateTime fechaActual;
 
     @NotBlank(message = "El movimiento es requerido")
     private String movimiento;
 
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
