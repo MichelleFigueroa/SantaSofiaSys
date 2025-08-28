@@ -57,12 +57,12 @@ public class ProductoController {
     }
 
     @GetMapping("/create")
-    public String create(Producto producto, Model model)
-    {
+    public String create(Producto producto, Model model) {
         model.addAttribute("categorias", categoriaService.obtenerTodos());
         model.addAttribute("marcas", marcaService.obtenerTodos());
         return "producto/create";
     }
+
     @PostMapping("/save")
     public String save(@Valid Producto producto,
                        BindingResult result,
@@ -77,6 +77,7 @@ public class ProductoController {
         attributes.addFlashAttribute("msg", "Producto creado correctamente");
         return "redirect:/productos";
     }
+
     @GetMapping("/details/{id}")
     public String details(@PathVariable("id") Integer id,
                           Model model,
@@ -124,14 +125,19 @@ public class ProductoController {
         return "redirect:/productos";
     }
 
-
     @GetMapping("/buscar")
-    public String buscarPorId(@RequestParam(value = "id", required = false) Integer id, Model model) {
+    public String buscarPorId(@RequestParam(value = "id", required = false) Integer id,
+                              Model model) {
         if (id != null) {
             Optional<Producto> producto = productoService.buscarPorId(id);
-            model.addAttribute("producto", producto.orElse(null));
+            if (producto.isPresent()) {
+                model.addAttribute("producto", producto.get());
+            } else {
+                model.addAttribute("error", "No se encontró el producto con ID " + id);
+            }
         }
-        return "producto/buscarPorId";
+        return "producto/buscar"; // tu vista de búsqueda
     }
 }
+
 

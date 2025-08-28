@@ -40,6 +40,9 @@
             <!-- FORMULARIO -->
             <form th:action="@{/productos/save}" th:object="${producto}" method="post" class="needs-validation" novalidate>
 
+                <!-- Campo oculto para el ID -->
+                <input type="hidden" th:field="*{id}" />
+
                 <!-- Categoría -->
                 <div class="mb-3">
                     <label for="categoria" class="form-label fw-bold">Categoría</label>
