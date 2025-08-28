@@ -46,13 +46,13 @@
         <tr th:each="item : ${proveedores}"> <!-- Itera sobre la lista de proveedores -->
             <td th:text="${item.id}"></td>
             <td th:text="${item.distrito.nombre}"></td>
-            <td th:text="${item.nombre + ' ' + item.apellido}"></td> <!-- Muestra nombre y apellido juntos -->
+            <td th:text="${item.nombre}"></td> <!-- Muestra nombre y apellido juntos -->
             <td th:text="${item.telefono}"></td>
             <td th:text="${item.email}"></td>
             <td th:text="${item.detalle}"></td>
             <td th:text="${item.direccion}"></td>
             <!-- Muestra el nombre del municipio asociado al proveedor -->
-            <td th:text="${item.municipio.nombre}"></td>
+            <td th:text="${item.distrito.nombre}"></td>
             <td>
                 <a th:href="@{/proveedores/details/{id} (id = ${item.id}) }" class="btn btn-outline-secondary">Detalles</a>
                 <a th:href="@{/proveedores/edit/{id} (id = ${item.id}) }" class="btn btn-outline-info">Editar</a>

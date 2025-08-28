@@ -9,13 +9,13 @@
       <hr />
       <dl class="row">
         <dt class="col-sm-2">ID</dt>
-        <dd class="col-sm-10" th:text=${proveedor.id}"></dd>
+        <dd class="col-sm-10" th:text="${proveedor.id}"></dd>
 
         <dt class="col-sm-2">Distrito</dt>
-        <dd class="col-sm-10" th:text="${proveedor.distrito}"></dd>
+        <dd class="col-sm-10" th:text="${proveedor.distrito.nombre}"></dd>
 
         <dt class="col-sm-2">Nombre</dt>
-        <dd class="col-sm-10" th:text=${proveedor.nombre}"></dd>
+        <dd class="col-sm-10" th:text="${proveedor.nombre}"></dd>
 
         <dt class="col-sm-2">Telefono</dt>
         <dd class="col-sm-10" th:text="${proveedor.telefono}"></dd>

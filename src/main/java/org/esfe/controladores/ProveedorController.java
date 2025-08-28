@@ -1,6 +1,7 @@
 package org.esfe.controladores;
 
 
+import jakarta.persistence.Id;
 import org.esfe.modelos.Distrito;
 import org.esfe.modelos.Proveedor;
 import org.esfe.servicios.interfaces.IDistritoService;
@@ -30,55 +31,68 @@ public class ProveedorController {
 
     @GetMapping
     public String index(Model model, @RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size) {
-        int currentPage = page.orElse(1) - 1; // Si no está seteado, se asigna 0
-        int pageSize = size.orElse(5); // Tamaño de la página, se asigna 5
+        int currentPage = page.orElse(1) - 1;
+        int pageSize = size.orElse(5);
 
         Pageable pageable = PageRequest.of(currentPage, pageSize);
-
         Page<Proveedor> proveedores = proveedorService.buscarTodosPaginados(pageable);
         model.addAttribute("proveedores", proveedores);
 
         int totalPages = proveedores.getTotalPages();
         if (totalPages > 0) {
-            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
-                    .boxed()
-                    .collect(Collectors.toList());
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
             model.addAttribute("pageNumbers", pageNumbers);
         }
         return "proveedor/index";
-
     }
 
     @GetMapping("/create")
     public String create(Model model) {
-        model.addAttribute("distrito", distritoService.obtenerTodos());
+        model.addAttribute("distritos", distritoService.obtenerTodos());
         return "proveedor/create";
     }
 
     @PostMapping("/save")
-    public String save(@RequestParam Integer distritoId,
-                       @RequestParam String nombre, @RequestParam String telefono,
+    public String save(@RequestParam(required = false) Integer id,   // 👈 recibimos también el id
+                       @RequestParam Integer distritoId,
+                       @RequestParam String nombre,
+                       @RequestParam String telefono,
                        @RequestParam String email,
-                       @RequestParam String detalle, @RequestParam String direccion,
+                       @RequestParam String detalle,
+                       @RequestParam String direccion,
                        RedirectAttributes attributes) {
-        Distrito distrito = distritoService.buscarPorId(distritoId).get();
 
-        if (distrito != null ) {
-            Proveedor proveedor = new Proveedor();
-            proveedor.setNombre(nombre);
+        Distrito distrito = distritoService.buscarPorId(distritoId).orElse(null);
+
+        if (distrito != null) {
+            Proveedor proveedor;
+
+            if (id != null) {
+                // si viene id, cargamos el proveedor de la BD (modo editar)
+                proveedor = proveedorService.buscarPorId(id).orElse(new Proveedor());
+            } else {
+                //  si no hay id, es uno nuevo
+                proveedor = new Proveedor();
+            }
+
+            // seteamos datos
             proveedor.setDistrito(distrito);
+            proveedor.setNombre(nombre);
             proveedor.setTelefono(telefono);
             proveedor.setEmail(email);
             proveedor.setDetalle(detalle);
             proveedor.setDireccion(direccion);
 
+            // guardar
             proveedorService.createOrEditone(proveedor);
-            attributes.addFlashAttribute("msg", "Proveedor creado correctamente");
 
+            // mensaje
+            String msg = (id != null) ? "Proveedor actualizado correctamente"
+                    : "Proveedor creado correctamente";
+            attributes.addFlashAttribute("msg", msg);
         }
 
         return "redirect:/proveedores";
-
     }
 
     @GetMapping("/details/{id}")
@@ -91,24 +105,22 @@ public class ProveedorController {
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") Integer id, Model model) {
         Proveedor proveedor = proveedorService.buscarPorId(id).get();
-        model.addAttribute("proveedor", proveedorService.obtenerTodos());
-        model.addAttribute("distrito", distritoService.obtenerTodos());
+        model.addAttribute("proveedor", proveedor);
+        model.addAttribute("distritos", distritoService.obtenerTodos());
         return "proveedor/edit";
     }
 
     @GetMapping("/remove/{id}")
-    public String remove(@PathVariable("id") Integer id, Model model) {
-        Proveedor proveedor = proveedorService.buscarPorId(id).get();
-        model.addAttribute("proveedor", proveedor);
-        return "proveedor/delete";
+    public String remove(@PathVariable("id") Integer id, RedirectAttributes attributes) {
+        proveedorService.eliminarPorld(id);
+        attributes.addFlashAttribute("msg", "Proveedor eliminado correctamente");
+        return "redirect:/proveedores";
     }
-
 
     @PostMapping("/delete")
     public String delete(Proveedor proveedor, RedirectAttributes attributes) {
         proveedorService.eliminarPorld(proveedor.getId());
         attributes.addFlashAttribute("msg", "Proveedor eliminado correctamente");
         return "redirect:/proveedores";
-
     }
 }
