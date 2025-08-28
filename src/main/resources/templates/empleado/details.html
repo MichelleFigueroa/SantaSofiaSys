@@ -1,33 +1,48 @@
-<html lang="en"
+<!DOCTYPE html>
+<html lang="es"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="/layouts/_mainLayout">
 
-<div layout:fragment="content">
-    <h1>Detalles del Empleado</h1>
-    <div>
-        <hr />
-        <dl class="row">
-            <dt class="col-ms-2">ID</dt>
-            <dd class="col-ms-10" th:text="${empleado.id}"></dd>
+<div layout:fragment="content" class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-10 col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-header text-center bg-light">
+                    <h1 class="mb-0">Detalles del Empleado</h1>
+                </div>
+                <div class="card-body">
+                    <hr />
+                    <dl class="row mb-4">
+                        <dt class="col-sm-4 col-md-3">ID</dt>
+                        <dd class="col-sm-8 col-md-9" th:text="${empleado.id}"></dd>
 
-            <dt class="col-ms-2">Nombre</dt>
-            <dd class="col-ms-10" th:text="${empleado.nombre}"></dd>
+                        <dt class="col-sm-4 col-md-3">Nombre</dt>
+                        <dd class="col-sm-8 col-md-9" th:text="${empleado.nombre}"></dd>
 
-            <dt class="col-ms-2">Apellido</dt>
-            <dd class="col-ms-10" th:text="${empleado.apellido}"></dd>
+                        <dt class="col-sm-4 col-md-3">Apellido</dt>
+                        <dd class="col-sm-8 col-md-9" th:text="${empleado.apellido}"></dd>
 
-            <dt class="col-ms-2">Teléfono</dt>
-            <dd class="col-ms-10" th:text="${empleado.telefono}"></dd>
+                        <dt class="col-sm-4 col-md-3">Teléfono</dt>
+                        <dd class="col-sm-8 col-md-9" th:text="${empleado.telefono}"></dd>
 
-            <dt class="col-ms-2">Email</dt>
-            <dd class="col-ms-10" th:text="${empleado.email}"></dd>
+                        <dt class="col-sm-4 col-md-3">Email</dt>
+                        <dd class="col-sm-8 col-md-9" th:text="${empleado.email}"></dd>
 
-            <dt class="col-ms-2">DUI</dt>
-            <dd class="col-ms-10" th:text="${empleado.dui}"></dd>
-        </dl>
+                        <dt class="col-sm-4 col-md-3">DUI</dt>
+                        <dd class="col-sm-8 col-md-9" th:text="${empleado.dui}"></dd>
+                    </dl>
 
-        <a th:href="@{/empleados/edit/{id}(id=${empleado.id})}" class="btn btn-outline-info">Editar</a>
-        <a th:href="@{/empleados}" class="btn btn-secondary">Regresar</a>
+                    <div class="d-flex gap-2 justify-content-start">
+                        <a th:href="@{/empleados/edit/{id}(id=${empleado.id})}" class="btn btn-outline-info">
+                            <i class="bi bi-pencil-square"></i> Editar
+                        </a>
+                        <a th:href="@{/empleados}" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left-circle"></i> Regresar
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

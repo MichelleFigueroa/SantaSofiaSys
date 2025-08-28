@@ -3,75 +3,79 @@
       xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="/layouts/_mainLayout">
 
-<div layout:fragment="content">
-  <h1>Editar proveedor</h1>
-  <form th:action="@{/proveedores/save}" th:object="${proveedor}" method="post">
-    <input type="hidden" th:field="*{id}">
+<div layout:fragment="content" class="d-flex justify-content-center align-items-center min-vh-100 bg-light">
 
-    <div class="row">
-      <div class="col-md-6">
-        <div class="form-group">
-          <label for="nombre">Nombre</label>
-          <input type="text" class="form-control" th:field="*{nombre}" id="nombre" placeholder="Escribe el nombre del proveedor" required>
-        </div>
+  <!-- CONTENEDOR PRINCIPAL -->
+  <div class="card shadow-lg border-0 w-100" style="max-width: 700px; border-radius: 20px;">
+    <div class="card-body p-4">
+
+      <!-- ENCABEZADO -->
+      <div class="text-center mb-4 border-bottom pb-3">
+        <h2 class="fw-bold text-primary mb-0">✍️ Editar Proveedor</h2>
       </div>
-    </div>
 
-    <div class="row">
-      <div class="col-md-6">
-        <div class="form-group">
-          <label for="distrito">Distrito</label>
-          <!-- Aquí se corrige para que Thymeleaf mande proveedor.distrito.id -->
-          <select class="form-control" name="distritoId" id="distrito" required>
+      <!-- FORMULARIO -->
+      <form th:action="@{/proveedores/save}" th:object="${proveedor}" method="post" class="needs-validation" novalidate>
+        <input type="hidden" th:field="*{id}">
+
+        <!-- Nombre -->
+        <div class="mb-3">
+          <label for="nombre" class="form-label fw-bold">Nombre</label>
+          <input type="text" class="form-control" th:field="*{nombre}" id="nombre" placeholder="Escribe el nombre del proveedor" required>
+          <div class="invalid-feedback">El nombre es obligatorio.</div>
+        </div>
+
+        <!-- Distrito -->
+        <div class="mb-3">
+          <label for="distrito" class="form-label fw-bold">Distrito</label>
+          <select class="form-select" name="distritoId" id="distrito" required>
+            <option value="" disabled>Seleccione un distrito</option>
             <option th:each="distrito : ${distritos}"
                     th:value="${distrito.id}"
                     th:text="${distrito.nombre}"
                     th:selected="${distrito.id == proveedor.distrito.id}">
             </option>
           </select>
+          <div class="invalid-feedback">Debe seleccionar un distrito.</div>
         </div>
-      </div>
-    </div>
 
-    <div class="row">
-      <div class="col-md-6">
-        <div class="form-group">
-          <label for="telefono">Teléfono</label>
-          <input type="text" class="form-control" th:field="*{telefono}" id="telefono" required>
+        <!-- Teléfono -->
+        <div class="mb-3">
+          <label for="telefono" class="form-label fw-bold">Teléfono</label>
+          <input type="text" class="form-control" th:field="*{telefono}" id="telefono" placeholder="Ingrese el teléfono" required>
+          <div class="invalid-feedback">El teléfono es obligatorio.</div>
         </div>
-      </div>
-    </div>
 
-    <div class="row">
-      <div class="col-md-6">
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" class="form-control" th:field="*{email}" id="email" required>
+        <!-- Email -->
+        <div class="mb-3">
+          <label for="email" class="form-label fw-bold">Email</label>
+          <input type="email" class="form-control" th:field="*{email}" id="email" placeholder="Ingrese el email" required>
+          <div class="invalid-feedback">El email es obligatorio y debe ser válido.</div>
         </div>
-      </div>
-    </div>
 
-    <div class="row">
-      <div class="col-md-6">
-        <div class="form-group">
-          <label for="detalle">Detalle</label>
-          <textarea class="form-control" th:field="*{detalle}" id="detalle" required></textarea>
+        <!-- Detalle -->
+        <div class="mb-3">
+          <label for="detalle" class="form-label fw-bold">Detalle</label>
+          <textarea class="form-control" th:field="*{detalle}" id="detalle" rows="3" placeholder="Ingrese detalles adicionales" required></textarea>
+          <div class="invalid-feedback">El detalle es obligatorio.</div>
         </div>
-      </div>
-    </div>
 
-    <div class="row">
-      <div class="col-md-6">
-        <div class="form-group">
-          <label for="direccion">Dirección</label>
-          <textarea class="form-control" th:field="*{direccion}" id="direccion" required></textarea>
+        <!-- Dirección -->
+        <div class="mb-4">
+          <label for="direccion" class="form-label fw-bold">Dirección</label>
+          <textarea class="form-control" th:field="*{direccion}" id="direccion" rows="3" placeholder="Ingrese la dirección completa" required></textarea>
+          <div class="invalid-feedback">La dirección es obligatoria.</div>
         </div>
-      </div>
-    </div>
 
-    <hr>
-    <button type="submit" class="btn btn-primary">Guardar cambios</button> |
-    <a th:href="@{/proveedores}">Regresar</a>
-  </form>
+        <!-- Botones -->
+        <div class="d-flex justify-content-between">
+          <a th:href="@{/proveedores}" class="btn btn-outline-secondary px-4">⬅ Regresar</a>
+          <button type="submit" class="btn btn-primary px-4">💾 Guardar Cambios</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
 </div>
 </html>

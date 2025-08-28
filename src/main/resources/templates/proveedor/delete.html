@@ -3,39 +3,57 @@
       xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="/layouts/_mainLayout">
 
-<div layout:fragment="content">
-  <h1>Detalles del proveedor</h1>
-  <h3>Estas seguro que deseas eliminar este proveedor?</h3>
-  <div>
-    <hr />
-    <dl class="row">
-      <dt class="col-sm-2">ID</dt>
-      <dd class="col-sm-10" th:text=${proveedor.id}"></dd>
+<div layout:fragment="content" class="d-flex justify-content-center align-items-center min-vh-100 bg-light">
 
-      <dt class="col-sm-2">Distrito</dt>
-      <dd class="col-sm-10" th:text="${proveedor.distrito}"></dd>
+  <div class="card shadow-lg border-0 w-100" style="max-width: 700px; border-radius: 20px;">
+    <div class="card-body p-4">
 
-      <dt class="col-sm-2">Nombre</dt>
-      <dd class="col-sm-10" th:text=${proveedor.nombre}"></dd>
+      <div class="text-center mb-4 border-bottom pb-3">
+        <h2 class="fw-bold text-danger mb-0">🗑️ Eliminar Proveedor</h2>
+      </div>
 
-      <dt class="col-sm-2">Telefono</dt>
-      <dd class="col-sm-10" th:text="${proveedor.telefono}"></dd>
+      <h3 class="text-center mb-4">¿Estás seguro que deseas eliminar este proveedor?</h3>
 
-      <dt class="col-sm-2">Email</dt>
-      <dd class="col-sm-10" th:text="${proveedor.email}"></dd>
+      <div class="alert alert-warning text-center" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i> Esta acción es irreversible.
+      </div>
 
-      <dt class="col-sm-2">Detalle</dt>
-      <dd class="col-sm-10" th:text="${proveedor.detalle}"></dd>
+      <div class="mb-4">
+        <dl class="row">
+          <dt class="col-sm-4 text-end text-primary">ID:</dt>
+          <dd class="col-sm-8" th:text="${proveedor.id}"></dd>
 
-      <dt class="col-sm-2">Direccion</dt>
-      <dd class="col-sm-10" th:text="${proveedor.direccion}"></dd>
-    </dl>
+          <dt class="col-sm-4 text-end text-primary">Distrito:</dt>
+          <dd class="col-sm-8" th:text="${proveedor.distrito.nombre}"></dd>
 
-    <form th:action="@{/proveedores/delete}" method="post">
-      <input type="hidden" name="id" th:value="${proveedor.id}">
-      <input type="submit" value="Eliminar" class="btn btn-danger"> |
-      <a th:href="@{/proveedores}">Regresar</a>
-    </form>
+          <dt class="col-sm-4 text-end text-primary">Nombre:</dt>
+          <dd class="col-sm-8" th:text="${proveedor.nombre}"></dd>
 
+          <dt class="col-sm-4 text-end text-primary">Teléfono:</dt>
+          <dd class="col-sm-8" th:text="${proveedor.telefono}"></dd>
+
+          <dt class="col-sm-4 text-end text-primary">Email:</dt>
+          <dd class="col-sm-8" th:text="${proveedor.email}"></dd>
+
+          <dt class="col-sm-4 text-end text-primary">Detalle:</dt>
+          <dd class="col-sm-8" th:text="${proveedor.detalle}"></dd>
+
+          <dt class="col-sm-4 text-end text-primary">Dirección:</dt>
+          <dd class="col-sm-8" th:text="${proveedor.direccion}"></dd>
+        </dl>
+      </div>
+
+      <form th:action="@{/proveedores/delete}" method="post" class="d-flex justify-content-center gap-3">
+        <input type="hidden" name="id" th:value="${proveedor.id}">
+        <button type="submit" class="btn btn-danger px-4">
+          <i class="bi bi-trash-fill me-2"></i> Eliminar
+        </button>
+        <a th:href="@{/proveedores}" class="btn btn-outline-secondary px-4">
+          <i class="bi bi-arrow-left me-2"></i> Cancelar
+        </a>
+      </form>
+
+    </div>
+  </div>
 </div>
-</div>
+</html>

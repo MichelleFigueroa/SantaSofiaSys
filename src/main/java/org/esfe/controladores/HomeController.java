@@ -11,4 +11,17 @@ public class HomeController {
     public String index(){
         return "home/index";
     }
+
+    @GetMapping("/login")
+    public String mostrarlogin(){
+        // Spring Security maneja el parámetro 'error' directamente en la URL,
+        // no necesitas inyectar Model aquí si solo usas th:if="${param.error}"
+        return  "home/fromLogin";
+    }
+
+    // Si tienes un home page para después del login exitoso
+    @GetMapping("/home")
+    public String homePage() {
+        return "home/homePage";
+    }
 }

@@ -21,6 +21,9 @@ public class Usuario {
     @NotBlank(message = "La clave es obligatoria")
     private String clave;
 
+    // Nuevo campo para el estado del usuario
+    private Integer status; // Agregamos el campo 'status'
+
     // Getters y Setters
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
@@ -36,4 +39,8 @@ public class Usuario {
 
     public String getClave() { return clave; }
     public void setClave(String clave) { this.clave = clave; }
+
+    // Getter y Setter para el nuevo campo 'status'
+    public Integer getStatus() { return status; }
+    public void setStatus(Integer status) { this.status = status; }
 }

@@ -1,37 +1,90 @@
+<!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="/layouts/_mainLayout">
 
-<div layout:fragment="content">
-    <h1>Eliminar Empleado</h1>
-    <h3>¿Estás seguro que quieres eliminar este registro?</h3>
-    <div>
-        <hr />
-        <dl class="row">
-            <dt class="col-ms-2">ID</dt>
-            <dd class="col-ms-10" th:text="${empleado.id}"></dd>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Eliminar Empleado</title>
 
-            <dt class="col-ms-2">Nombre</dt>
-            <dd class="col-ms-10" th:text="${empleado.nombre}"></dd>
+    <!-- Bootstrap CSS (CDN) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
-            <dt class="col-ms-2">Apellido</dt>
-            <dd class="col-ms-10" th:text="${empleado.apellido}"></dd>
+    <style>
+        /* Estilo suave para la vista de eliminación */
+        .container-custom {
+            margin-top: 40px;
+        }
+        .card {
+            border-radius: 12px;
+        }
+        .card-header {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .dl-row dt {
+            width: 180px;
+        }
+        @media (max-width: 767.98px) {
+            .dl-row dt {
+                width: auto;
+            }
+        }
+    </style>
+</head>
 
-            <dt class="col-ms-2">Teléfono</dt>
-            <dd class="col-ms-10" th:text="${empleado.telefono}"></dd>
+<body>
+<div class="container container-custom">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-10 col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-header text-center">
+                    <h2 class="mb-0">Eliminar Empleado</h2>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title text-center mb-4">¿Estás seguro de que quieres eliminar este registro?</h5>
 
-            <dt class="col-ms-2">Email</dt>
-            <dd class="col-ms-10" th:text="${empleado.email}"></dd>
+                    <dl class="row g-3 mb-4">
+                        <dt class="col-6 col-sm-4">ID</dt>
+                        <dd class="col-6 col-sm-8" th:text="${empleado.id}"></dd>
 
-            <dt class="col-ms-2">DUI</dt>
-            <dd class="col-ms-10" th:text="${empleado.dui}"></dd>
-        </dl>
+                        <dt class="col-6 col-sm-4">Nombre</dt>
+                        <dd class="col-6 col-sm-8" th:text="${empleado.nombre}"></dd>
 
-        <form th:action="@{/empleados/delete}" method="post" th:object="${empleado}" style="display:inline;">
-            <input type="hidden" name="id" th:value="${empleado.id}">
-            <input type="submit" value="Eliminar" class="btn btn-outline-danger">
-        </form>
+                        <dt class="col-6 col-sm-4">Apellido</dt>
+                        <dd class="col-6 col-sm-8" th:text="${empleado.apellido}"></dd>
 
+                        <dt class="col-6 col-sm-4">Teléfono</dt>
+                        <dd class="col-6 col-sm-8" th:text="${empleado.telefono}"></dd>
+
+                        <dt class="col-6 col-sm-4">Email</dt>
+                        <dd class="col-6 col-sm-8" th:text="${empleado.email}"></dd>
+
+                        <dt class="col-6 col-sm-4">DUI</dt>
+                        <dd class="col-6 col-sm-8" th:text="${empleado.dui}"></dd>
+                    </dl>
+
+                    <div class="d-flex justify-content-start gap-2">
+                        <form th:action="@{/empleados/delete}" method="post" th:object="${empleado}" style="display:inline;">
+                            <input type="hidden" name="id" th:value="${empleado.id}" />
+                            <button type="submit" class="btn btn-outline-danger">
+                                Eliminar
+                            </button>
+                        </form>
+                        <a th:href="@{/empleados}" class="btn btn-outline-secondary">Cancelar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+<!-- Bootstrap JS (opcional) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+</body>
+</html>

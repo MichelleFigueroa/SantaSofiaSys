@@ -2,70 +2,75 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="/layouts/_mainLayout">
-<div layout:fragment="content">
-  <h1>Crear nuevo Proveedor</h1> <form th:action="@{/proveedores/save}" method="post">
-  <div class="row"> <div class="col-md-6">
-    <div class="form-group">
-      <label for="distrito">Distrito:</label>
-      <select id="distrito" name="distritoId" class="form-control" required>
-        <option th:each="distrito : ${distritos}" th:value="${distrito.id}" th:text="${distrito.nombre}"></option>
-      </select>
+
+<div layout:fragment="content" class="d-flex justify-content-center align-items-center min-vh-100 bg-light">
+
+  <!-- CONTENEDOR PRINCIPAL -->
+  <div class="card shadow-lg border-0 w-100" style="max-width: 700px; border-radius: 20px;">
+    <div class="card-body p-4">
+
+      <!-- ENCABEZADO -->
+      <div class="text-center mb-4 border-bottom pb-3">
+        <h2 class="fw-bold text-primary mb-0">➕ Crear Nuevo Proveedor</h2>
+      </div>
+
+      <!-- FORMULARIO -->
+      <form th:action="@{/proveedores/save}" method="post" class="needs-validation" novalidate>
+
+        <!-- Distrito -->
+        <div class="mb-3">
+          <label for="distrito" class="form-label fw-bold">Distrito:</label>
+          <select id="distrito" name="distritoId" class="form-select" required>
+            <option value="" disabled selected>Seleccione un distrito</option>
+            <option th:each="distrito : ${distritos}" th:value="${distrito.id}" th:text="${distrito.nombre}"></option>
+          </select>
+          <div class="invalid-feedback">Debe seleccionar un distrito.</div>
+        </div>
+
+        <!-- Nombre -->
+        <div class="mb-3">
+          <label for="nombre" class="form-label fw-bold">Nombre:</label>
+          <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ingrese el nombre del proveedor" required>
+          <div class="invalid-feedback">El nombre es obligatorio.</div>
+        </div>
+
+        <!-- Telefono -->
+        <div class="mb-3">
+          <label for="telefono" class="form-label fw-bold">Telefono:</label>
+          <input type="text" class="form-control" id="telefono" name="telefono" placeholder="Ingrese el teléfono" required>
+          <div class="invalid-feedback">El teléfono es obligatorio.</div>
+        </div>
+
+        <!-- Direccion -->
+        <div class="mb-3">
+          <label for="direccion" class="form-label fw-bold">Direccion:</label>
+          <input type="text" class="form-control" id="direccion" name="direccion" placeholder="Ingrese la dirección" required>
+          <div class="invalid-feedback">La dirección es obligatoria.</div>
+        </div>
+
+        <!-- Email -->
+        <div class="mb-3">
+          <label for="email" class="form-label fw-bold">Email:</label>
+          <input type="email" class="form-control" id="email" name="email" placeholder="Ingrese el email" required>
+          <div class="invalid-feedback">El email es obligatorio y debe ser válido.</div>
+        </div>
+
+        <!-- Detalle -->
+        <div class="mb-4">
+          <label for="detalle" class="form-label fw-bold">Detalle:</label>
+          <input type="text" class="form-control" id="detalle" name="detalle" placeholder="Ingrese un detalle" required>
+          <div class="invalid-feedback">El detalle es obligatorio.</div>
+        </div>
+
+        <!-- Botones -->
+        <div class="d-flex justify-content-between">
+          <a th:href="@{/proveedores}" class="btn btn-outline-secondary px-4">⬅ Regresar</a>
+          <button type="submit" class="btn btn-success px-4">💾 Guardar</button>
+        </div>
+
+      </form>
     </div>
-  </div>
   </div>
 
-  <div class="row">
-    <div class="col-md-6">
-      <div class="form-group">
-        <label for="nombre">Nombre:</label>
-        <input type="text" class="form-control" id="nombre" name="nombre" required>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-md-6">
-      <div class="form-group">
-        <label for="telefono">Telefono:</label>
-        <input type="text" class="form-control" id="telefono" name="telefono" required>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-md-6">
-      <div class="form-group">
-        <label for="direccion">Direccion:</label>
-        <input type="text" class="form-control" id="direccion" name="direccion" required>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-md-6">
-      <div class="form-group">
-        <label for="email">Email:</label>
-        <input type="email" class="form-control" id="email" name="email" required>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-md-6">
-      <div class="form-group">
-        <label for="detalle">Detalle:</label>
-        <input type="text" class="form-control" id="detalle" name="detalle" required>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-md-6">
-      <div class="form-group">
-        <button type="submit" class="btn btn-primary">Guardar</button> |
-        <a href="/proveedores"> Volver</a>
-      </div>
-    </div>
-  </div>
-</form>
 </div>
+</html>
